@@ -1,5 +1,5 @@
-"\eOC": forward-word
-"\eOD": backward-word
+"\eOc": forward-word
+"\eOd": backward-word
 
 set completion-ignore-case on
 set show-all-if-ambiguous on
