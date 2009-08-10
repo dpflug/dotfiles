@@ -1,0 +1,12 @@
+"\eOC": forward-word
+"\eOD": backward-word
+
+set completion-ignore-case on
+set show-all-if-ambiguous on
+
+$if Bash
+  # F10 toggles mc
+  #"\e[21~": "mc\C-M"
+  # Can be used to hotkey other commands
+  Space: magic-space
+$endif

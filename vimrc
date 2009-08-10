@@ -1,0 +1,9 @@
+set nocompatible
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set expandtab
+set smarttab
+set smartindent
+set cindent
+set backupdir=~/.vim/backups/,.,/tmp
