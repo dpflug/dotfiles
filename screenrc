@@ -1,0 +1,8 @@
+terminfo rxvt-unicode 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+terminfo rxvt-unicode256 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+startup_message off
+vbell off
+defscrollback 1000
+nethack on
+hardstatus alwayslastline
+hardstatus string '%{gk}[ %{G}%H %{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}][%{Y}%l%{g}]%{=b C}[ %m/%d %c ]%{W}'
