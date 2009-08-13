@@ -1,7 +1,7 @@
 "\eOc": forward-word
 "\eOd": backward-word
-"\e[C": forward-word
-"\e[D": backward-word
+#"\e[C": forward-word
+#"\e[D": backward-word
 
 set completion-ignore-case on
 set show-all-if-ambiguous on
