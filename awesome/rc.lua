@@ -318,7 +318,7 @@ globalkeys =
 
     -- Standard program
     key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    key({ modkey, "Shift"   }, "x", function () os.execute('slock') end),
+    key({ modkey,           }, "x", function () os.execute('slock') end),
     key({ modkey, "Control" }, "r", awesome.restart),
     key({ modkey, "Shift"   }, "q", awesome.quit),
 
