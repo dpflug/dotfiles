@@ -21,7 +21,7 @@ editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Used later for various things
-net_device = "wlan0"
+net_device = "eth0"
 spacertext = " "
 spacerwidth = "4"
 
@@ -35,13 +35,11 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.max,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
+    awful.layout.suit.max,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.top,
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
     awful.layout.suit.floating
@@ -260,14 +258,14 @@ for s = 1, screen.count() do
                            mytaglist[s],
                            mytasklist[s],
                            mypromptbox[s],
-                           essidwidget,
-                           spacerwidget,
-                           ratewidget,
-                           lqwidget,
+--                           essidwidget,
+--                           spacerwidget,
+--                           ratewidget,
+--                           lqwidget,
                            bandwidthwidget,
                            cpu0graphwidget,
                            membarwidget,
-                           batterywidget,
+--                           batterywidget,
                            mytextbox,
                            mylayoutbox[s],
                            s == 1 and mysystray or nil }
@@ -560,7 +558,7 @@ function splitbywhitespace(str)
 end
 
 net_infos = {
-  interfaces = {'eth0', 'wlan0'},
+  interfaces = {'eth0'}, --, 'wlan0'},
   eth0 = {
     status = 'down',
     bytes_up = 0,
@@ -568,13 +566,13 @@ net_infos = {
     rate_up = 0,
     rate_down = 0
   },
-  wlan0 = {
-    status = 'down',
-    bytes_up = 0,
-    bytes_down = 0,
-    rate_up = 0,
-    rate_down = 0
-  },
+--  wlan0 = {
+--    status = 'down',
+--    bytes_up = 0,
+--    bytes_down = 0,
+--    rate_up = 0,
+--    rate_down = 0
+--  },
 }
 
 function get_bw()
@@ -725,16 +723,16 @@ function get_bat()
 end
 
 function hook_1sec ()
-  get_mhz()
+--  get_mhz()
   get_cpu()
   get_bw()  
 end
 
 function hook_5sec ()
   get_mem()
-  get_bat()
+--  get_bat()
   --    get_temp()
-  get_iwinfo()
+--  get_iwinfo()
 end
 
 awful.hooks.timer.register(1, hook_1sec)
