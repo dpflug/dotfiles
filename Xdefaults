@@ -1,0 +1,22 @@
+Xft.antialias:           rgba
+Xft.hinting:             true
+Xft.hintstyle:           hintfull
+
+XTerm*background: Black
+XTerm*foreground: Gold
+!XTerm*font: xft:terminus:antialias=true:autohint=true
+XTerm*font: xft:envy code r:antialias=true:autohint=true
+
+Rxvt*background: Black
+Rxvt*foreground: Gold
+
+!urxvt*font: xft:inconsolata:antialias=true:autohint=true
+urxvt*font: xft:Envy Code R:autohint=false:antialias=false:size=9
+urxvt*scrollBar: False
+urxvt*urgentOnBell: True
+urxvt*visualBell: False
+urxvt*skipScroll: True
+urxvt.perl-ext: default,matcher
+urxvt.urlLauncher: sensible-browser
+urxvt.keysym.C-Delete: perl:matcher
+urxvt.underlineURLs: true
