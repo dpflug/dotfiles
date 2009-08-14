@@ -69,7 +69,9 @@ apptags =
     ["Firefox"] = { screen = 1, tag = 2 },
     ["Gran Paradiso"] = { screen = 1, tag = 2 },
     ["Thunderbird"] = { screen = 1, tag = 4 },
-    ["Spicebird"] = { screen = 1, tag = 4}
+    ["Spicebird"] = { screen = 1, tag = 4},
+    ["gajim"] = { screen = 1, tag = 9},
+    ["gajim.py"] = { screen = 1, tag = 9}
     -- ["mocp"] = { screen = 2, tag = 4 },
 }
 
