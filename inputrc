@@ -3,7 +3,7 @@
 #"\e[C": forward-word
 #"\e[D": backward-word
 
-set completion-ignore-case on
+#set completion-ignore-case on # Don't think I actually like this.
 set show-all-if-ambiguous on
 
 $if Bash
