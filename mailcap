@@ -1,3 +1,4 @@
 text/html; /usr/bin/firefox '%s'; description=HTML Text; test=test -n "$DISPLAY";  nametemplate=%s.html
 text/html; /usr/bin/elinks '%s'; description=HTML Text; test=test -x /usr/bin/elinks ; nametemplate=%s.html
 text/html; /usr/bin/lynx -stdin; description=HTML Text; nametemplate=%s.html
+application/pdf; /usr/bin/evince '%s'; test=test -n "$DISPLAY"; nametemplate=%s.pdf
