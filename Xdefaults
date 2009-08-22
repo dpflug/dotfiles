@@ -5,13 +5,13 @@ Xft.hintstyle:           hintfull
 XTerm*background: Black
 XTerm*foreground: Gold
 !XTerm*font: xft:terminus:antialias=true:autohint=true
-XTerm*font: xft:envy code r:antialias=true:autohint=true
+!XTerm*font: xft:envy code r:antialias=true:autohint=true
 
 Rxvt*background: Black
 Rxvt*foreground: Gold
 
 !urxvt*font: xft:inconsolata:antialias=true:autohint=true
-urxvt*font: xft:Envy Code R:autohint=false:antialias=false:size=9
+!urxvt*font: xft:Envy Code R:autohint=false:antialias=false:size=9
 urxvt*scrollBar: False
 urxvt*urgentOnBell: True
 urxvt*visualBell: False
