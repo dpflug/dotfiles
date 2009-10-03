@@ -2,3 +2,7 @@ text/html; /usr/bin/firefox '%s'; description=HTML Text; test=test -n "$DISPLAY"
 text/html; /usr/bin/elinks '%s'; description=HTML Text; test=test -x /usr/bin/elinks ; nametemplate=%s.html
 text/html; /usr/bin/lynx -stdin; description=HTML Text; nametemplate=%s.html
 application/pdf; /usr/bin/epdfview '%s'; test=test -n "$DISPLAY"; nametemplate=%s.pdf
+application/msword; /usr/bin/oobase '%s'; test=test -n "$DISPLAY"; nametemplate=%s.doc
+application/vnd.openxmlformats-officedocument.presentationml.presentation; /usr/bin/oobase '%s'; test=test -n "$DISPLAY"; nametemplate=%s.pptx
+application/vnd.ms-powerpoint; /usr/bin/oobase '%s'; test=test -n "$DISPLAY"; nametemplate=%s.ppt
+image/jpeg; /usr/bin/gqview '%s'; description=JPEG Image; test=test -n "$DISPLAY"; nametemplate=%s.jpg
