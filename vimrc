@@ -9,5 +9,7 @@ set cindent
 set foldmethod=marker
 set backupdir=~/.vim/backups/,.,/tmp
 
+syntax enable
+
 "Make Crtl-L clear search highlights
 nmap <silent> <C-l> :nohl<CR><C-l>
