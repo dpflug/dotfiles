@@ -6,3 +6,5 @@ application/msword; /usr/bin/oobase '%s'; test=test -n "$DISPLAY"; nametemplate=
 application/vnd.openxmlformats-officedocument.presentationml.presentation; /usr/bin/oobase '%s'; test=test -n "$DISPLAY"; nametemplate=%s.pptx
 application/vnd.ms-powerpoint; /usr/bin/oobase '%s'; test=test -n "$DISPLAY"; nametemplate=%s.ppt
 image/jpeg; /usr/bin/gqview '%s'; description=JPEG Image; test=test -n "$DISPLAY"; nametemplate=%s.jpg
+image/png; /usr/bin/gqview '%s'; description=PNG Image; test=test -n "$DISPLAY"; nametemplate=%s.png
+image/pdf; /usr/bin/epdfview '%s'; description= PDF document; test=test -n "$DISPLAY"; nametemplate=%s.pdf
