@@ -6,6 +6,8 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
+-- Widgets
+--require("vicious")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
@@ -62,6 +64,16 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- }}}
 
 -- {{{ Wibox
+cpu0graphwidget = awful.widget.graph()
+cpu0graphwidget:set_width(45)
+cpu0graphwidget:set_height(18)
+cpu0graphwidget:set_max_value(100)
+cpu0graphwidget:set_background_color(beautiful.bg_normal)
+cpu0graphwidget:set_border_color(beautiful.border_normal)
+cpu0graphwidget:set_color(beautiful.fg_color)
+cpu0graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 3, orange = 3})
+cpu0graphwidget:set_gradient_angle(40)
+
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right", format = "<b><small> %a %b %d, %I:%M </small></b>" })
 
@@ -131,14 +143,15 @@ for s = 1, screen.count() do
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
         {
-            mylauncher,
             mytaglist[s],
+            mylauncher,
             mypromptbox[s],
             layout = awful.widget.layout.horizontal.leftright
         },
         s == 1 and mysystray or nil,
         mylayoutbox[s],
         mytextclock,
+        cpu0graphwidget.widget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
@@ -209,7 +222,14 @@ globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end)
+              end)--,
+
+    --[[ David's
+    awful.key({ modkey }, "t",
+        function ()
+            os.execute('sleep 180 ; notify-send -u critical "TEA TIME" "Go get your tea"')
+        end)
+    --]] -- It freezes awesome's execution. :P
 )
 
 clientkeys = awful.util.table.join(
@@ -226,6 +246,7 @@ clientkeys = awful.util.table.join(
             c.maximized_vertical   = not c.maximized_vertical
         end)
 )
+
 
 -- Compute the maximum number of digit we need, limited to 9
 keynumber = 0
@@ -296,9 +317,83 @@ awful.rules.rules = {
     -- Do the same for gajim, on 9.
     { rule = { class = "Gajim.py" },
       properties = { tag = tags[1][9] } },
+    { rule = { name = "HDssh" },
+      properties = { tag = tags[1][3] } },
+    { rule = { name = "ssh" },
+      properties = { tag = tags[1][3] } },
     -- Useful for Gajim, if I can work out how.
     --awful.tag.setproperty(tags[s][9], "mwfact", 0.13)
 }
+-- }}}
+
+-- {{{ Custom functions
+cpu0_total  = 0
+cpu0_active = 0
+timer_1second = timer({ timeout = 1 })
+timer_1second:add_signal("timeout", function() get_cpu() end)
+timer_1second:start()
+
+--[[ Obsoleted?
+function splitbywhitespace(str) --stolen from wicked.lua
+values = {}
+start = 1
+splitstart, splitend = string.find(str, ' ', start)
+
+while splitstart do
+    m = string.sub(str, start, splitstart-1)
+    if m:gsub(' ','') ~= '' then
+        table.insert(values, m)
+    end
+
+    start = splitend+1
+    splitstart, splitend = string.find(str, ' ', start)
+end
+
+m = string.sub(str, start)
+if m:gsub(' ','') ~= '' then
+    table.insert(values, m)
+end
+
+return values
+end
+--]]
+
+function splitbywhitespace(str)
+    local t = {}
+    local function helper(word) table.insert(t, word) return "" end
+    if not str:gsub("%w+", helper):find"%S" then return t end
+end
+
+function get_cpu()
+  local f = io.open('/proc/stat')
+  local limit_break = 1
+  for l in f:lines() do
+    local cpu = string.match(l, 'cpu%d+')
+    if cpu == "cpu0" then
+          local cpu_usage = splitbywhitespace(l)
+          total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
+          active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
+          diff_total    = total_new-cpu0_total
+          diff_active   = active_new-cpu0_active
+          usage_percent = math.floor(diff_active/diff_total*100)
+          cpu0_total    = total_new
+          cpu0_active   = active_new
+          cpu0graphwidget:add_value(usage_percent)
+    elseif cpu == "cpu1" then
+          local cpu_usage = splitbywhitespace(l)
+          total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
+          active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
+          diff_total    = total_new-cpu1_total
+          diff_active   = active_new-cpu1_active
+          usage_percent = math.floor(diff_active/diff_total*100)
+          cpu1_total    = total_new
+          cpu1_active   = active_new
+          cpu1graphwidget:add_value(usage_percent)
+      end
+    end
+  f:close()
+end
+
 -- }}}
 
 -- {{{ Signals
