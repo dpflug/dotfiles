@@ -34,6 +34,9 @@ layouts =
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.floating,
 }
+
+
+
 -- }}}
 
 -- {{{ Tags
@@ -76,6 +79,10 @@ cpu0graphwidget:set_gradient_angle(40)
 
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right", format = "<b><small> %a %b %d, %I:%M </small></b>" })
+
+-- Testing a textbox
+bandwidthwidget = widget({ type = "textbox" })
+bandwidthwidget.text = '0D | 0U'
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -152,6 +159,7 @@ for s = 1, screen.count() do
         mylayoutbox[s],
         mytextclock,
         cpu0graphwidget.widget,
+        bandwidthwidget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
@@ -331,32 +339,49 @@ cpu0_total  = 0
 cpu0_active = 0
 timer_1second = timer({ timeout = 1 })
 timer_1second:add_signal("timeout", function() get_cpu() end)
+timer_1second:add_signal("timeout", function() get_bw() end)
 timer_1second:start()
 
---[[ Obsoleted?
-function splitbywhitespace(str) --stolen from wicked.lua
-values = {}
-start = 1
-splitstart, splitend = string.find(str, ' ', start)
+net_info = {
+    interfaces = {'eth0'},
+    eth0 = {
+        status = 'down',
+        bytes_up = 0,
+        bytes_down = 0,
+        rate_up = 0,
+        rate_down = 0
+    },
+}
 
-while splitstart do
-    m = string.sub(str, start, splitstart-1)
-    if m:gsub(' ','') ~= '' then
-        table.insert(values, m)
+function get_bw()
+  local time_interval_s = 1
+  local c_proc_net_dev = ''
+  local proc_net_dev = io.open( '/proc/net/dev' )
+  if proc_net_dev ~= nil then
+    c_proc_net_dev = proc_net_dev:read( '*all' )
+  end
+  proc_net_dev:close()
+  for nd = 1, #net_info[ 'interfaces' ]  do
+    local f = io.open('/sys/class/net/' .. net_info[ 'interfaces' ][ nd ] .. '/operstate')
+    net_info[ net_info[ 'interfaces' ][ nd ] ][ 'status' ] = 'down'
+    if f ~= nil then
+      net_info[ net_info[ 'interfaces' ][ nd ] ][ 'status' ] = string.match( f:read(), 'down' )
+      f:close()
     end
-
-    start = splitend+1
-    splitstart, splitend = string.find(str, ' ', start)
+    if c_proc_net_dev ~= '' then
+      local current_bytes_up = 0
+      local current_bytes_down = 0
+      current_bytes_down, current_bytes_up = string.match( c_proc_net_dev, net_info[ 'interfaces' ][ nd ] .. ':%s*(%d+)%s*%d+%s*%d+%s*%d+%s*%d+%s*%d+%s*%d+%s*%d+%s*(%d+)' )
+      net_info[ net_info[ 'interfaces' ][ nd ] ][ 'rate_up' ] = ( current_bytes_up - net_info[ net_info[ 'interfaces' ][ nd ] ][ 'bytes_up' ] ) / time_interval_s
+      net_info[ net_info[ 'interfaces' ][ nd ] ][ 'rate_down' ] = ( current_bytes_down - net_info[ net_info[ 'interfaces' ][ nd ] ][ 'bytes_down' ] ) / time_interval_s
+      net_info[ net_info[ 'interfaces' ][ nd ] ][ 'bytes_up' ] = current_bytes_up
+      net_info[ net_info[ 'interfaces' ][ nd ] ][ 'bytes_down' ] = current_bytes_down
+    end
+  end
+  rx = string.format( '%.2f', net_info[ 'eth0' ][ 'rate_down' ] / 1024 )
+  tx = string.format( '%.2f', net_info[ 'eth0' ][ 'rate_up' ] / 1024 )
+  bandwidthwidget.text = "<small>"..rx.."D | "..tx.."U</small>"
 end
-
-m = string.sub(str, start)
-if m:gsub(' ','') ~= '' then
-    table.insert(values, m)
-end
-
-return values
-end
---]]
 
 function splitbywhitespace(str)
     local t = {}
