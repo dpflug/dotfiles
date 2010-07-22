@@ -11,7 +11,7 @@ require("naughty")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init(".config/awesome/theme/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvtcd"
@@ -64,18 +64,54 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 -- }}}
 
 -- {{{ Wibox
+--------------
+-- These should be in a table
+--cpuvals = {}
+--cpugraphs = {}
+--get_cpu()
+
 cpu0graphwidget = awful.widget.graph()
-cpu0graphwidget:set_width(45)
+cpu0graphwidget:set_width(30)
 cpu0graphwidget:set_height(18)
 cpu0graphwidget:set_max_value(100)
 cpu0graphwidget:set_background_color(beautiful.bg_normal)
 cpu0graphwidget:set_border_color(beautiful.border_normal)
 cpu0graphwidget:set_color(beautiful.fg_color)
-cpu0graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 3, orange = 3})
-cpu0graphwidget:set_gradient_angle(40)
+cpu0graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 4, orange = 3})
+cpu0graphwidget:set_gradient_angle(50)
+
+cpu1graphwidget = awful.widget.graph()
+cpu1graphwidget:set_width(30)
+cpu1graphwidget:set_height(18)
+cpu1graphwidget:set_max_value(100)
+cpu1graphwidget:set_background_color(beautiful.bg_normal)
+cpu1graphwidget:set_border_color(beautiful.border_normal)
+cpu1graphwidget:set_color(beautiful.fg_color)
+cpu1graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 2, orange = 3})
+cpu1graphwidget:set_gradient_angle(30)
+
+cpu2graphwidget = awful.widget.graph()
+cpu2graphwidget:set_width(30)
+cpu2graphwidget:set_height(18)
+cpu2graphwidget:set_max_value(100)
+cpu2graphwidget:set_background_color(beautiful.bg_normal)
+cpu2graphwidget:set_border_color(beautiful.border_normal)
+cpu2graphwidget:set_color(beautiful.fg_color)
+cpu2graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 2, orange = 3})
+cpu2graphwidget:set_gradient_angle(-30)
+
+cpu3graphwidget = awful.widget.graph()
+cpu3graphwidget:set_width(30)
+cpu3graphwidget:set_height(18)
+cpu3graphwidget:set_max_value(100)
+cpu3graphwidget:set_background_color(beautiful.bg_normal)
+cpu3graphwidget:set_border_color(beautiful.border_normal)
+cpu3graphwidget:set_color(beautiful.fg_color)
+cpu3graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 4, orange = 3})
+cpu3graphwidget:set_gradient_angle(-50)
 
 -- Create a textclock widget
-mytextclock = awful.widget.textclock({ align = "right", format = "<b><small> %a %b %d, %I:%M </small></b>" })
+mytextclock = awful.widget.textclock({ align = "right" }, " %a %b %d, %l:%M%p ")
 
 -- Create a systray
 mysystray = widget({ type = "systray" })
@@ -151,7 +187,11 @@ for s = 1, screen.count() do
         s == 1 and mysystray or nil,
         mylayoutbox[s],
         mytextclock,
+
         cpu0graphwidget.widget,
+        cpu1graphwidget.widget,
+        cpu2graphwidget.widget,
+        cpu3graphwidget.widget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
@@ -319,6 +359,9 @@ awful.rules.rules = {
     -- Set Firefox to always map on tags number 2 of screen 1.
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2] } },
+    -- And Chromium on 2 as well.
+    { rule = { class = "Chromium" },
+      properties = { tag = tags[1][2] } },
     -- Do the same for gajim, on 9.
     { rule = { class = "Gajim.py" },
       properties = { tag = tags[1][9] } },
@@ -326,14 +369,24 @@ awful.rules.rules = {
       properties = { tag = tags[1][3] } },
     { rule = { name = "ssh" },
       properties = { tag = tags[1][3] } },
+    { rule = { name = "nona" },
+      properties = { tag = tags[1][8] } },
     -- Useful for Gajim, if I can work out how.
     --awful.tag.setproperty(tags[s][9], "mwfact", 0.13)
 }
 -- }}}
 
 -- {{{ Custom functions
+--cpu = {}
 cpu0_total  = 0
 cpu0_active = 0
+cpu1_total  = 0
+cpu1_active = 0
+cpu2_total  = 0
+cpu2_active = 0
+cpu3_total  = 0
+cpu3_active = 0
+
 timer_1second = timer({ timeout = 1 })
 timer_1second:add_signal("timeout", function() get_cpu() end)
 timer_1second:start()
@@ -374,6 +427,24 @@ function get_cpu()
   local limit_break = 1
   for l in f:lines() do
     local cpu = string.match(l, 'cpu%d+')
+    --[[ This isn't ready yet.
+    if cpunum then
+        if not cpu[cpunum] then
+            cpu[cpunum] = { active=0, total=0 }
+        else
+            local cpu_usage = splitbywhitespace(l)
+            total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
+            active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
+            diff_total    = total_new-cpu0_total
+            diff_active   = active_new-cpu0_active
+            usage_percent = math.floor(diff_active/diff_total*100)
+            cpu0_total    = total_new
+            cpu0_active   = active_new
+            cpu0graphwidget:add_value(usage_percent)
+            -- Widgets should be in a table, it seems. ANYTHING can go in a table. :D
+      end
+    end
+    --]]
     if cpu == "cpu0" then
           local cpu_usage = splitbywhitespace(l)
           total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
@@ -394,6 +465,26 @@ function get_cpu()
           cpu1_total    = total_new
           cpu1_active   = active_new
           cpu1graphwidget:add_value(usage_percent)
+    elseif cpu == "cpu2" then
+          local cpu_usage = splitbywhitespace(l)
+          total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
+          active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
+          diff_total    = total_new-cpu2_total
+          diff_active   = active_new-cpu2_active
+          usage_percent = math.floor(diff_active/diff_total*100)
+          cpu2_total    = total_new
+          cpu2_active   = active_new
+          cpu2graphwidget:add_value(usage_percent)
+    elseif cpu == "cpu3" then
+          local cpu_usage = splitbywhitespace(l)
+          total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
+          active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
+          diff_total    = total_new-cpu3_total
+          diff_active   = active_new-cpu3_active
+          usage_percent = math.floor(diff_active/diff_total*100)
+          cpu3_total    = total_new
+          cpu3_active   = active_new
+          cpu3graphwidget:add_value(usage_percent)
       end
     end
   f:close()
