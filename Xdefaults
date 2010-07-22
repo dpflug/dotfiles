@@ -10,8 +10,8 @@ XTerm*foreground: Gold
 Rxvt*background: Black
 Rxvt*foreground: Gold
 
-!urxvt*font: xft:inconsolata:antialias=true:autohint=true
-!urxvt*font: xft:Envy Code R:autohint=false:antialias=false:size=9
+!urxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
+urxvt*font: xft:Envy Code R:autohint=false:antialias=false
 urxvt*scrollBar: False
 urxvt*urgentOnBell: True
 urxvt*visualBell: False
