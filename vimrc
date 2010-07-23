@@ -5,7 +5,7 @@ set tabstop=4
 set expandtab
 set smarttab
 set autoindent
-"set smartindent
+set smartindent
 "set cindent
 set foldmethod=marker
 set backupdir=~/.vim/backups/,.,/tmp
@@ -16,3 +16,4 @@ syntax enable
 nmap <silent> <C-l> :nohl<CR><C-l>
 
 au BufNewFile,BufRead *.t2t set ft=txt2tags
+autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
