@@ -240,7 +240,7 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey,           }, "x", function () os.execute('slock') end),
+    awful.key({ modkey,           }, "x", function () awful.util.spawn('slock') end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
@@ -257,6 +257,9 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q sset Master 2dB-") end),
     awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q sset Master 2dB+") end),
     awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -q sset Master toggle") end),
+    awful.key({}, "XF86AudioPrev", function () awful.util.spawn("mpc prev") end),
+    awful.key({}, "XF86AudioNext", function () awful.util.spawn("mpc next") end),
+    awful.key({}, "XF86AudioPlay", function () awful.util.spawn("mpc stop") end),
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
@@ -269,12 +272,10 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end)--,
 
-    --[[ David's
     awful.key({ modkey }, "t",
         function ()
-            os.execute('sleep 180 ; notify-send -u critical "TEA TIME" "Go get your tea"')
+            awful.util.spawn('sleep 180 ; notify-send -u critical "TEA TIME" "Go get your tea"')
         end)
-    --]] -- It freezes awesome's execution. :P
 )
 
 clientkeys = awful.util.table.join(
