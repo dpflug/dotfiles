@@ -21,6 +21,10 @@ for file in * ; do
     fi
 done
 
+for file in ~/Public/dotfiles/bin* ; do
+    ln -s $file ~/bin/
+done
+
 
 for file in ~/Public/dotfiles/* ; do
     #Just omitting the directories for now. I'd like to pull them into this loop, too, though.
