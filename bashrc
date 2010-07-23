@@ -7,6 +7,7 @@ alias grep='grep --colour=auto'
 alias x='startx'
 alias ta='tmux a -d > /dev/null || tmux'
 alias dps='ssh -t projecthq.biz screen -raAd'
+alias awdb='Xephyr -ac -br -noreset -screen 800:600 :1 & export DISPLAY=":1" PS1="AWDB ${PS1}"'
 
 
 [[ -f /etc/profile.d/bash-completion ]] &&
