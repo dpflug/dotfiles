@@ -10,6 +10,9 @@ fi
 
 cd ~/Public/dotfiles/ssh
 for file in * ; do
+    if [[ -f ${file}.pub ]] ; then
+        chmod 600 $file ${file}.pub
+    fi
     if [[ -a ~/.ssh/${file} ]] ; then
         echo "~/.ssh/${file} exists"
     else
