@@ -365,10 +365,6 @@ awful.rules.rules = {
     -- Do the same for gajim, on 9.
     { rule = { class = "Gajim.py" },
       properties = { tag = tags[1][9] } },
-    { rule = { name = "HDssh" },
-      properties = { tag = tags[1][3] } },
-    { rule = { name = "ssh" },
-      properties = { tag = tags[1][3] } },
     { rule = { name = "nona" },
       properties = { tag = tags[1][8] } },
     -- Useful for Gajim, if I can work out how.
