@@ -1,7 +1,7 @@
 #!/usr/bin/bash
-alias y='sudo powerpill'
-alias yup='sudo powerpill -Syu ; slurpy -udt ~/build/' 
+alias y='sudo pacman-color'
+alias yup='sudo pacman-color -Syu ; slurpy -udt ~/build/' 
 
 ys () {
-    powerpill -Ss $* ; slurpy -s $*
+    pacman-color -Ss $* ; slurpy -s $*
 }
