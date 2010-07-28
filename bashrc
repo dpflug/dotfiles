@@ -9,6 +9,7 @@ alias ta='tmux a -d > /dev/null || tmux'
 alias dps='ssh -t projecthq.biz screen -raAd'
 alias awdb='Xephyr -ac -br -noreset -screen 800:600 :1 & export DISPLAY=":1.0" PS1="\[\e[0;31m\]AWDB ${PS1}" ; sleep 2 && awesome &'
 alias undb='killall Xephyr ; export DISPLAY=":0.0" PS1=${PS1##*AWDB }'
+alias mtr='mtr --curses'
 
 
 [[ -f /etc/profile.d/bash-completion ]] &&
