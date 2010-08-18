@@ -17,6 +17,6 @@ urxvt*urgentOnBell: True
 urxvt*visualBell: False
 urxvt*skipScroll: True
 urxvt.perl-ext: default,matcher
-urxvt.urlLauncher: chromium
+urxvt.urlLauncher: firefox
 urxvt.keysym.C-Delete: perl:matcher
 urxvt.underlineURLs: true
