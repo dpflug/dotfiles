@@ -10,6 +10,9 @@ set smartindent
 set foldmethod=marker
 set backupdir=~/.vim/backups/,.,/tmp
 
+set spell spelllang=en_us
+set spellfile=~/.vim/spellfile.add
+
 syntax enable
 
 "Make Crtl-L clear search highlights
