@@ -259,7 +259,16 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -q sset Master toggle") end),
     awful.key({}, "XF86AudioPrev", function () awful.util.spawn("mpc prev") end),
     awful.key({}, "XF86AudioNext", function () awful.util.spawn("mpc next") end),
-    awful.key({}, "XF86AudioPlay", function () awful.util.spawn("mpc stop") end),
+    awful.key({}, "XF86AudioPlay", function () awful.util.spawn("mpc toggle") end),
+    awful.key({}, "XF86Mail", function () awful.util.spawn("firefox mail.google.com/a/tpflug.com") end),
+    awful.key({}, "XF86Calculator", function () awful.util.spawn("slock") end),
+    awful.key({}, "XF86HomePage", function () awful.util.spawn("firefox reader.google.com") end),
+
+--[[
+awful.key({}, "XF86Tools", function () awful.util.spawn("") end), -- Music note key
+awful.key({}, "XF86Search", function () awful.util.spawn("") end),
+awful.key({}, "XF86Explorer", function () awful.util.spawn("") end),
+--]]
 
     -- Prompt
     awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
