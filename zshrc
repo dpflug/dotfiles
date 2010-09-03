@@ -14,7 +14,7 @@ autoload -U promptinit colors
 promptinit
 colors
 prompt walters
-PS1="%B%(?..[%?] )%b%{$fg[blue]%}%n%{$reset_color%}@%U%B%m%b%u%{$fg[red]%}%# "
+PS1="%B%(?..[%?] )%b%{$fg[blue]%}%n%{$reset_color%}@%U%B%m%b%u%{$fg[red]%}%#%{$reset_color%} "
 
 # Setup some key bindings
 bindkey "\e[1~" beginning-of-line
