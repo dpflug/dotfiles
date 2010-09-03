@@ -10,9 +10,11 @@ zstyle :compinstall filename '/home/dpflug/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-autoload -U promptinit
+autoload -U promptinit colors
 promptinit
+colors
 prompt walters
+PS1="%B%(?..[%?] )%b%{$fg[blue]%}%n%{$reset_color%}@%U%B%m%b%u%{$fg[red]%}%# "
 
 # Setup some key bindings
 bindkey "\e[1~" beginning-of-line

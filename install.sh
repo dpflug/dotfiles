@@ -8,6 +8,10 @@ else
     ln -s ~/Public/dotfiles/config/awesome ~/.config/awesome
 fi
 
+if [[ ! -d ~/.ssh ]] ; then
+    mkdir ~/.ssh
+fi
+
 cd ~/Public/dotfiles/ssh
 for file in * ; do
     if [[ -f ${file}.pub ]] ; then
