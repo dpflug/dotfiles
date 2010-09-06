@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 PATH=${PATH}:~/bin:~/.gem/ruby/1.9.1/bin
 export EDITOR="vim"
 
