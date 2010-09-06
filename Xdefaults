@@ -1,6 +1,8 @@
-Xft.antialias:           rgba
+Xft.antialias:           true
 Xft.hinting:             true
 Xft.hintstyle:           hintfull
+Xft.lcdfilter:           lcddefault
+Xft.rgba:                rgb
 
 XTerm*background: Black
 XTerm*foreground: Gold
@@ -12,6 +14,8 @@ Rxvt*foreground: Gold
 
 !urxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
 urxvt*font: xft:Envy Code R:autohint=false:antialias=false
+!fade text n% on unfocus
+urxvt*fading: 20
 urxvt*scrollBar: False
 urxvt*urgentOnBell: True
 urxvt*visualBell: False
