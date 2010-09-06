@@ -10,7 +10,7 @@ set smartindent
 set foldmethod=marker
 set backupdir=~/.vim/backups/,.,/tmp
 
-set spell spelllang=en_us
+set spelllang=en_us
 set spellfile=~/.vim/spellfile.add
 
 syntax enable
