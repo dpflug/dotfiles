@@ -27,7 +27,7 @@ source ~/.bashrc_local
 
 if [[ $EUID -gt 1 ]] ; then
 	PS1='\[\e[0;33m\][\[\e[1;34m\]\u\[\e[0;33m\]@\[\e[1;33m\]\h \[\e[0;31m\]\w\[\e[0;33m\]]\[\e[0;31m\]\$ \[\e[0m\]'
-    if `which keychain` ; then
+    if [[ -x $(which keychain) ]] ; then
         eval $(keychain --eval -q ~/.ssh/id_rsa ~/.ssh/cao_key)
     fi
 fi
