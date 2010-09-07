@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
 #Ok, this is quick and hackish.
-if [[ -a ~/.config/awesome ]] ; then
-    echo "~/.config/awesome exists"
-else
-    echo "Linking ~/.config/awesome"
-    ln -s ~/Public/dotfiles/config/awesome ~/.config/awesome
+if [[ -a ~/.config ]] ; then
+    if [[ -a ~/.config/awesome ]] ; then
+        echo "~/.config/awesome exists"
+    else
+        echo "Linking ~/.config/awesome"
+        ln -s ~/Public/dotfiles/config/awesome ~/.config/awesome
+    fi
 fi
 
 if [[ ! -d ~/.ssh ]] ; then
