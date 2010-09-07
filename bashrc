@@ -13,20 +13,22 @@ alias undb='killall Xephyr ; export DISPLAY=":0.0" PS1=${PS1##*AWDB }'
 alias mtr='mtr --curses'
 alias myip='elinks -dump checkip.dyndns.org'
 
-
 [[ -f /etc/profile.d/bash-completion ]] &&
 source /etc/profile.d/bash-completion
 
 shopt -s histappend
 
-#Possible fix for Java window issues in Awesome. I think it's cleaner in xinitrc, though.
+# Possible fix for Java window issues in Awesome. I think it's cleaner in xinitrc, though.
 #export AWT_TOOLKIT=MToolkit
+
+# Moved this up here so it can be overridden in the bashrc_local
+[[ $EUID -gt 1 ]] &&
+	export PS1='\[\e[0;33m\][\[\e[1;34m\]\u\[\e[0;33m\]@\[\e[1;33m\]\h \[\e[0;31m\]\w\[\e[0;33m\]]\[\e[0;31m\]\$ \[\e[0m\]'
 
 [[ -a ~/.bashrc_local ]] &&
 source ~/.bashrc_local
 
 if [[ $EUID -gt 1 ]] ; then
-	PS1='\[\e[0;33m\][\[\e[1;34m\]\u\[\e[0;33m\]@\[\e[1;33m\]\h \[\e[0;31m\]\w\[\e[0;33m\]]\[\e[0;31m\]\$ \[\e[0m\]'
     if [[ -x $(which keychain) ]] ; then
         eval $(keychain --eval -q ~/.ssh/id_rsa ~/.ssh/cao_key)
     fi
