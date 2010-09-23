@@ -20,3 +20,8 @@ nmap <silent> <C-l> :nohl<CR><C-l>
 
 au BufNewFile,BufRead *.t2t set ft=txt2tags
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
+
+"Lilypond support
+filetype off
+set runtimepath+=/usr/local/share/lilypond/current/vim/
+filetype on
