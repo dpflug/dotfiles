@@ -28,7 +28,7 @@ for file in * ; do
 done
 
 for file in ~/Public/dotfiles/bin* ; do
-    ln -s $file ~/bin/
+    ln -s $file ~/bin
 done
 
 
