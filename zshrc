@@ -18,6 +18,7 @@ prompt walters
 PS1="%B%(?..[%?] )%b%{$fg[blue]%}%n%{$reset_color%}@%U%B%m%b%u%{$fg[red]%}%#%{$reset_color%} "
 
 # Setup some key bindings
+# bindkey -e # This will enable emacs keybindings I'm "used" to.
 bindkey "\e[1~" beginning-of-line
 bindkey "\e[4~" end-of-line
 bindkey "\e[5~" beginning-of-history
