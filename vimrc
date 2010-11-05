@@ -52,6 +52,7 @@ set pastetoggle=<F11>
 
 " Folding
 set foldmethod=marker
+
 set backupdir=~/.vim/backups/,.,/tmp
 
 " Spell checking
