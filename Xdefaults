@@ -20,7 +20,6 @@ urxvt*scrollBar: False
 urxvt*urgentOnBell: True
 urxvt*visualBell: False
 urxvt*skipScroll: True
-urxvt*termName: rxvt-unicode256
 urxvt.perl-ext: default,matcher
 urxvt.urlLauncher: firefox
 urxvt.keysym.C-Delete: perl:matcher
