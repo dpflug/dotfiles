@@ -31,7 +31,7 @@ for file in $(find * -maxdepth 0 -type f) ; do
 done
 
 if [[ ! -d ~/bin ]] ; then
-    ln -s $(pwd)/bin ~/bin
+    ln -s ${REPODIR}/bin ~/bin
 else
     for file in ${REPODIR}/bin/* ; do
         if [[ ! -a ~/bin/$(basename ${file}) ]] ; then
