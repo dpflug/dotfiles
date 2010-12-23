@@ -1,3 +1,4 @@
+! Pretty text yay
 Xft.antialias:           true
 Xft.hinting:             true
 Xft.hintstyle:           hintfull
@@ -6,20 +7,32 @@ Xft.rgba:                rgb
 
 XTerm*background: Black
 XTerm*foreground: Gold
-!XTerm*font: xft:terminus:antialias=true:autohint=true
-!XTerm*font: xft:envy code r:antialias=true:autohint=true
 
 Rxvt*background: Black
-Rxvt*foreground: Gold
 
-!urxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
+Rxvt*foreground: Gold
 urxvt*font: xft:Envy Code R:autohint=false:antialias=false:size=10
-!fade text n% on unfocus
+!urxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
+
+! fade text n% on unfocus
 urxvt*fading: 20
+! Let's try some transparency.
+urxvt*transparent: True
+urxvt*shading: 15
+
+! We don't need no steenkin scrollbars.
 urxvt*scrollBar: False
+
+! Make bells a little more noticable
 urxvt*urgentOnBell: True
+
+! But the bell flicker's annoying
 urxvt*visualBell: False
+
+! This lets more text scroll by than can be handled by the video card. Lowers CPU usage for things with lots of output.
 urxvt*skipScroll: True
+
+! Clickable URLs
 urxvt.perl-ext: default,matcher
 urxvt.urlLauncher: firefox
 urxvt.keysym.C-Delete: perl:matcher
