@@ -2,6 +2,9 @@ set nocompatible
 
 " Colorscheme I like
 colorscheme maroloccio
+" It's 256 color, so I'll force that. In the rare case it causes problems,
+" unset by hand.
+set t_Co=256
 
 " Whip the tabs into shape
 set shiftwidth=4
