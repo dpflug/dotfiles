@@ -6,8 +6,6 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
--- Widgets
---require("vicious")
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
@@ -28,7 +26,9 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
+    awful.layout.suit.tile,
     awful.layout.suit.fair,
+    awful.layout.suit.tile.top,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
@@ -222,7 +222,7 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show(true)        end),
+    awful.key({ modkey,           }, "w", function () mymainmenu:show({keygrabber=true}) end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -257,17 +257,20 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q sset Master 2dB-") end),
     awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q sset Master 2dB+") end),
     awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -q sset Master toggle") end),
-    awful.key({}, "XF86AudioPrev", function () awful.util.spawn("mpc prev") end),
-    awful.key({}, "XF86AudioNext", function () awful.util.spawn("mpc next") end),
-    awful.key({}, "XF86AudioPlay", function () awful.util.spawn("mpc toggle") end),
+    awful.key({}, "XF86AudioPrev", function () awful.util.spawn("mpc -q prev") end),
+    awful.key({}, "XF86AudioNext", function () awful.util.spawn("mpc -q next") end),
+    awful.key({}, "XF86AudioStop", function () awful.util.spawn("mpc -q stop") end),
+    awful.key({}, "XF86AudioPlay", function () awful.util.spawn("mpc -q toggle") end),
     awful.key({}, "XF86Mail", function () awful.util.spawn("firefox mail.google.com/a/tpflug.com") end),
     awful.key({}, "XF86Calculator", function () awful.util.spawn("slock") end),
     awful.key({}, "XF86HomePage", function () awful.util.spawn("firefox reader.google.com") end),
-
---[[
-awful.key({}, "XF86Tools", function () awful.util.spawn("") end), -- Music note key
-awful.key({}, "XF86Search", function () awful.util.spawn("") end),
-awful.key({}, "XF86Explorer", function () awful.util.spawn("") end),
+--[[ Nothing assigned yet.
+    awful.key({}, "XF86WebCam", function () end),
+    awful.key({}, "XF86AudioMedia", function () end),
+    awful.key({}, "XF86Sleep", function () end),
+    awful.key({}, "XF86Tools", function () end), -- Music note key
+    awful.key({}, "XF86Search", function () end),
+    awful.key({}, "XF86Explorer", function () end),
 --]]
 
     -- Prompt
@@ -294,6 +297,8 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
+    -- Commenting for "tea time" above.
+    --awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
     awful.key({ modkey,           }, "m",
         function (c)
@@ -301,7 +306,6 @@ clientkeys = awful.util.table.join(
             c.maximized_vertical   = not c.maximized_vertical
         end)
 )
-
 
 -- Compute the maximum number of digit we need, limited to 9
 keynumber = 0
@@ -372,7 +376,6 @@ awful.rules.rules = {
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 2 of screen 1.
     { rule = { class = "Firefox" },
-      -- properties = { tag = tags[1][2], floating = false } },
       properties = { tag = tags[1][2] } },
     -- And Chromium on 2 as well.
     { rule = { class = "Chromium" },
@@ -380,8 +383,6 @@ awful.rules.rules = {
     -- Do the same for gajim, on 9.
     { rule = { class = "Gajim.py" },
       properties = { tag = tags[1][9] } },
-    { rule = { name = "nona" },
-      properties = { tag = tags[1][8] } },
     -- Useful for Gajim, if I can work out how.
     --awful.tag.setproperty(tags[s][9], "mwfact", 0.13)
 }
@@ -533,3 +534,6 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+-- Local settings test
+require("localrc")
