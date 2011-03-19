@@ -72,7 +72,7 @@ nmap <silent> <C-l> :nohl<CR><C-l>
 au BufNewFile,BufRead *.t2t set ft=txt2tags
 
 " Python smart indent
-autocmd BufRead *.py set cindent cinwords=if,elif,else,for,while,try,except,finally,def,class colorcolumn=79
+autocmd BufRead *.py set colorcolumn=79
 
 "Lilypond support
 filetype off
