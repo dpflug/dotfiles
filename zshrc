@@ -73,10 +73,15 @@ alias myip='elinks -dump checkip.dyndns.org'
 alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount -t sys{fs,fs,} && sudo chroot . /bin/bash ; sudo umount dev/* dev sys proc'
 
 [[ -a ~/.zshrc_local ]] &&
-source ~/.zshrc_local
+    source ~/.zshrc_local
 
 if [[ $EUID > 1 ]] ; then
     if [[ -x $(which keychain) ]] ; then
         eval $(keychain --eval -q ~/.ssh/id_rsa ~/.ssh/cao_key)
     fi
 fi
+
+# Virtualenvwrapper
+WORKON_HOME=~/.virtualenvs
+[[ -f $(which virtualenvwrapper.sh) ]] &&
+    source $(which virtualenvwrapper.sh)

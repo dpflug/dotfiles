@@ -14,7 +14,7 @@ alias mtr='mtr --curses'
 alias myip='elinks -dump checkip.dyndns.org'
 
 [[ -f /etc/profile.d/bash-completion ]] &&
-source /etc/profile.d/bash-completion
+    source /etc/profile.d/bash-completion
 
 shopt -s histappend
 
@@ -23,13 +23,18 @@ shopt -s histappend
 
 # Moved this up here so it can be overridden in the bashrc_local
 [[ $EUID -gt 1 ]] &&
-	export PS1='\[\e[0;33m\][\[\e[1;34m\]\u\[\e[0;33m\]@\[\e[1;33m\]\h \[\e[0;31m\]\w\[\e[0;33m\]]\[\e[0;31m\]\$ \[\e[0m\]'
+    export PS1='\[\e[0;33m\][\[\e[1;34m\]\u\[\e[0;33m\]@\[\e[1;33m\]\h \[\e[0;31m\]\w\[\e[0;33m\]]\[\e[0;31m\]\$ \[\e[0m\]'
 
 [[ -a ~/.bashrc_local ]] &&
-source ~/.bashrc_local
+    source ~/.bashrc_local
 
 if [[ $EUID -gt 1 ]] ; then
     if [[ -x $(which keychain) ]] ; then
         eval $(keychain --eval -q ~/.ssh/id_rsa ~/.ssh/cao_key)
     fi
 fi
+
+# Virtualenvwrapper
+WORKON_HOME=~/.virtualenvs
+[[ -f $(which virtualenvwrapper.sh) ]] &&
+    source $(which virtualenvwrapper.sh)
