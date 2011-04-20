@@ -83,5 +83,5 @@ fi
 
 # Virtualenvwrapper
 WORKON_HOME=~/.virtualenvs
-[[ -f $(which virtualenvwrapper.sh > /dev/null) ]] &&
+[[ -f $(which virtualenvwrapper.sh) ]] &&
     source $(which virtualenvwrapper.sh)
