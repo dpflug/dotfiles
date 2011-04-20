@@ -29,12 +29,12 @@ shopt -s histappend
     source ~/.bashrc_local
 
 if [[ $EUID -gt 1 ]] ; then
-    if [[ -x $(which keychain) ]] ; then
+    if [[ -x $(which keychain 2> /dev/null) ]] ; then
         eval $(keychain --eval -q ~/.ssh/id_rsa ~/.ssh/cao_key)
     fi
 fi
 
 # Virtualenvwrapper
 WORKON_HOME=~/.virtualenvs
-[[ -f $(which virtualenvwrapper.sh) ]] &&
+[[ -f $(which virtualenvwrapper.sh 2> /dev/null) ]] &&
     source $(which virtualenvwrapper.sh)

@@ -76,12 +76,12 @@ alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount
     source ~/.zshrc_local
 
 if [[ $EUID > 1 ]] ; then
-    if [[ -x $(which keychain) ]] ; then
+    if [[ -x $(which keychain > /dev/null) ]] ; then
         eval $(keychain --eval -q ~/.ssh/id_rsa ~/.ssh/cao_key)
     fi
 fi
 
 # Virtualenvwrapper
 WORKON_HOME=~/.virtualenvs
-[[ -f $(which virtualenvwrapper.sh) ]] &&
+[[ -f $(which virtualenvwrapper.sh > /dev/null) ]] &&
     source $(which virtualenvwrapper.sh)
