@@ -76,7 +76,7 @@ alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount
     source ~/.zshrc_local
 
 if [[ $EUID > 1 ]] ; then
-    if [[ -x $(which keychain > /dev/null) ]] ; then
+    if [[ -x $(which keychain) ]] ; then
         eval $(keychain --eval -q ~/.ssh/id_rsa ~/.ssh/cao_key)
     fi
 fi
