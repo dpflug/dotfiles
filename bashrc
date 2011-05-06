@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 PATH=${PATH}:~/bin:~/.gem/ruby/1.9.1/bin
 export EDITOR="vim"
+export LESS="$LESS -i"
 
 alias vi='vim'
 alias ls='ls --color=auto'
@@ -29,7 +30,7 @@ shopt -s histappend
     source ~/.bashrc_local
 
 if [[ $EUID -gt 1 ]] ; then
-    if [[ -x $(which keychain) ]] ; then
+    if [[ -x $(which keychain 2> /dev/null) ]] ; then
         eval $(keychain --eval -q ~/.ssh/id_rsa ~/.ssh/cao_key)
     fi
 fi
