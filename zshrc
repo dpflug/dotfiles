@@ -57,32 +57,10 @@ bindkey "\eOF" end-of-line
 bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line
 
-PATH=${PATH}:~/bin:~/.gem/ruby/1.9.1/bin
-export EDITOR="vim"
-export LESS="$LESS -i"
-
-alias vi='vim'
-alias ls='ls --color=auto'
-alias grep='grep --colour=auto'
-alias x='startx'
-alias ta='tmux a -d > /dev/null || tmux'
-alias dps='ssh -t david@projecthq.biz screen -raAd'
-alias awdb='Xephyr -ac -br -noreset -screen 800:600 :1 & export DISPLAY=":1.0" PS1="\[\e[0;31m\]AWDB ${PS1}" ; sleep 2 && awesome &'
-alias undb='killall Xephyr ; export DISPLAY=":0.0" PS1=${PS1##*AWDB }'
-alias mtr='mtr --curses'
-alias myip='elinks -dump checkip.dyndns.org'
-alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount -t sys{fs,fs,} && sudo chroot . /bin/bash ; sudo umount dev/* dev sys proc'
-
-[[ -a ~/.zshrc_local ]] &&
-    source ~/.zshrc_local
-
-if [[ $EUID > 1 ]] ; then
-    if [[ -x $(which keychain) ]] ; then
-        eval $(keychain --eval -q ~/.ssh/id_rsa ~/.ssh/cao_key)
-    fi
+if [[ -a ~/.commonrc ]] ; then
+    source ~/.commonrc
 fi
 
-# Virtualenvwrapper
-WORKON_HOME=~/.virtualenvs
-[[ -f $(which virtualenvwrapper.sh) ]] &&
-    source $(which virtualenvwrapper.sh)
+if [[ -a ~/.zshrc_local ]] ; then
+    source ~/.zshrc_local
+fi
