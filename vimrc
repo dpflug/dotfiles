@@ -24,7 +24,7 @@ syntax on
 "set cindent
 filetype indent plugin on
 
-"This allows you to switch to other buffers without saving. This is important when working in multiple files.
+" This allows you to switch to other buffers without saving. This is important when working in multiple files.
 set hidden
 
 " Better command-line completion
@@ -74,7 +74,10 @@ au BufNewFile,BufRead *.t2t set ft=txt2tags
 " Python smart indent
 autocmd BufRead *.py set colorcolumn=79
 
-"Lilypond support
+" Lilypond support
 filetype off
 set runtimepath+=/usr/share/lilypond/2.12.3/vim/
 filetype on
+
+" I shouldn't encounter any slow TTYs
+set ttyfast
