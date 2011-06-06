@@ -44,3 +44,9 @@ function dump () {
         echo "What should be sent?"
     fi
 }
+
+function opng () {
+    if [ -n $1 ] ; then
+        optipng -o7 -zw32k -p $*
+    fi
+}
