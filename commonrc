@@ -24,8 +24,8 @@ if [[ $EUID -gt 1 ]] ; then
 fi
 
 # Virtualenvwrapper
-WORKON_HOME=~/.virtualenvs
 if [[ -f $(which virtualenvwrapper.sh) ]] ; then
+    WORKON_HOME=~/.virtualenvs
     source $(which virtualenvwrapper.sh)
 fi
 

@@ -57,6 +57,11 @@ bindkey "\eOF" end-of-line
 bindkey "\e[H" beginning-of-line
 bindkey "\e[F" end-of-line
 
+if [[ -f /etc/bash_completion.d/virtualenvwrapper && ! -f $(which virtualenvwrapper.sh) ]] ; then # -.- Ubuntu
+    WORKON_HOME=~/.virtualenvs
+    source /etc/bash_completion.d/virtualenvwrapper
+fi
+
 if [[ -a ~/.commonrc ]] ; then
     source ~/.commonrc
 fi
