@@ -1,0 +1,6 @@
+loadplugins '\.(js|penta)$'
+group user
+set passkeys=voice.google.com:<space>,reader.google.com:jklS,google.com/voice:<space>,google.com/reader:jklSs,google.com/mail:jk#,mail.google.com:jk#
+set defsearch=duck
+
+" vim: set ft=pentadactyl:
