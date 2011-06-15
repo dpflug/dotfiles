@@ -66,7 +66,7 @@ set spelllang=en_us
 set spellfile=~/.vim/spellfile.add
 
 " Make Crtl-L clear search highlights
-nmap <silent> <C-l> :nohl<CR><C-l>
+nmap <silent> <C-l> :nohl<CR>
 
 " txt2tags support
 au BufNewFile,BufRead *.t2t set ft=txt2tags
