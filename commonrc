@@ -32,6 +32,9 @@ fi
 function toweb () {
     if [ -n $1 ] ; then
         rsync -SHPcavy $* melch:public_html/
+        for x in $* ; do
+            echo "http://dpflug.udderweb.com/${x}"
+        done
     else
         echo "What should be sent?"
     fi
@@ -40,6 +43,9 @@ function toweb () {
 function dump () {
     if [ -n $1 ] ; then
         rsync -SHPcavy $* uw:dump/
+        for x in $* ; do
+            echo "http://dump.udderweb.com/${x}"
+        done
     else
         echo "What should be sent?"
     fi
