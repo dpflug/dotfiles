@@ -1,3 +1,5 @@
+$include /etc/inputrc
+
 "\eOC": forward-word
 "\eOD": backward-word
 "\eOc": forward-word
