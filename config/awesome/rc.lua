@@ -23,17 +23,64 @@ editor_cmd = terminal .. " -e " .. editor
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
+-- Used by cpu meter
+jiffies = {}
+cpugraphs = {}
+
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.tile,
-    awful.layout.suit.fair,
-    awful.layout.suit.tile.top,
     awful.layout.suit.fair.horizontal,
+    awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
+    awful.layout.suit.tile,
     awful.layout.suit.max,
     awful.layout.suit.max.fullscreen,
     awful.layout.suit.floating,
 }
+-- }}}
+
+-- {{{ Custom functions
+function create_cpu_widgets()
+  for l in io.lines('/proc/stat') do
+    local cpu = string.match(l, '(cpu%d+)\ ')
+    if cpu then
+      if not cpugraphs[cpu] then
+        cpugraphs[cpu] = awful.widget.graph()
+        cpugraphs[cpu]:set_width(30)
+        cpugraphs[cpu]:set_height(20)
+        cpugraphs[cpu]:set_max_value(100)
+        cpugraphs[cpu]:set_background_color(beautiful.bg_normal)
+        cpugraphs[cpu]:set_border_color(beautiful.border_normal)
+        cpugraphs[cpu]:set_color(beautiful.fg_color)
+        cpugraphs[cpu]:set_gradient_colors({"red", "orange", "yellow", red = 4, orange = 3})
+        cpugraphs[cpu]:set_gradient_angle(45)
+      end
+    end
+  end
+end
+create_cpu_widgets()
+--cpugraphs['layout'] = awful.widget.layout.horizontal.leftright
+
+function splitbywhitespace(str)
+    local t = {}
+    local function helper(word) table.insert(t, word) return "" end
+    if not str:gsub("%w+", helper):find"%S" then return t end
+end
+
+function get_cpu()
+  for l in io.lines('/proc/stat') do
+    local cpu, newjiffies = string.match(l, '(cpu%d+)\ +(%d+)')
+    if cpu and newjiffies then
+      if not jiffies[cpu] then
+        jiffies[cpu] = newjiffies
+      end
+      cpugraphs[cpu]:add_value(newjiffies-jiffies[cpu])
+      jiffies[cpu] = newjiffies
+    end
+  end
+end
+
 -- }}}
 
 -- {{{ Tags
@@ -67,48 +114,6 @@ mylauncher = awful.widget.launcher({ image = image(beautiful.awesome_icon),
 --------------
 -- These should be in a table
 --cpuvals = {}
---cpugraphs = {}
---get_cpu()
-
-cpu0graphwidget = awful.widget.graph()
-cpu0graphwidget:set_width(30)
-cpu0graphwidget:set_height(18)
-cpu0graphwidget:set_max_value(100)
-cpu0graphwidget:set_background_color(beautiful.bg_normal)
-cpu0graphwidget:set_border_color(beautiful.border_normal)
-cpu0graphwidget:set_color(beautiful.fg_color)
-cpu0graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 4, orange = 3})
-cpu0graphwidget:set_gradient_angle(50)
-
-cpu1graphwidget = awful.widget.graph()
-cpu1graphwidget:set_width(30)
-cpu1graphwidget:set_height(18)
-cpu1graphwidget:set_max_value(100)
-cpu1graphwidget:set_background_color(beautiful.bg_normal)
-cpu1graphwidget:set_border_color(beautiful.border_normal)
-cpu1graphwidget:set_color(beautiful.fg_color)
-cpu1graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 2, orange = 3})
-cpu1graphwidget:set_gradient_angle(30)
-
-cpu2graphwidget = awful.widget.graph()
-cpu2graphwidget:set_width(30)
-cpu2graphwidget:set_height(18)
-cpu2graphwidget:set_max_value(100)
-cpu2graphwidget:set_background_color(beautiful.bg_normal)
-cpu2graphwidget:set_border_color(beautiful.border_normal)
-cpu2graphwidget:set_color(beautiful.fg_color)
-cpu2graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 2, orange = 3})
-cpu2graphwidget:set_gradient_angle(-30)
-
-cpu3graphwidget = awful.widget.graph()
-cpu3graphwidget:set_width(30)
-cpu3graphwidget:set_height(18)
-cpu3graphwidget:set_max_value(100)
-cpu3graphwidget:set_background_color(beautiful.bg_normal)
-cpu3graphwidget:set_border_color(beautiful.border_normal)
-cpu3graphwidget:set_color(beautiful.fg_color)
-cpu3graphwidget:set_gradient_colors({"red", "orange", "yellow", red = 4, orange = 3})
-cpu3graphwidget:set_gradient_angle(-50)
 
 -- Create a textclock widget
 mytextclock = awful.widget.textclock({ align = "right" }, " %a %b %d, %l:%M%p ")
@@ -132,11 +137,17 @@ mytaglist.buttons = awful.util.table.join(
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
                      awful.button({ }, 1, function (c)
-                                              if not c:isvisible() then
-                                                  awful.tag.viewonly(c:tags()[1])
+                                              if c == client.focus then
+                                                  c.minimized = true
+                                              else
+                                                  if not c:isvisible() then
+                                                      awful.tag.viewonly(c:tags()[1])
+                                                  end
+                                                  -- This will also un-minimize
+                                                  -- the client, if needed
+                                                  client.focus = c
+                                                  c:raise()
                                               end
-                                              client.focus = c
-                                              c:raise()
                                           end),
                      awful.button({ }, 3, function ()
                                               if instance then
@@ -187,15 +198,25 @@ for s = 1, screen.count() do
         s == 1 and mysystray or nil,
         mylayoutbox[s],
         mytextclock,
+        -- cpugraphs, -- Tables don't work here like you expect
+        s == screen.count() and cpugraphs['cpu0'].widget or nil,
+        s == screen.count() and cpugraphs['cpu1'] and cpugraphs['cpu1'].widget or nil, -- Is there a better way to do this? :\
+        s == screen.count() and cpugraphs['cpu2'] and cpugraphs['cpu2'].widget or nil,
+        s == screen.count() and cpugraphs['cpu3'] and cpugraphs['cpu3'].widget or nil,
+        s == screen.count() and cpugraphs['cpu4'] and cpugraphs['cpu4'].widget or nil,
+        s == screen.count() and cpugraphs['cpu5'] and cpugraphs['cpu5'].widget or nil,
+        s == screen.count() and cpugraphs['cpu6'] and cpugraphs['cpu6'].widget or nil,
+        s == screen.count() and cpugraphs['cpu7'] and cpugraphs['cpu7'].widget or nil,
+        s == screen.count() and cpugraphs['cpu8'] and cpugraphs['cpu8'].widget or nil,
+        s == screen.count() and cpugraphs['cpu9'] and cpugraphs['cpu9'].widget or nil,
+        s == screen.count() and cpugraphs['cpu10'] and cpugraphs['cpu10'].widget or nil,
 
-        cpu0graphwidget.widget,
-        cpu1graphwidget.widget,
-        cpu2graphwidget.widget,
-        cpu3graphwidget.widget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
     }
+
 end
+
 -- }}}
 
 -- {{{ Mouse bindings
@@ -240,9 +261,9 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey,           }, "x", function () awful.util.spawn('slock') end),
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    awful.key({ modkey,           }, "x", function () awful.util.spawn("slock") end),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
@@ -253,6 +274,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
 
+    awful.key({ modkey, "Control" }, "n", awful.client.restore),
+
     -- Multimedia keys
     awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q sset Master 2dB-") end),
     awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q sset Master 2dB+") end),
@@ -262,8 +285,8 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86AudioStop", function () awful.util.spawn("mpc -q stop") end),
     awful.key({}, "XF86AudioPlay", function () awful.util.spawn("mpc -q toggle") end),
     awful.key({}, "XF86Mail", function () awful.util.spawn("firefox mail.google.com/a/tpflug.com") end),
-    awful.key({}, "XF86Calculator", function () awful.util.spawn("slock") end),
     awful.key({}, "XF86HomePage", function () awful.util.spawn("firefox reader.google.com") end),
+    awful.key({}, "XF86Calculator", function () awful.util.spawn("xscreensaver-command -lock") end),
 --[[ Nothing assigned yet.
     awful.key({}, "XF86WebCam", function () end),
     awful.key({}, "XF86AudioMedia", function () end),
@@ -282,12 +305,12 @@ globalkeys = awful.util.table.join(
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end),
+              end)
 
-    awful.key({ modkey }, "t",
-        function ()
-            awful.util.spawn('sleep 180 ; notify-send -u critical "TEA TIME" "Go get your tea"')
-        end)
+    --awful.key({ modkey }, "t",
+    --    function ()
+    --        awful.util.spawn('sleep 180 ; notify-send -u critical "TEA TIME" "Go get your tea"')
+    --    end)
 )
 
 clientkeys = awful.util.table.join(
@@ -297,9 +320,13 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-    -- Commenting for "tea time" above.
-    --awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
-    awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
+    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
+    awful.key({ modkey,           }, "n",
+        function (c)
+            -- The client currently has the input focus, so it cannot be
+            -- minimized, since minimized clients can't have the focus.
+            c.minimized = true
+        end),
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
@@ -388,123 +415,11 @@ awful.rules.rules = {
 }
 -- }}}
 
--- {{{ Custom functions
---cpu = {}
-cpu0_total  = 0
-cpu0_active = 0
-cpu1_total  = 0
-cpu1_active = 0
-cpu2_total  = 0
-cpu2_active = 0
-cpu3_total  = 0
-cpu3_active = 0
-
+-- {{{ Signals and init
 timer_1second = timer({ timeout = 1 })
-timer_1second:add_signal("timeout", function() get_cpu() end)
+timer_1second:add_signal("timeout", get_cpu)
 timer_1second:start()
 
---[[ Obsoleted?
-function splitbywhitespace(str) --stolen from wicked.lua
-values = {}
-start = 1
-splitstart, splitend = string.find(str, ' ', start)
-
-while splitstart do
-    m = string.sub(str, start, splitstart-1)
-    if m:gsub(' ','') ~= '' then
-        table.insert(values, m)
-    end
-
-    start = splitend+1
-    splitstart, splitend = string.find(str, ' ', start)
-end
-
-m = string.sub(str, start)
-if m:gsub(' ','') ~= '' then
-    table.insert(values, m)
-end
-
-return values
-end
---]]
-
-function splitbywhitespace(str)
-    local t = {}
-    local function helper(word) table.insert(t, word) return "" end
-    if not str:gsub("%w+", helper):find"%S" then return t end
-end
-
-function get_cpu()
-  local f = io.open('/proc/stat')
-  local limit_break = 1
-  for l in f:lines() do
-    local cpu = string.match(l, 'cpu%d+')
-    --[[ This isn't ready yet.
-    if cpunum then
-        if not cpu[cpunum] then
-            cpu[cpunum] = { active=0, total=0 }
-        else
-            local cpu_usage = splitbywhitespace(l)
-            total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
-            active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
-            diff_total    = total_new-cpu0_total
-            diff_active   = active_new-cpu0_active
-            usage_percent = math.floor(diff_active/diff_total*100)
-            cpu0_total    = total_new
-            cpu0_active   = active_new
-            cpu0graphwidget:add_value(usage_percent)
-            -- Widgets should be in a table, it seems. ANYTHING can go in a table. :D
-      end
-    end
-    --]]
-    if cpu == "cpu0" then
-          local cpu_usage = splitbywhitespace(l)
-          total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
-          active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
-          diff_total    = total_new-cpu0_total
-          diff_active   = active_new-cpu0_active
-          usage_percent = math.floor(diff_active/diff_total*100)
-          cpu0_total    = total_new
-          cpu0_active   = active_new
-          cpu0graphwidget:add_value(usage_percent)
-    elseif cpu == "cpu1" then
-          local cpu_usage = splitbywhitespace(l)
-          total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
-          active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
-          diff_total    = total_new-cpu1_total
-          diff_active   = active_new-cpu1_active
-          usage_percent = math.floor(diff_active/diff_total*100)
-          cpu1_total    = total_new
-          cpu1_active   = active_new
-          cpu1graphwidget:add_value(usage_percent)
-    elseif cpu == "cpu2" then
-          local cpu_usage = splitbywhitespace(l)
-          total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
-          active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
-          diff_total    = total_new-cpu2_total
-          diff_active   = active_new-cpu2_active
-          usage_percent = math.floor(diff_active/diff_total*100)
-          cpu2_total    = total_new
-          cpu2_active   = active_new
-          cpu2graphwidget:add_value(usage_percent)
-    elseif cpu == "cpu3" then
-          local cpu_usage = splitbywhitespace(l)
-          total_new     = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]+cpu_usage[5]
-          active_new    = cpu_usage[2]+cpu_usage[3]+cpu_usage[4]
-          diff_total    = total_new-cpu3_total
-          diff_active   = active_new-cpu3_active
-          usage_percent = math.floor(diff_active/diff_total*100)
-          cpu3_total    = total_new
-          cpu3_active   = active_new
-          cpu3graphwidget:add_value(usage_percent)
-      end
-    end
-  f:close()
-end
-
--- }}}
-
--- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.add_signal("manage", function (c, startup)
     -- Add a titlebar
@@ -534,6 +449,3 @@ end)
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-
--- Local settings test
-require("localrc")
