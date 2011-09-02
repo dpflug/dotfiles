@@ -13,7 +13,7 @@ Rxvt*background: Black
 Rxvt*foreground: Gold
 !URxvt*font: xft:Envy Code R:autohint=true:antialias=true:size=10
 !URxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
-URxvt*font: xft:dina:size=10
+URxvt*font: xft:dina
 
 ! fade text n% on unfocus
 URxvt*fading: 20
