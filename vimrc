@@ -1,5 +1,9 @@
 set nocompatible
 
+" Enable Pathogen, with all the bundles I have installed
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+
 " Colorscheme I like
 colorscheme maroloccio
 " It's 256 color, so I'll force that. In the rare case it causes problems,
@@ -73,6 +77,10 @@ au BufNewFile,BufRead *.t2t set ft=txt2tags
 
 " Python smart indent
 autocmd BufRead *.py set colorcolumn=79
+
+" HTML tag closing
+autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
+autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
 " Lilypond support
 filetype off
