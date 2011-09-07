@@ -41,7 +41,7 @@ layouts =
 -- }}}
 
 -- {{{ Custom functions
-function create_cpu_widgets()
+function create_cpu_widgets() --{{{
   for l in io.lines('/proc/stat') do
     local cpu = string.match(l, '(cpu%d+)\ ')
     if cpu then
@@ -58,19 +58,27 @@ function create_cpu_widgets()
       end
     end
   end
-end
+end --}}}
 create_cpu_widgets()
 cpugraphs['layout'] = awful.widget.layout.horizontal.leftright
 
-function splitbywhitespace(str)
+membarwidget = awful.widget.progressbar()
+membarwidget:set_width(10)
+membarwidget:set_height(20)
+membarwidget:set_vertical(true)
+membarwidget:set_background_color('black')
+membarwidget:set_color('red')
+membarwidget:set_gradient_colors({'green', 'yellow', 'red'})
+
+function splitbywhitespace(str) --{{{
     local t = {}
     local function helper(word) table.insert(t, word) return "" end
     if not str:gsub("%w+", helper):find"%S" then return t end
-end
+end --}}}
 
-function get_cpu()
+function get_cpu() --{{{
   for l in io.lines('/proc/stat') do
-    local cpu, newjiffies = string.match(l, '(cpu%d+)\ +(%d+)')
+    local cpu, newjiffies = string.match(l, '^(cpu%d+)\ +(%d+)')
     if cpu and newjiffies then
       if not jiffies[cpu] then
         jiffies[cpu] = newjiffies
@@ -79,7 +87,31 @@ function get_cpu()
       jiffies[cpu] = newjiffies
     end
   end
-end
+end --}}}
+
+function get_mem() --{{{
+    local membytes = {}
+    for l in io.lines('/proc/meminfo') do
+        local mem_free = string.match(l, '^MemFree:\ +(%d+)')
+        if mem_free then
+            membytes['free'] = mem_free
+        end
+        local mem_total = string.match(l, '^MemTotal:\ +(%d+)')
+        if mem_total then
+            membytes['total'] = mem_total
+        end
+        local mem_c = string.match(l, '^Cached:\ +(%d+)')
+        if mem_c then
+            membytes['cached'] = mem_c
+        end
+        local mem_b = string.match(l, '^Buffers:\ +(%d+)')
+        if mem_b then
+            membytes['buffer'] = mem_b
+        end
+    end
+    membytes['percent'] = (membytes['total'] - membytes['free'] - membytes['buffer'] - membytes['cached']) / membytes['total']
+    membarwidget:set_value(membytes['percent'])
+end --}}}
 
 -- }}}
 
@@ -198,7 +230,13 @@ for s = 1, screen.count() do
         s == 1 and mysystray or nil,
         mylayoutbox[s],
         mytextclock,
-        s == screen.count() and cpugraphs or nil,
+        s == screen.count() and {
+            -- Keeps my widgets clustered
+            -- Can't find any way to put them on the right of the tasklist with cpugraphs as a table
+            cpugraphs,
+            membarwidget.widget,
+            layout = awful.widget.layout.horizontal.leftright,
+        } or nil,
 
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -407,6 +445,7 @@ awful.rules.rules = {
 -- {{{ Signals and init
 timer_1second = timer({ timeout = 1 })
 timer_1second:add_signal("timeout", get_cpu)
+timer_1second:add_signal("timeout", get_mem)
 timer_1second:start()
 
 -- Signal function to execute when a new client appears.
