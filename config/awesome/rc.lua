@@ -60,7 +60,7 @@ function create_cpu_widgets()
   end
 end
 create_cpu_widgets()
---cpugraphs['layout'] = awful.widget.layout.horizontal.leftright
+cpugraphs['layout'] = awful.widget.layout.horizontal.leftright
 
 function splitbywhitespace(str)
     local t = {}
@@ -198,18 +198,7 @@ for s = 1, screen.count() do
         s == 1 and mysystray or nil,
         mylayoutbox[s],
         mytextclock,
-        -- cpugraphs, -- Tables don't work here like you expect
-        s == screen.count() and cpugraphs['cpu0'].widget or nil,
-        s == screen.count() and cpugraphs['cpu1'] and cpugraphs['cpu1'].widget or nil, -- Is there a better way to do this? :\
-        s == screen.count() and cpugraphs['cpu2'] and cpugraphs['cpu2'].widget or nil,
-        s == screen.count() and cpugraphs['cpu3'] and cpugraphs['cpu3'].widget or nil,
-        s == screen.count() and cpugraphs['cpu4'] and cpugraphs['cpu4'].widget or nil,
-        s == screen.count() and cpugraphs['cpu5'] and cpugraphs['cpu5'].widget or nil,
-        s == screen.count() and cpugraphs['cpu6'] and cpugraphs['cpu6'].widget or nil,
-        s == screen.count() and cpugraphs['cpu7'] and cpugraphs['cpu7'].widget or nil,
-        s == screen.count() and cpugraphs['cpu8'] and cpugraphs['cpu8'].widget or nil,
-        s == screen.count() and cpugraphs['cpu9'] and cpugraphs['cpu9'].widget or nil,
-        s == screen.count() and cpugraphs['cpu10'] and cpugraphs['cpu10'].widget or nil,
+        s == screen.count() and cpugraphs or nil,
 
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
