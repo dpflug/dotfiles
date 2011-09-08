@@ -304,9 +304,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "n", awful.client.restore),
 
     -- Multimedia keys
-    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q sset Master 2dB-") end),
-    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q sset Master 2dB+") end),
-    awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -q sset Master toggle") end),
+    awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer -q sset PCM 2dB-") end),
+    awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer -q sset PCM 2dB+") end),
+    awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer -q sset PCM toggle") end),
     awful.key({}, "XF86AudioPrev", function () awful.util.spawn("mpc -q prev") end),
     awful.key({}, "XF86AudioNext", function () awful.util.spawn("mpc -q next") end),
     awful.key({}, "XF86AudioStop", function () awful.util.spawn("mpc -q stop") end),
