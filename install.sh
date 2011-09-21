@@ -4,8 +4,7 @@
 
 REPODIR=$(pwd)
 
-git submodule init
-git submodule update
+git submodule update --init
 
 if [[ ! -d ~/.config ]] ; then
     mkdir ~/.config
