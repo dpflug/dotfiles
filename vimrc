@@ -89,3 +89,6 @@ filetype on
 
 " I shouldn't encounter any slow TTYs
 set ttyfast
+
+" Show end of line whitespace
+set list listchars=trail:·
