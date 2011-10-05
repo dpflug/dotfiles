@@ -28,7 +28,7 @@ syntax on
 "set cindent
 filetype indent plugin on
 
-" This allows you to switch to other buffers without saving. This is important when working in multiple files.
+" This allows you to switch to other buffers without saving.
 set hidden
 
 " Better command-line completion
@@ -40,6 +40,9 @@ set showcmd
 " Highlight searches (use <C-L> to temporarily turn off highlighting; see the
 " mapping of <C-L> below)
 set hlsearch
+
+" Incremental search
+set incsearch
 
 " Ignore case while searching, except when caps are entered.
 set ignorecase
@@ -87,8 +90,40 @@ filetype off
 set runtimepath+=/usr/share/lilypond/2.12.3/vim/
 filetype on
 
+" Relative line numbers can be helpful for navigation
+set rnu
+
 " I shouldn't encounter any slow TTYs
 set ttyfast
 
 " Show end of line whitespace
 set list listchars=trail:·
+
+" Sometimes I open files, then decide I want to make changes when I don't have
+" the permissions.
+cmap w!! %!sudo tee > /dev/null %
+
+" How many times have I typoed this?
+command! W w
+
+" Easier split movement
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+
+" Store more history
+set history=100
+
+" Keep some lines between cursor and screen edge
+set scrolloff=4
+set sidescrolloff=6
+
+" send stuff to xclip (because I don't like vim messing with my clipboard
+" automatically)
+map ,c :w !xclip<CR><CR>
+vmap ,c '<,'>w !xclip<CR><CR>
+
+" Pastebin my crap
+map ,pb :w !curl -F 'sprunge=<-' http://sprunge.us<CR>
+vmap ,pb '<,'>w !curl -F 'sprunge=<-' http://sprunge.us<CR>
