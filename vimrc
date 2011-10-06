@@ -106,12 +106,6 @@ cmap w!! %!sudo tee > /dev/null %
 " How many times have I typoed this?
 command! W w
 
-" Easier split movement
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
-
 " Store more history
 set history=100
 
