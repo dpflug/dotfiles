@@ -1,3 +1,9 @@
 #!/usr/bin/env zsh
+alias y='sudo pacman-color'
+alias yup='sudo pacman-color -Syu ; slurpy -udt ~/build/' 
 alias b='sudo bauerbill'
 alias bup='sudo bauerbill -Syu'
+
+ys () {
+    pacman-color -Ss $* ; slurpy -s $*
+}
