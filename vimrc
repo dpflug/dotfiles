@@ -113,11 +113,22 @@ set history=100
 set scrolloff=4
 set sidescrolloff=6
 
+" Let's make navigating wrapped lines easier
+nnoremap  <Up>    gk
+nnoremap  <Down>  gj
+inoremap  <Up>    <C-O>gk
+inoremap  <Down>  <C-O>gj
+
 " send stuff to xclip (because I don't like vim messing with my clipboard
 " automatically)
 map ,c :w !xclip<CR><CR>
 vmap ,c '<,'>w !xclip<CR><CR>
 
 " Pastebin my crap
-map ,pb :w !curl -F 'sprunge=<-' http://sprunge.us<CR>
-vmap ,pb '<,'>w !curl -F 'sprunge=<-' http://sprunge.us<CR>
+if exists("$DISPLAY")
+    map ,pb :w !curl -sF 'sprunge=<-' http://sprunge.us \| tee /dev/stderr \| xclip<CR>
+    vmap ,pb '<,'>w !curl -sF 'sprunge=<-' http://sprunge.us \| tee /dev/stderr \| xclip<CR>
+else
+    map ,pb :w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
+    vmap ,pb '<,'>w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
+endif
