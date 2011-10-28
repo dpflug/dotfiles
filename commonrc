@@ -16,6 +16,7 @@ alias undb='killall Xephyr ; export DISPLAY=":0.0" PS1=${PS1##*AWDB }'
 alias mtr='mtr --curses'
 alias myip='elinks -dump checkip.dyndns.org'
 alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount -t sys{fs,fs,} && sudo chroot . /bin/bash ; sudo umount dev/* dev sys proc'
+alias ws='sudo wifi-select wlan0'
 
 # Keychain
 ssh_keys=$(find ~/.ssh -name id_\* -and -not -name \*.pub)
