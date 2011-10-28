@@ -2,6 +2,8 @@
 PATH=${PATH}:~/bin:~/.gem/ruby/1.9.1/bin
 export EDITOR="vim"
 export LESS="$LESS -iRs"
+export LC_ALL=
+export LC_COLLATE="C"
 
 alias vi='vim'
 alias ls='ls --color=auto'
