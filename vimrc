@@ -89,9 +89,12 @@ autocmd BufRead *.py set colorcolumn=79
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
-" Relative line numbers can be helpful for navigation
 if v:version >= 730
+    " Relative line numbers can be helpful for navigation
     set rnu
+
+    " Stronger encryption
+    set cryptmethod=blowfish
 endif
 
 " I shouldn't encounter any slow TTYs
@@ -143,6 +146,3 @@ else
     map ,pb :w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
     vmap ,pb '<,'>w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
 endif
-
-" Stronger encryption
-set cryptmethod=blowfish
