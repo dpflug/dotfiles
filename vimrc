@@ -90,13 +90,25 @@ autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
 " Relative line numbers can be helpful for navigation
-set rnu
+if v:version >= 730
+    set rnu
+endif
 
 " I shouldn't encounter any slow TTYs
 set ttyfast
 
 " Show end of line whitespace
-set list listchars=trail:·
+if has("multi_byte")
+    if &termencoding == ""
+        let &termencoding = &encoding
+    endif
+    set encoding=utf8
+    setglobal fileencoding=utf-8 bomb
+    set fileencodings=ucs-bom,utf-8,latin1
+    set list listchars=tab:▸\ ,eol:¬,trail:·
+else
+    set list listchars=trail:-
+endif
 
 " Sometimes I open files, then decide I want to make changes when I don't have
 " the permissions.
@@ -131,3 +143,6 @@ else
     map ,pb :w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
     vmap ,pb '<,'>w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
 endif
+
+" Stronger encryption
+set cryptmethod=blowfish
