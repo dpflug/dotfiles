@@ -108,7 +108,7 @@ if has("multi_byte")
     set encoding=utf8
     setglobal fileencoding=utf-8 bomb
     set fileencodings=ucs-bom,utf-8,latin1
-    set list listchars=tab:▸\ ,eol:¬,trail:·
+    set list listchars=tab:▸\ ,trail:·
 else
     set list listchars=trail:-
 endif
