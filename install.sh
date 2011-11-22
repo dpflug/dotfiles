@@ -5,6 +5,7 @@
 REPODIR=$(pwd)
 
 git submodule update --init
+(cd vim/bundle/pyflakes/ && git submodule update --init)
 
 if [[ ! -d ~/.config ]] ; then
     mkdir ~/.config
