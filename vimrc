@@ -14,22 +14,23 @@ set softtabstop=4
 set expandtab
 set smarttab
 
-" syntax highlighting
-syntax on
-
 " Enable Pathogen, with all the bundles I have installed
+filetype off
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
 " Lilypond support
-filetype off
 set runtimepath+=/usr/share/lilypond/2.12.3/vim/
+
+" syntax highlighting
+syntax on
 
 " Setting ident options is deprecated in favor of allowed the language detection to setup indentation rules
 " This allows more flexible/intelligent indentation options.
 " See :help 30.3
 "set smartindent
 "set cindent
+filetype on
 filetype indent plugin on
 
 " This allows you to switch to other buffers without saving.
@@ -82,8 +83,17 @@ nmap <silent> <C-l> :nohl<CR>
 " txt2tags support
 au BufNewFile,BufRead *.t2t set ft=txt2tags
 
-" Python smart indent
-autocmd BufRead *.py set colorcolumn=79
+if v:version >= 730
+    " Python smart indent
+    autocmd BufRead *.py set colorcolumn=79
+endif
+
+" Python completion
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+let g:SuperTabDefaultCompletionType = "context"
+
+" Add pydoc and menu for completion
+set completeopt=menuone,longest,preview
 
 " HTML tag closing
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
