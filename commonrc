@@ -59,3 +59,7 @@ function opng () {
         optipng -o7 -zw32k -p $*
     fi
 }
+
+if [[ -a ~/.commonrc_local ]] ; then
+    source ~/.commonrc_local
+fi
