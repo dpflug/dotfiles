@@ -1,6 +1,5 @@
 loadplugins '\.(js|penta)$'
 group user
-colorscheme simple_dark
 set passkeys=voice.google.com:<space>,reader.google.com:jklS,google.com/voice:<space>,google.com/reader:jklSs,google.com/mail:jk#e,mail.google.com:jk#e
 set defsearch=duck
 set errorbells
