@@ -15,12 +15,11 @@ set expandtab
 set smarttab
 
 " Enable Pathogen, with all the bundles I have installed
-filetype off
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+call pathogen#infect()
+Helptags
 
 " Lilypond support
-set runtimepath+=/usr/share/lilypond/2.12.3/vim/
+set runtimepath+=/usr/share/lilypond/*/vim
 
 " syntax highlighting
 syntax on
@@ -83,7 +82,7 @@ nmap <silent> <C-l> :nohl<CR>
 " txt2tags support
 au BufNewFile,BufRead *.t2t set ft=txt2tags
 
-if v:version >= 730
+if v:version >= 703
     " Python smart indent
     autocmd BufRead *.py set colorcolumn=79
 endif
@@ -99,7 +98,7 @@ set completeopt=menuone,longest,preview
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
-if v:version >= 730
+if v:version >= 703
     " Relative line numbers can be helpful for navigation
     set rnu
 
