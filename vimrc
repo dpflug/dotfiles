@@ -111,17 +111,17 @@ set ttyfast
 
 " Show end of line whitespace, tabs
 " For some reason, this isn't working for me within tmux.
-"if has("multi_byte")
-"    if &termencoding == ''
-"        let &termencoding = &encoding
-"    endif
-"    set encoding=utf-8
-"    setglobal fileencoding=utf-8 bomb
-"    set fileencodings=ucs-bom,utf-8,latin1
-"    set list listchars=tab:▸\ ,eol:¬,trail:·
-"else
+if has("multi_byte")
+    if &termencoding == ''
+        let &termencoding = &encoding
+    endif
+    set encoding=utf-8
+    setglobal fileencoding=utf-8 bomb
+    set fileencodings=ucs-bom,utf-8,latin1
+    set list listchars=tab:▸\ ,eol:¬,trail:·
+else
 set list listchars=trail:-,tab:>-
-"endif
+endif
 
 " Sometimes I open files, then decide I want to make changes when I don't have
 " the permissions.
