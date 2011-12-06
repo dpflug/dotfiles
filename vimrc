@@ -83,7 +83,7 @@ nmap <silent> <C-l> :nohl<CR>
 au BufNewFile,BufRead *.t2t set ft=txt2tags
 
 if v:version >= 703
-    " Python smart indent
+    " Python line length indicator
     autocmd BufRead *.py set colorcolumn=79
 endif
 
@@ -109,18 +109,20 @@ endif
 " I shouldn't encounter any slow TTYs
 set ttyfast
 
-" Show end of line whitespace
-if has("multi_byte")
-    if &termencoding == ""
-        let &termencoding = &encoding
-    endif
-    set encoding=utf8
-    setglobal fileencoding=utf-8 bomb
-    set fileencodings=ucs-bom,utf-8,latin1
-    set list listchars=tab:▸\ ,trail:·
-else
+" Show end of line whitespace, tabs
+" For some reason, this isn't working for me. Just munges my term. Look at
+" later.
+"if has("multi_byte")
+"    if &termencoding == ""
+"        let &termencoding = &encoding
+"    endif
+"    set encoding=utf-8
+"    setglobal fileencoding=utf-8 bomb
+"    set fileencodings=ucs-bom,utf-8,latin1
+"    set list listchars=tab:▸\ ,trail:·
+"else
     set list listchars=trail:-
-endif
+"endif
 
 " Sometimes I open files, then decide I want to make changes when I don't have
 " the permissions.
