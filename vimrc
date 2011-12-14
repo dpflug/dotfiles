@@ -1,11 +1,5 @@
 set nocompatible
 
-" Colorscheme I like
-colorscheme maroloccio
-" It's 256 color, so I'll force that. In the rare case it causes problems,
-" unset by hand.
-set t_Co=256
-
 " Whip the tabs into shape
 set shiftwidth=4
 set softtabstop=4
@@ -17,6 +11,12 @@ set smarttab
 " Enable Pathogen, with all the bundles I have installed
 call pathogen#infect()
 Helptags
+
+" Colorscheme I like
+colorscheme maroloccio
+" It's 256 color, so I'll force that. In the rare case it causes problems,
+" unset by hand.
+set t_Co=256
 
 " Lilypond support
 set runtimepath+=/usr/share/lilypond/*/vim
