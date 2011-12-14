@@ -38,3 +38,6 @@ URxvt.perl-ext: default,matcher
 URxvt.urlLauncher: firefox
 URxvt.keysym.C-Delete: perl:matcher
 URxvt.underlineURLs: true
+
+! Create a difference between fg and yellow color
+Rxvt*color3: Orange
