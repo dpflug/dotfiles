@@ -3,7 +3,6 @@ Xft.antialias:           true
 Xft.hinting:             true
 Xft.hintstyle:           hintfull
 Xft.lcdfilter:           lcddefault
-Xft.rgba:                vrgb
 
 XTerm*background: Black
 XTerm*foreground: Gold
@@ -11,9 +10,9 @@ XTerm*foreground: Gold
 Rxvt*background: Black
 
 Rxvt*foreground: Gold
-!URxvt*font: xft:Envy Code R:autohint=true:antialias=true:size=10
+URxvt*font: xft:Envy Code R:autoalias=true
 !URxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
-URxvt*font: xft:dina
+!URxvt*font: xft:dina
 
 ! fade text n% on unfocus
 URxvt*fading: 20
@@ -35,7 +34,7 @@ URxvt*skipScroll: True
 
 ! Clickable URLs
 URxvt.perl-ext: default,matcher
-URxvt.urlLauncher: firefox
+URxvt.urlLauncher: firefox-beta-bin
 URxvt.keysym.C-Delete: perl:matcher
 URxvt.underlineURLs: true
 
