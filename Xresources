@@ -34,7 +34,7 @@ URxvt*skipScroll: True
 
 ! Clickable URLs
 URxvt.perl-ext: default,matcher
-URxvt.urlLauncher: firefox-beta-bin
+URxvt.urlLauncher: xdg-open
 URxvt.keysym.C-Delete: perl:matcher
 URxvt.underlineURLs: true
 
