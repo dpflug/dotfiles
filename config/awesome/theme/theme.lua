@@ -6,20 +6,20 @@ theme = {}
 
 theme.font          = "sans 8"
 
-theme.bg_normal     = "#544800"
-theme.bg_focus      = "#a88f00"
-theme.bg_urgent     = "#0026ff"
-theme.bg_minimize   = "#444444"
+theme.bg_normal     = "#262729"
+theme.bg_focus      = "#3e3f41"
+theme.bg_urgent     = "#e04612"
+theme.bg_minimize   = "#000000"
 
-theme.fg_normal     = "#ffd700"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#ffffff"
+theme.fg_normal     = "#e04612"
+theme.fg_focus      = "#e0ad12"
+theme.fg_urgent     = "#262729"
+theme.fg_minimize   = "#12ade0"
 
 theme.border_width  = "1"
 theme.border_normal = "#000000"
-theme.border_focus  = "#a88f00"
-theme.border_marked = "#ffd700"
+theme.border_focus  = "#e04613"
+theme.border_marked = "#12ade0"
 
 -- There are other variable sets
 -- overriding the default one when
