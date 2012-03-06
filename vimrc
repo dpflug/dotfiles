@@ -10,7 +10,6 @@ set smarttab
 
 " Enable Pathogen, with all the bundles I have installed
 call pathogen#infect()
-Helptags
 
 " Colorscheme I like
 colorscheme maroloccio
