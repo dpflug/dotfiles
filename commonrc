@@ -20,7 +20,7 @@ alias ws='sudo wifi-select wlan0'
 alias o='xdg-open'
 
 # Keychain
-ssh_keys=$(find ~/.ssh -name id_\* -and -not -name \*.pub)
+ssh_keys=$(find ~/.ssh -name id_\* -and \! -name \*.pub)
 if [[ $EUID -gt 1 ]] ; then
     if [[ -x $(which keychain) ]] ; then
         eval $(keychain --eval -q ~/.ssh/cao_key ${ssh_keys})
