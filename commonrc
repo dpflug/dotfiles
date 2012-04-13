@@ -61,6 +61,12 @@ function opng () {
     fi
 }
 
+function wp () {
+    if [ -n $1 ] ; then
+        opng $* ; mv -i $* ~/.config/awesome/theme/wallpapers/
+    fi
+}
+
 if [[ -a ~/.commonrc_local ]] ; then
     source ~/.commonrc_local
 fi
