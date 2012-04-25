@@ -14,16 +14,27 @@ alias dps='ssh -t david@projecthq.biz screen -raAd'
 alias awdb='Xephyr -ac -br -noreset -screen 800:600 :1 & export DISPLAY=":1.0" PS1="\[\e[0;31m\]AWDB ${PS1}" ; sleep 2 && awesome &'
 alias undb='killall Xephyr ; export DISPLAY=":0.0" PS1=${PS1##*AWDB }'
 alias mtr='mtr --curses'
-alias myip='elinks -dump checkip.dyndns.org'
+alias myip='curl icanhazip.com'
 alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount -t sys{fs,fs,} && sudo chroot . /bin/bash ; sudo umount dev/* dev sys proc'
 alias ws='sudo wifi-select wlan0'
 alias o='xdg-open'
+alias aurup='makepkg -S; burp $(source PKGBUILD; echo ${pkgname}-${pkgver}-${pkgrel}.src.tar.gz)'
+
+#Games :)
+alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
+#alias engage=""
+#play -n -c1 synth whitenoise lowpass -1 120 lowpass -1 120 lowpass -1 120 gain +14
+#play -n -c1 synth whitenoise band 100 20 compand .3,.8 -1,-10 gain +20
+#play -n -c1 synth whitenoise band -n 100 20 band -n 50 20 gain +25  fade h 1 864000 1
 
 # Keychain
 ssh_keys=$(find ~/.ssh -name id_\* -and \! -name \*.pub)
+#gpg_keys=$(gpg -K | grep 'sec ' | awk '{ print $2 }' | cut -d'/' -f 2)
+gpg_keys=""
+
 if [[ $EUID -gt 1 ]] ; then
     if [[ -x $(which keychain) ]] ; then
-        eval $(keychain --eval -q ~/.ssh/cao_key ${ssh_keys})
+        eval $(keychain --eval -q ~/.ssh/cao_key ${ssh_keys} ${gpg_keys})
     fi
 fi
 
