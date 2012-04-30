@@ -128,6 +128,8 @@ cmap w!! %!sudo tee > /dev/null %
 
 " How many times have I typoed this?
 command! W w
+command! Wq wq
+command! WQ wq
 
 " Store more history
 set history=100
