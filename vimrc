@@ -82,8 +82,9 @@ nmap <silent> <C-l> :nohl<CR>
 au BufNewFile,BufRead *.t2t set ft=txt2tags
 
 if v:version >= 703
-    " Python line length indicator
-    autocmd BufRead *.py set colorcolumn=79
+    " Python and git commit line length indicators
+    autocmd FileType python set colorcolumn=72,79
+    autocmd FileType gitcommit set colorcolumn=50
 endif
 
 " Python completion
