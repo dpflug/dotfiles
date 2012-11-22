@@ -10,7 +10,7 @@ XTerm*foreground: Gold
 Rxvt*background: Black
 
 Rxvt*foreground: Gold
-URxvt*font: xft:Envy Code R:autohint=true:antialias=true:size=10
+URxvt*font: xft:Envy Code R:autohint=false:antialias=false:size=10
 !URxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
 !URxvt*font: xft:dina
 
@@ -40,3 +40,8 @@ URxvt.underlineURLs: true
 
 ! Create a difference between fg and yellow color
 Rxvt*color3: Orange
+
+! Make Emacs a bit darker
+Emacs*Background: Black
+Emacs*Foreground: Gold
+Emacs*Background-Mode: dark
