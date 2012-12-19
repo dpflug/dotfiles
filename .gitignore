@@ -4,3 +4,4 @@
 config/awesome/theme/wallpapers/*
 vim/.netrwhist
 bin/*
+emacs.d/*
