@@ -42,7 +42,9 @@ zstyle ':completion:*:kill:*'   force-list always
 #bindkey "\e\e[D" backward-word
 
 # Let's give vim mode a try
-bindkey -v
+#bindkey -v
+# Decided c-x c-e is a better idea.
+
 # These make me feel like I'm doing it wrong, maybe... >.>
 bindkey "\e[1~" beginning-of-line
 bindkey "\e[4~" end-of-line
