@@ -9,7 +9,7 @@ export VDPAU_NVIDIA_NO_OVERLAY=1
 alias vi='vim'
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
-alias x='startx'
+alias x='startx &! exit'
 alias ta='tmux a -d > /dev/null || tmux'
 alias dps='ssh -t david@projecthq.biz screen -raAd'
 alias awdb='Xephyr -ac -br -noreset -screen 800:600 :1 & export DISPLAY=":1.0" PS1="\[\e[0;31m\]AWDB ${PS1}" ; sleep 2 && awesome &'
