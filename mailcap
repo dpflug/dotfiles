@@ -7,5 +7,6 @@ application/msword; /usr/bin/libreoffice '%s'; test=test -n "$DISPLAY"; nametemp
 application/vnd.openxmlformats-officedocument.presentationml.presentation; /usr/bin/libreoffice '%s'; test=test -n "$DISPLAY"; nametemplate=%s.pptx
 application/vnd.ms-powerpoint; /usr/bin/libreoffice '%s'; test=test -n "$DISPLAY"; nametemplate=%s.ppt
 image/jpeg; /usr/bin/sxiv '%s'; description=JPEG Image; test=test -n "$DISPLAY"; nametemplate=%s.jpg
+image/png; /usr/bin/sxiv '%s'; description=PNG Image; test=test -n "$DISPLAY"; nametemplate=%s.png
 image/gif; /usr/bin/sxiv '%s'; description=GIF Image; test=test -n "$DISPLAY"; nametemplate=%s.gif
 video/x-ms-wmv; /usr/bin/mplayer '%s'; description=WMV Video; test=test -n "$DISPLAY"; nametemplate=%s.wmv
