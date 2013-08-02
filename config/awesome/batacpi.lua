@@ -38,7 +38,7 @@ local function worker(format)
             table.insert(battery_info, (battery_state[string.match(line, "(%a*),") or "unknown"]))
             table.insert(battery_info, (tonumber(string.match(line, "(%d?%d?%d)%%,")) or 0))
             -- Store remaining time information
-            table.insert(battery_info, (string.match(line, "%%,%s(.*) %w") or "N/A"))
+            table.insert(battery_info, (string.match(line, "%%,%s(%d%d:%d%d:%d%d)") or "N/A"))
         else
             return {battery_state["unknown"], 0, "N/A"}
         end

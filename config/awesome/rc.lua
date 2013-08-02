@@ -12,7 +12,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 -- Widget library
 local vicious = require("vicious")
-vicious.contrib = require("vicious.contrib")
+local batacpi = require("batacpi")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -112,7 +112,7 @@ mytextclock = awful.widget.textclock()
 
 -- Battery
 batterywidget = wibox.widget.textbox()
-vicious.register(batterywidget, vicious.contrib.batacpi, " [ Batt: $2%/$3$1 ] ", 31, "BAT0")
+vicious.register(batterywidget, batacpi, " [ Batt: $2%/$3$1 ] ", 31, "BAT0")
 
 -- Memory
 -- Initialize widget
@@ -130,56 +130,70 @@ vicious.register(memwidget, vicious.widgets.mem, "$1", 13)
 -- Net Traffic
 netwidget = wibox.widget.textbox()
 vicious.register(netwidget, vicious.widgets.net,
+		 -- Build an array of net adapters and build ourselves our stats string
 		 function (netwidget, args)
-		    --for k,v in pairs(vicious.widgets.net(netwidget, args)) do
-		       --if v == 1 and string.find(k, "carrier") then
-			  --naughty.notify({ title = "Detected connected network device:", text = v })
-		       --end
-		    --end
-		    local outstring = ""
-		    if args["{em1 carrier}"] > 0 or args["{wlp2s0 carrier}"] > 0 then
-		       outstring = "["
-		       if args["{em1 carrier}"] > 0 then
-			  outstring = outstring .. " eth ▾" .. args["{em1 down_kb}"] .. "▴" .. args["{em1 up_kb}"]
-		       else
-			  outstring = outstring .. " wlan ▾" .. args["{wlp2s0 down_kb}"] .. "▴" .. args["{wlp2s0 up_kb}"]
+		    active_connections = {}
+		    for k,v in pairs(vicious.widgets.net(netwidget, args)) do
+		       if v == 1 then
+			  adapter = string.match(k, "(%w+) carrier")
+			  if adapter ~= "lo" then -- Don't particularly care about loopback
+			     table.insert(active_connections, adapter)
+			  end
 		       end
-		       outstring = outstring .. " ]"
+		    end
+		    local outstring = ""
+		    for i,v in ipairs(active_connections) do
+		       if i == 1 then
+			  outstring = "[ "
+		       else
+			  outstring = outstring .. " | "
+		       end
+                       outstring = outstring .. v .. " ▾" .. args["{" .. v .. " down_kb}"] .. " ▴" .. args["{" .. v .. " up_kb}"]
+		       if i == #active_connections then
+			  outstring = outstring .. " ] "
+		       end
 		    end
 		    return outstring
 		 end,
-		 5)
+		 7)
 
 -- Wifi widget
 wifiwidget = wibox.widget.textbox()
--- vicious.register(wifiwidget, vicious.widgets.wifi, function (wifiwidget, args)
+-- vicious.register(wifiwidget, vicious.widgets.wifi,
+--function (wifiwidget, args)
 
 -- Pkg Updates
 updatewidget = wibox.widget.textbox()
 vicious.register(updatewidget, vicious.widgets.pkg,
+		 -- Only show updates if we have any
 		 function (updatewidget, args)
 		    if args[1] > 0 then
-		       return " [ Pkg▴: " .. args[1] .. " ]"
+		       return "[ Pkg▴: " .. args[1] .. " ] "
 		    else
 		       return ""
 		    end
-		 end, 21600, "Fedora")
+		 end, 21599, "Fedora")
 
 -- Weather
 weatherwidget = wibox.widget.textbox()
 vicious.register(weatherwidget, vicious.widgets.weather,
+		 -- I want the "feels like" temperature, so I compute it using the Australian Apparent Temperature formula
 		 function (weatherwidget, args)
-		    if args["{windkmh}"] then
-		       local ws = args["{windkmh}"] / 3600 * 1000
+		    if args["{windmph}"] then -- We have results
+		       local wind = tonumber(args["{windmph}"])
+		       local ws = 0
+		       if wind then -- This double-checking windmph looks redundant, but we get the string "N/A" when there is no wind.
+			  local ws = wind * 0.447
+		       end
 		       local e = args["{humid}"] / 100 * 6.105 * math.exp(17.27 * args["{tempc}"] / (237.7 + args["{tempc}"]))
 		       local at = args["{tempc}"] + 0.348 * e - 0.7 * ws
 		       local atf = at * 9 / 5 + 32
-		       return string.format(" [ %s %sF/%sC - %sF - %smph ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], args["{windmph}"])
+		       return string.format(" [ %s %sF/%sC - %sF - %smph - %s%% ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], args["{windmph}"], args["{humid}"])
 		    else
 		       return "[ Look Outside ]"
 		    end
 		 end,
-		 3600, "KSFB")
+		 3607, "KSFB")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
