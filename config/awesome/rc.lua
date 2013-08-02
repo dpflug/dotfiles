@@ -10,6 +10,9 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+-- Widget library
+local vicious = require("vicious")
+vicious.contrib = require("vicious.contrib")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -107,6 +110,77 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
+-- Battery
+batterywidget = wibox.widget.textbox()
+vicious.register(batterywidget, vicious.contrib.batacpi, " [ Batt: $2%/$3$1 ] ", 31, "BAT0")
+
+-- Memory
+-- Initialize widget
+memwidget = awful.widget.progressbar()
+-- Progressbar properties
+memwidget:set_width(8)
+memwidget:set_height(10)
+memwidget:set_vertical(true)
+memwidget:set_background_color("#494B4F")
+memwidget:set_border_color(nil)
+memwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#AECF96"}, {0.5, "#88A175"}, 
+                    {1, "#FF5656"}}})
+vicious.register(memwidget, vicious.widgets.mem, "$1", 13)
+
+-- Net Traffic
+netwidget = wibox.widget.textbox()
+vicious.register(netwidget, vicious.widgets.net,
+		 function (netwidget, args)
+		    --for k,v in pairs(vicious.widgets.net(netwidget, args)) do
+		       --if v == 1 and string.find(k, "carrier") then
+			  --naughty.notify({ title = "Detected connected network device:", text = v })
+		       --end
+		    --end
+		    local outstring = ""
+		    if args["{em1 carrier}"] > 0 or args["{wlp2s0 carrier}"] > 0 then
+		       outstring = "["
+		       if args["{em1 carrier}"] > 0 then
+			  outstring = outstring .. " eth ▾" .. args["{em1 down_kb}"] .. "▴" .. args["{em1 up_kb}"]
+		       else
+			  outstring = outstring .. " wlan ▾" .. args["{wlp2s0 down_kb}"] .. "▴" .. args["{wlp2s0 up_kb}"]
+		       end
+		       outstring = outstring .. " ]"
+		    end
+		    return outstring
+		 end,
+		 5)
+
+-- Wifi widget
+wifiwidget = wibox.widget.textbox()
+-- vicious.register(wifiwidget, vicious.widgets.wifi, function (wifiwidget, args)
+
+-- Pkg Updates
+updatewidget = wibox.widget.textbox()
+vicious.register(updatewidget, vicious.widgets.pkg,
+		 function (updatewidget, args)
+		    if args[1] > 0 then
+		       return " [ Pkg▴: " .. args[1] .. " ]"
+		    else
+		       return ""
+		    end
+		 end, 21600, "Fedora")
+
+-- Weather
+weatherwidget = wibox.widget.textbox()
+vicious.register(weatherwidget, vicious.widgets.weather,
+		 function (weatherwidget, args)
+		    if args["{windkmh}"] then
+		       local ws = args["{windkmh}"] / 3600 * 1000
+		       local e = args["{humid}"] / 100 * 6.105 * math.exp(17.27 * args["{tempc}"] / (237.7 + args["{tempc}"]))
+		       local at = args["{tempc}"] + 0.348 * e - 0.7 * ws
+		       local atf = at * 9 / 5 + 32
+		       return string.format(" [ %s %sF/%sC - %sF - %smph ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], args["{windmph}"])
+		    else
+		       return "[ Look Outside ]"
+		    end
+		 end,
+		 3600, "KSFB")
+
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -183,6 +257,11 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
+    right_layout:add(weatherwidget)
+    right_layout:add(updatewidget)
+    right_layout:add(netwidget)
+    right_layout:add(memwidget)
+    right_layout:add(batterywidget)
     right_layout:add(mylayoutbox[s])
     right_layout:add(mytextclock)
     if s == 1 then right_layout:add(wibox.widget.systray()) end

@@ -22,3 +22,6 @@
 [submodule "vim/bundle/python_calltips"]
 	path = vim/bundle/python_calltips
 	url = https://github.com/vim-scripts/python_calltips.git
+[submodule "config/awesome/vicious"]
+	path = config/awesome/vicious
+	url = http://git.sysphere.org/vicious
