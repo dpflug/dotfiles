@@ -45,6 +45,13 @@ if [[ -f $(which virtualenvwrapper.sh) ]] ; then
     source $(which virtualenvwrapper.sh)
 fi
 
+# EncFS
+if [[ -d ~/Private && -d ~/.Private ]] ; then
+    if ! mount | grep "${USER}/Private" > /dev/null ; then
+        encfs ~/{.,}Private
+    fi
+fi
+
 function toweb () {
     if [ -n $1 ] ; then
         rsync -SHPcavy $* melch:public_html/
