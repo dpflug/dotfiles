@@ -1,6 +1,7 @@
 *~
 *.swp
 \#*#
+.#*
 config/awesome/theme/wallpapers/*
 vim/.netrwhist
 bin/*
