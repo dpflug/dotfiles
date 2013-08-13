@@ -47,11 +47,11 @@
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'scheme-mode-hook           'enable-paredit-mode)
 
-
 ;And highlight parens, etc
 (require 'paren)
 (setq show-paren-style 'parenthesis)
 (show-paren-mode +1)
+
 ;Slime setup
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (require 'slime)

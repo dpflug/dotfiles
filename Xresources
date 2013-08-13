@@ -6,6 +6,10 @@ Xft.lcdfilter:           lcddefault
 
 XTerm*background: Black
 XTerm*foreground: Gold
+UXTerm*background: Black
+UXTerm*foreground: Gold
+XTerm*font: xft:Envy Code R:autohint=true:antialias=true:size=12
+UXTerm*font: xft:Envy Code R:autohint=true:antialias=true:size=12
 
 Rxvt*background: Black
 

@@ -69,6 +69,20 @@ if [ -f /etc/profile.d/nix.sh ] ; then
     source /etc/profile.d/nix.sh
 fi
 
+function d () {
+    for word in "$@" ; do
+        curl dict://dict.org/d:"${word}" 2> /dev/null | less -FX
+    done
+}
+
+function urxvtcd () {
+    urxvtc "$@"
+    if [ $? -eq 2 ]; then
+        urxvtd -q -o -f
+        urxvtc "$@"
+    fi
+}
+
 toweb () {
     if [[ -n "$1" ]] ; then
         rsync -SHPcavy "$@" og:public_html/
