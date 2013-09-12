@@ -10,9 +10,9 @@ XTerm*foreground: Gold
 Rxvt*background: Black
 
 Rxvt*foreground: Gold
-Rxvt*font: xft:Envy Code R:autohint=false:antialias=false:size=10
-!URxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
-!URxvt*font: xft:dina
+Rxvt*font: xft:Envy Code R:autohint=true:antialias=true:size=10
+!Rxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
+!Rxvt*font: xft:dina
 
 ! fade text n% on unfocus
 Rxvt*fading: 20
