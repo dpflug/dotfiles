@@ -1,3 +1,5 @@
+"hg6901
+
 loadplugins '\.(js|penta)$'
 group user
 set passkeys=voice.google.com:<space>,reader.google.com:jklS,google.com/voice:<space>,google.com/reader:jklSs,google.com/mail:jk#e,mail.google.com:jk#e

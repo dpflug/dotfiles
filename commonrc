@@ -54,7 +54,7 @@ fi
 
 function toweb () {
     if [ -n $1 ] ; then
-        rsync -SHPcavy $* melch:public_html/
+        rsync -SHPcavy $* og:public_html/
         for x in $* ; do
             echo "http://dpflug.udderweb.com/$(basename ${x} | sed 's/ /%20/g')"
         done
@@ -76,7 +76,7 @@ function dump () {
 
 function opng () {
     if [ -n $1 ] ; then
-        optipng -o7 -zw32k -p $*
+        parallel optipng -o7 -zw32k -p ::: $*
     fi
 }
 

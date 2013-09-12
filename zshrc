@@ -3,7 +3,7 @@
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
-setopt appendhistory autocd beep correctall dvorak interactive_comments nomatch notify
+setopt appendhistory autocd beep correctall dvorak interactive_comments nomatch notify extendedglob
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/dpflug/.zshrc'
