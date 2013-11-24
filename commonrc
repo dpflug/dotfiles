@@ -1,10 +1,17 @@
 #!$SHELL
-PATH=${PATH}:~/bin:~/.gem/ruby/1.9.1/bin
 export EDITOR="vim"
 export LESS="$LESS -iRs"
 export LC_ALL=
 export LC_COLLATE="C"
 export VDPAU_NVIDIA_NO_OVERLAY=1
+
+#PATH handling
+if [[ -d "$HOME/bin" && ! "$PATH" =~ "$HOME/bin" ]] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+if [[ -d "$HOME/.nix-profile/bin" && ! "$PATH" =~ "$HOME/bin" ]] ; then
+    PATH="$HOME/.nix-profile/bin:$PATH"
+fi
 
 alias vi='vim'
 alias ls='ls --color=auto'
@@ -34,15 +41,15 @@ ssh_keys=$(find ~/.ssh -name id_\* -and \! -name \*.pub)
 gpg_keys=""
 
 if [[ $EUID -gt 1 ]] ; then
-    if [[ -x $(which keychain) ]] ; then
-        eval $(keychain --eval -q ~/.ssh/cao_key ${ssh_keys} ${gpg_keys})
+    if [[ -x "$(which keychain)" ]] ; then
+        eval "$(keychain --eval -q ~/.ssh/cao_key ${ssh_keys} ${gpg_keys})"
     fi
 fi
 
 # Virtualenvwrapper
-if [[ -f $(which virtualenvwrapper.sh) ]] ; then
-    WORKON_HOME=~/.virtualenvs
-    source $(which virtualenvwrapper.sh)
+if [[ -f "$(which virtualenvwrapper.sh)" ]] ; then
+    export WORKON_HOME=~/.virtualenvs
+    source "$(which virtualenvwrapper.sh)"
 fi
 
 # EncFS
@@ -52,37 +59,42 @@ if [[ -d ~/Private && -d ~/.Private ]] ; then
     fi
 fi
 
-function toweb () {
-    if [ -n $1 ] ; then
-        rsync -SHPcavy $* og:public_html/
-        for x in $* ; do
-            echo "http://dpflug.udderweb.com/$(basename ${x} | sed 's/ /%20/g')"
+# Nix
+if [ -f /etc/profile.d/nix.sh ] ; then
+    source /etc/profile.d/nix.sh
+fi
+
+toweb () {
+    if [[ -n "$1" ]] ; then
+        rsync -SHPcavy "$@" og:public_html/
+        for x in "$@" ; do
+            echo "http://dpflug.udderweb.com/$(basename "${x}" | sed 's/ /%20/g')"
         done
     else
         echo "What should be sent?"
     fi
 }
 
-function dump () {
-    if [ -n $1 ] ; then
-        rsync -SHPcavy $* uw:dump/
-        for x in $* ; do
-            echo "http://dump.udderweb.com/$(basename ${x} | sed 's/ /%20/g')"
+dump () {
+    if [[ -n "$1" ]] ; then
+        rsync -SHPcavy "$@" uw:dump/
+        for x in "$@" ; do
+            echo "http://dump.udderweb.com/$(basename "${x}" | sed 's/ /%20/g')"
         done
     else
         echo "What should be sent?"
     fi
 }
 
-function opng () {
-    if [ -n $1 ] ; then
-        parallel optipng -o7 -zw32k -p ::: $*
+opng () {
+    if [[ -n "$1" ]] ; then
+        parallel optipng -o7 -zw32k -p ::: "$@"
     fi
 }
 
-function wp () {
-    if [ -n $1 ] ; then
-        opng $* ; mv -i $* ~/.config/awesome/theme/wallpapers/
+wp () {
+    if [[ -n "$1" ]] ; then
+        opng "$@" ; mv -i "$@" ~/annex/wallpapers
     fi
 }
 
