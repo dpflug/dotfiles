@@ -8,8 +8,18 @@ set softtabstop=4
 set expandtab
 set smarttab
 
-" Enable Pathogen, with all the bundles I have installed
-call pathogen#infect()
+" Enable Vundle, for bundles
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Let Vundle manage itself
+Bundle 'gmarik/vundle'
+
+" My bundles
+Bundle 'nvie/vim-flake8'
+Bundle 'Maroloccio/maroloccio-vim'
+Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'ervandew/supertab'
 
 " Colorscheme I like
 colorscheme maroloccio
@@ -29,7 +39,7 @@ syntax on
 "set smartindent
 "set cindent
 filetype on
-filetype indent plugin on
+filetype plugin indent on
 
 " This allows you to switch to other buffers without saving.
 set hidden
