@@ -2,7 +2,13 @@
 
 #Ok, this is quick and hackish.
 
-REPODIR=$(pwd)
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+    REPODIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+    SOURCE="$(readlink "$SOURCE")"
+    [[ $SOURCE != /* ]] && SOURCE="$REPODIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+REPODIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 unset CDPATH
 
 git submodule update --init
@@ -14,7 +20,7 @@ fi
 if [[ -a ~/.config ]] ; then
     if [[ ! -a ~/.config/awesome ]] ; then
         echo "Linking ~/.config/awesome"
-        ln -s ${REPODIR}/config/awesome ~/.config/awesome
+        ln -s "${REPODIR}"/config/awesome ~/.config/awesome
     fi
 fi
 
@@ -22,41 +28,48 @@ if [[ ! -d ~/.ssh ]] ; then
     mkdir ~/.ssh
 fi
 
-cd ${REPODIR}/ssh
-for file in $(find * -maxdepth 0 -type f) ; do
+cd "${REPODIR}"/ssh
+find ./* -maxdepth 0 -type f | while read file ; do
     if [[ -f ${file}.pub ]] ; then
-        chmod 600 $file ${file}.pub
+        chmod 600 "$file" "${file}".pub
     fi
-    if [[ ! -a ~/.ssh/${file} ]] ; then
-        echo "Linking ${REPODIR}/ssh/${file} to ~/.ssh/"
-        ln -s ${REPODIR}/ssh/${file} ~/.ssh/
+    bfile=$(basename "${file}")
+    if [[ ! -a ~/.ssh/$basefile ]] ; then
+        echo "Linking ${REPODIR}/ssh/$bfile to ~/.ssh/"
+        ln -s "${REPODIR}/ssh/$bfile" ~/.ssh/
     fi
 done
+cd - > /dev/null
 
 if [[ ! -d ~/bin ]] ; then
-    ln -s ${REPODIR}/bin ~/bin
+    ln -s "${REPODIR}"/bin ~/bin
 else
-    for file in ${REPODIR}/bin/* ; do
-        if [[ ! -a ~/bin/$(basename ${file}) ]] ; then
-            ln -s $file ~/bin/
+    find "${REPODIR}"/bin/* -maxdepth 0 -type f | while read file ; do
+        if [[ ! -a ~/bin/$(basename "${file}") ]] ; then
+            ln -s "$file" ~/bin/
         fi
     done
 fi
 
 if [[ ! -d ~/.vim ]] ; then
-    ln -s $REPODIR/vim ~/.vim
+    ln -s "$REPODIR"/vim ~/.vim
 elif [[ ! -h ~/.vim ]] ; then
     echo "~/.vim ALREADY EXISTS. Either delete it or merge them."
 fi
 
+# Install Vundle
+if [[ ! -d $REPODIR/vim/bundle/vundle ]] ; then
+    git clone https://github.com/gmarik/vundle.git vim/bundle/vundle
+fi
 
-for file in ${REPODIR}/* ; do
+find "${REPODIR}"/* -maxdepth 0 | while read file ; do
     #Just omitting the directories for now. I'd like to pull them into this loop, too, though.
     #mkdir and ln files, or ln directories? How can I differentiate between dirs to link and dirs that will have local subdirs (ie .config)?
     if [[ -f $file && ! -x $file ]] ; then
-        if [[ ! -a ~/.$(basename ${file}) ]] ; then
-            echo "Linking ${file} to ~/.$(basename ${file})"
-            ln -s ${file} ~/.$(basename ${file})
+        bfile=$(basename "$file")
+        if [[ ! -a ~/."$bfile" ]] ; then
+            echo "Linking $file to ~/.$bfile"
+            ln -s "${file}" ~/."$bfile"
         fi
     fi
 done
