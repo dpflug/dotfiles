@@ -27,6 +27,7 @@ alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount
 alias wifi='sudo wifi-menu'
 alias o='xdg-open'
 alias aurup='makepkg -S; burp $(source PKGBUILD; echo ${pkgname}-${pkgver}-${pkgrel}.src.tar.gz)'
+alias om='offlineimap; mu index'
 
 #Games :)
 alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
