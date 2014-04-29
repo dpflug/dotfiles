@@ -5,6 +5,4 @@ read -rt 1 DISPLAY < <(ps -ef | grep "$USER"'.*X' | grep -o ' :[[:digit:]]\+ ')
 
 if [[ -n "$DISPLAY" ]] ; then
 	feh --bg-fill "$(find -L ~/.config/awesome/theme/wallpapers/ -type f -iname '*.jpg' -o -iname '*.png' | shuf -n1)"
-else
-	return 0  # If X isn't running, we don't need to do anything.
 fi
