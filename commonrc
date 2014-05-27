@@ -94,8 +94,15 @@ opng () {
 }
 
 wp () {
-    if [[ -n "$1" ]] ; then
-        opng "$@" ; mv -i "$@" ~/annex/wallpapers
+	if [[ -n "$1" ]] ; then
+		for img in "$@" ; do
+			if [[ -z "${img#*.png}" ]] ; then
+				opng "$img"
+			elif [[ -z "${img#*.jpg}" ]] ; then
+				jpegoptim "$img"
+			fi
+			mv -i "$@" ~/annex/wallpapers
+		done
     fi
 }
 
