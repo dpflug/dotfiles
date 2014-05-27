@@ -12,6 +12,10 @@ fi
 if [[ -d "$HOME/.nix-profile/bin" && ! "$PATH" =~ "$HOME/bin" ]] ; then
     PATH="$HOME/.nix-profile/bin:$PATH"
 fi
+export GOPATH="$HOME/.go"
+if [[ -d "$HOME/.go/bin" && ! "$PATH" =~ "$HOME/.go/bin" ]] ; then
+    PATH="$PATH:$HOME/.go/bin"
+fi
 
 alias vi='vim'
 alias ls='ls --color=auto'
