@@ -453,6 +453,14 @@ clientbuttons = awful.util.table.join(
 root.keys(globalkeys)
 -- }}}
 
+function Set (list)
+   local set = {}
+   for _, l in ipairs(list) do set[l] = true end
+   return set
+end
+
+float = Set{"MPlayer", "pinentry", "gimp", "minecraft", "QEMU", "EDiff", }
+
 -- {{{ Rules
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -471,6 +479,8 @@ awful.rules.rules = {
     { rule = { class = "minecraft" },
       properties = { floating = true } },
     { rule = { class = "QEMU" },
+      properties = { floating = true } },
+    { rule = { class = "EDiff" },
       properties = { floating = true } },
     -- Set Firefox to always map on tags number 2 of screen 1.
     { rule = { class = "Firefox" },
