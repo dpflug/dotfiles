@@ -13,6 +13,8 @@ local menubar = require("menubar")
 -- Widget library
 local vicious = require("vicious")
 local batacpi = require("batacpi")
+-- I/O library
+local io = require("io")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -110,9 +112,37 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
+-- Helper function: Used to check for batteries below.
+
 -- Battery
-batterywidget = wibox.widget.textbox()
-vicious.register(batterywidget, batacpi, " [ Batt: $2%/$3$1 ] ", 31, "BAT0")
+local batteries = {}
+local batterywidgets = {}
+function get_batteries()
+   local file_exists = function (name)
+      local f = io.open(name,"r")
+      if f ~= nil then
+	 io.close(f)
+	 return true
+      else
+	 return false
+      end
+   end
+   local i = 1
+   for bat in io.popen("ls /sys/class/power_supply"):lines() do
+      if file_exists("/sys/class/power_supply/" .. bat .. "/charge_full") then
+	 batteries[i] = bat
+	 i = i + 1
+      end
+   end
+   return batteries
+end
+get_batteries()
+
+for i=1,#batteries do
+   batterywidgets[i] = wibox.widget.textbox()
+   -- The below actually returns a 4th value, the percentage wear and tear on the battery. Use it if you want. I recommend the ✚ glyph.
+   vicious.register(batterywidgets[i], vicious.widgets.bat, " [ Bat" .. i .. ": $2%-$3$1 ] ", 31, batteries[i])
+end
 
 -- Memory
 -- Initialize widget
@@ -279,7 +309,9 @@ for s = 1, screen.count() do
     right_layout:add(updatewidget)
     right_layout:add(netwidget)
     right_layout:add(memwidget)
-    right_layout:add(batterywidget)
+    for i=1,#batterywidgets do
+       right_layout:add(batterywidgets[i])
+    end
     right_layout:add(mylayoutbox[s])
     right_layout:add(mytextclock)
     if s == 1 then right_layout:add(wibox.widget.systray()) end
