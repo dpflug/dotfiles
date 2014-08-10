@@ -14,7 +14,11 @@ local menubar = require("menubar")
 local vicious = require("vicious")
 local batacpi = require("batacpi")
 -- I/O library
-local io = require("io")
+local io = {
+   open = io.open,
+   close = io.close,
+   popen = io.popen
+}
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
