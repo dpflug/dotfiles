@@ -214,7 +214,7 @@ vicious.register(weatherwidget, vicious.widgets.weather,
 		 -- I want the "feels like" temperature, so I compute it using the Australian Apparent Temperature formula
 		 function (weatherwidget, args)
 		    local wind = args["{windmph}"]
-		    if wind then -- We have results
+		    if args["{tempc}"] ~= "N/A" then -- We have results
 		       local ws = 0
 		       if wind ~= "N/A" then -- We get the string "N/A" when there is no wind.
 			  local ws = tonumber(wind) * 0.447
