@@ -13,12 +13,6 @@ local menubar = require("menubar")
 -- Widget library
 local vicious = require("vicious")
 local batacpi = require("batacpi")
--- I/O library
-local io = {
-   open = io.open,
-   close = io.close,
-   popen = io.popen
-}
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -122,18 +116,9 @@ mytextclock = awful.widget.textclock()
 local batteries = {}
 local batterywidgets = {}
 function get_batteries()
-   local file_exists = function (name)
-      local f = io.open(name,"r")
-      if f ~= nil then
-	 io.close(f)
-	 return true
-      else
-	 return false
-      end
-   end
    local i = 1
-   for bat in io.popen("ls /sys/class/power_supply"):lines() do
-      if file_exists("/sys/class/power_supply/" .. bat .. "/charge_full") then
+   for bat in awful.util.pread("ls /sys/class/power_supply"):gmatch("[^\r\n]+") do
+      if awful.util.file_readable("/sys/class/power_supply/" .. bat .. "/charge_full") then
 	 batteries[i] = bat
 	 i = i + 1
       end
