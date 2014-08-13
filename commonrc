@@ -1,5 +1,5 @@
 #!$SHELL
-export EDITOR="vim"
+export EDITOR="emacsclient -c"
 export LESS="$LESS -iRs"
 export LC_ALL=
 export LC_COLLATE="C"
