@@ -6,6 +6,7 @@ set passkeys=voice.google.com:<space>,reader.google.com:jklS,google.com/voice:<s
 set defsearch=duck
 set errorbells
 set novisualbell
+set editor='emacsclient -a "" +<line>:<column> <file>'
 
 style -name nightshift * body,html {min-height: 100%!important; }
 style -name nightshift -append * html, body{background-color:#111!important}
