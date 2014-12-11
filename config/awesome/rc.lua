@@ -179,34 +179,35 @@ memwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = {
 vicious.register(memwidget, vicious.widgets.mem, "$1", 13)
 
 -- Net Traffic
+-- Build an array of net adapters and build ourselves our stats string
+function build_net_string(netwidget, args)
+   active_connections = {}
+   for k,v in pairs(vicious.widgets.net(netwidget, args)) do
+      if v == 1 then
+	 adapter = string.match(k, "(%w+) carrier")
+	 if adapter ~= "lo" then -- Don't particularly care about loopback
+	    table.insert(active_connections, adapter)
+	 end
+      end
+   end
+   local outstring = ""
+   for i,v in ipairs(active_connections) do
+      if i == 1 then
+	 outstring = "[ "
+      else
+	 outstring = outstring .. " | "
+      end
+      outstring = outstring .. v .. " ▾" .. args["{" .. v .. " down_kb}"] .. " ▴" .. args["{" .. v .. " up_kb}"]
+      if i == #active_connections then
+	 outstring = outstring .. " ] "
+      end
+   end
+   return outstring
+end
+
 netwidget = wibox.widget.textbox()
-vicious.register(netwidget, vicious.widgets.net,
-		 -- Build an array of net adapters and build ourselves our stats string
-		 function (netwidget, args)
-		    active_connections = {}
-		    for k,v in pairs(vicious.widgets.net(netwidget, args)) do
-		       if v == 1 then
-			  adapter = string.match(k, "(%w+) carrier")
-			  if adapter ~= "lo" then -- Don't particularly care about loopback
-			     table.insert(active_connections, adapter)
-			  end
-		       end
-		    end
-		    local outstring = ""
-		    for i,v in ipairs(active_connections) do
-		       if i == 1 then
-			  outstring = "[ "
-		       else
-			  outstring = outstring .. " | "
-		       end
-                       outstring = outstring .. v .. " ▾" .. args["{" .. v .. " down_kb}"] .. " ▴" .. args["{" .. v .. " up_kb}"]
-		       if i == #active_connections then
-			  outstring = outstring .. " ] "
-		       end
-		    end
-		    return outstring
-		 end,
-		 7)
+vicious.register(netwidget, vicious.widgets.net, build_net_string, 7)
+
 
 -- Wifi widget
 wifiwidget = wibox.widget.textbox()
