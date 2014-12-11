@@ -113,9 +113,14 @@ mytextclock = awful.widget.textclock()
 -- Helper function: Used to check for batteries below.
 
 -- Battery
+-- I could probably combine get_batteries and get_bat_handler and just put the handlers in the batteries table, but... *shrug*
+-- This works and is easier to read later
+-- If I want to get any fancier than this, though, the batteries table should possible become multidimensional with the widgets, handlers, and any other info I plan to use in it. Maybe state information to show a notification when plugged in/unplugged.
 local batteries = {}
 local batterywidgets = {}
+local bat_handlers = {}
 function get_batteries()
+   -- Builds the batteries table
    local i = 1
    for bat in awful.util.pread("ls /sys/class/power_supply"):gmatch("[^\r\n]+") do
       if awful.util.file_readable("/sys/class/power_supply/" .. bat .. "/charge_full") then
@@ -127,10 +132,37 @@ function get_batteries()
 end
 get_batteries()
 
+function get_bat_handler(bat)
+   -- Memoized. Returns a function used to format the battery string.
+   if not bat_handlers[bat] then
+      bat_handlers[bat] = function(widget, args)
+	 if args[2] > 15 then
+	    bat_10_triggered = false
+	    bat_5_triggered = false
+	 elseif args[2] < 10 and not bat_10_triggered then
+	    naughty.notify({ title = "Feeling a little droopy here!",
+			     text = "Mind plugging me in?" })
+	    bat_10_triggered = true
+	 elseif args[2] < 5 and not bat_5_triggered then
+	    naughty.notify({ preset = naughty.config.presets.critical,
+			     title = "Going to shut off soon!",
+			     text = "I hope you have the cable in hand." })
+	    bat_5_triggered = true
+	 elseif args[2] < 2 then
+	    naughty.notify({ preset = naughty.config.presets.critical,
+			     title = "PLUG ME IN!",
+			     text = "PLUG ME IN PLUG ME IN PLUG ME IN!" })
+	 end
+	 return(string.format(" [ Bat%s: %d%%-%s%s ] ", bat, args[2], args[3], args[1]))
+      end
+   end
+   return bat_handlers[bat]
+end
+
 for i=1,#batteries do
    batterywidgets[i] = wibox.widget.textbox()
-   -- The below actually returns a 4th value, the percentage wear and tear on the battery. Use it if you want. I recommend the ✚ glyph.
-   vicious.register(batterywidgets[i], vicious.widgets.bat, " [ Bat" .. i .. ": $2%-$3$1 ] ", 31, batteries[i])
+   -- The below actually returns a 4th value, the percentage wear and tear on the battery. Use it if you want. I recommend the ✚ glyph in red.
+   vicious.register(batterywidgets[i], vicious.widgets.bat, get_bat_handler(i), 31, batteries[i])
 end
 
 -- Memory
@@ -191,7 +223,7 @@ vicious.register(updatewidget, vicious.widgets.pkg,
 		    else
 		       return ""
 		    end
-		 end, 21599, "Fedora")
+		 end, 21599, "Arch C")
 
 -- Weather
 weatherwidget = wibox.widget.textbox()
@@ -382,8 +414,8 @@ globalkeys = awful.util.table.join(
     awful.key({}, "XF86AudioNext", function () awful.util.spawn("mpc -q next") end),
     awful.key({}, "XF86AudioStop", function () awful.util.spawn("mpc -q stop") end),
     awful.key({}, "XF86AudioPlay", function () awful.util.spawn("mpc -q toggle") end),
-    awful.key({}, "XF86Mail", function () awful.util.spawn("firefox mail.google.com/a/tpflug.com") end),
-    awful.key({}, "XF86HomePage", function () awful.util.spawn("firefox reader.google.com") end),
+    awful.key({}, "XF86Mail", function () awful.util.spawn("emacsclient -ce '(mu4e)'") end),
+    awful.key({}, "XF86HomePage", function () awful.util.spawn("firefox") end),
     awful.key({}, "XF86Calculator", function () awful.util.spawn("xscreensaver-command -lock") end),
 --[[ Nothing assigned yet.
     awful.key({}, "XF86WebCam", function () end),
