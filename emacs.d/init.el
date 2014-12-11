@@ -3,8 +3,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(scheme-program-name "racket")
- '(send-mail-function (quote mailclient-send-it)))
+ '(scheme-program-name "racket" t)
+ '(send-mail-function (quote mailclient-send-it))
+ '(tool-bar-mode nil)
+ '(weechat-button-buttonize-emails t)
+ '(weechat-button-buttonize-nicks t)
+ '(weechat-button-buttonize-rfc t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
