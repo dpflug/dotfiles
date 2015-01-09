@@ -6,10 +6,10 @@ export LC_COLLATE="C"
 export VDPAU_NVIDIA_NO_OVERLAY=1
 
 #PATH handling
-if [[ -d "$HOME/bin" && ! "$PATH" =~ "$HOME/bin" ]] ; then
+if [[ ! "$PATH" =~ "$HOME/bin" && -d "$HOME/bin" ]] ; then
     PATH="$HOME/bin:$PATH"
 fi
-if [[ -d "$HOME/.nix-profile/bin" && ! "$PATH" =~ "$HOME/bin" ]] ; then
+if [[ ! "$PATH" =~ "$HOME/.nix-profile/bin" && -d "$HOME/.nix-profile/bin" ]] ; then
     PATH="$HOME/.nix-profile/bin:$PATH"
 fi
 export GOPATH="$HOME/.go"
@@ -20,9 +20,8 @@ fi
 alias vi='vim'
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
-alias x='startx &! exit'
+alias x='startx'
 alias ta='tmux a -d > /dev/null || tmux'
-alias dps='ssh -t david@projecthq.biz screen -raAd'
 alias awdb='Xephyr -ac -br -noreset -screen 800:600 :1 & export DISPLAY=":1.0" PS1="\[\e[0;31m\]AWDB ${PS1}" ; sleep 2 && awesome &'
 alias undb='killall Xephyr ; export DISPLAY=":0.0" PS1=${PS1##*AWDB }'
 alias mtr='mtr --curses'
