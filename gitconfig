@@ -12,3 +12,5 @@
 	d = difftool
 [push]
 	default = simple
+[web]
+	browser = xdg-open
