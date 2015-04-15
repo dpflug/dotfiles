@@ -30,7 +30,7 @@ alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount
 alias wifi='sudo wifi-menu'
 alias o='xdg-open'
 alias aurup='makepkg -S; burp $(source PKGBUILD; echo ${pkgname}-${pkgver}-${pkgrel}.src.tar.gz)'
-alias om='offlineimap; mu index'
+alias om='nice -n20 ionice -c3 offlineimap; nice -n20 ionice -c3 mu index'
 
 #Games :)
 alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
@@ -68,13 +68,13 @@ if [ -f /etc/profile.d/nix.sh ] ; then
     source /etc/profile.d/nix.sh
 fi
 
-function d () {
+d () {
     for word in "$@" ; do
         curl dict://dict.org/d:"${word}" 2> /dev/null | less -FX
     done
 }
 
-function urxvtcd () {
+urxvtcd () {
     urxvtc "$@"
     if [ $? -eq 2 ]; then
         urxvtd -q -o -f
@@ -111,16 +111,29 @@ opng () {
 }
 
 wp () {
-	if [[ -n "$1" ]] ; then
-		for img in "$@" ; do
-			if [[ -z "${img#*.png}" ]] ; then
-				opng "$img"
-			elif [[ -z "${img#*.jpg}" ]] ; then
-				jpegoptim "$img"
-			fi
-			mv -i "$@" ~/annex/wallpapers
-		done
+    if [[ -n "$1" ]] ; then
+	for img in "$@" ; do
+	    if [[ -z "${img#*.png}" ]] ; then
+		opng "$img"
+	    elif [[ -z "${img#*.jpg}" ]] ; then
+		jpegoptim "$img"
+	    fi
+	    mv -i "$@" ~/annex/wallpapers
+	done
     fi
+}
+
+waitfor () {
+    while pgrep "$1" > /dev/null ; do
+	sleep 30
+    done
+}
+
+sudofor () {
+    while pgrep "$1" > /dev/null ; do
+	sudo -v
+	sleep 4m
+    done
 }
 
 if [[ -a ~/.commonrc_local ]] ; then
