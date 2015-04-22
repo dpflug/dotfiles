@@ -6,10 +6,10 @@ export LC_COLLATE="C"
 export VDPAU_NVIDIA_NO_OVERLAY=1
 
 #PATH handling
-if [[ -d "$HOME/bin" && ! "$PATH" =~ "$HOME/bin" ]] ; then
+if [[ ! "$PATH" =~ "$HOME/bin" && -d "$HOME/bin" ]] ; then
     PATH="$HOME/bin:$PATH"
 fi
-if [[ -d "$HOME/.nix-profile/bin" && ! "$PATH" =~ "$HOME/bin" ]] ; then
+if [[ ! "$PATH" =~ "$HOME/.nix-profile/bin" && -d "$HOME/.nix-profile/bin" ]] ; then
     PATH="$HOME/.nix-profile/bin:$PATH"
 fi
 export GOPATH="$HOME/.go"
@@ -20,9 +20,8 @@ fi
 alias vi='vim'
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
-alias x='startx &! exit'
+alias x='startx'
 alias ta='tmux a -d > /dev/null || tmux'
-alias dps='ssh -t david@projecthq.biz screen -raAd'
 alias awdb='Xephyr -ac -br -noreset -screen 800:600 :1 & export DISPLAY=":1.0" PS1="\[\e[0;31m\]AWDB ${PS1}" ; sleep 2 && awesome &'
 alias undb='killall Xephyr ; export DISPLAY=":0.0" PS1=${PS1##*AWDB }'
 alias mtr='mtr --curses'
@@ -31,7 +30,7 @@ alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount
 alias wifi='sudo wifi-menu'
 alias o='xdg-open'
 alias aurup='makepkg -S; burp $(source PKGBUILD; echo ${pkgname}-${pkgver}-${pkgrel}.src.tar.gz)'
-alias om='offlineimap; mu index'
+alias om='nice -n20 ionice -c3 offlineimap; nice -n20 ionice -c3 mu index'
 
 #Games :)
 alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
@@ -69,13 +68,13 @@ if [ -f /etc/profile.d/nix.sh ] ; then
     source /etc/profile.d/nix.sh
 fi
 
-function d () {
+d () {
     for word in "$@" ; do
         curl dict://dict.org/d:"${word}" 2> /dev/null | less -FX
     done
 }
 
-function urxvtcd () {
+urxvtcd () {
     urxvtc "$@"
     if [ $? -eq 2 ]; then
         urxvtd -q -o -f
@@ -112,16 +111,29 @@ opng () {
 }
 
 wp () {
-	if [[ -n "$1" ]] ; then
-		for img in "$@" ; do
-			if [[ -z "${img#*.png}" ]] ; then
-				opng "$img"
-			elif [[ -z "${img#*.jpg}" ]] ; then
-				jpegoptim "$img"
-			fi
-			mv -i "$@" ~/annex/wallpapers
-		done
+    if [[ -n "$1" ]] ; then
+	for img in "$@" ; do
+	    if [[ -z "${img#*.png}" ]] ; then
+		opng "$img"
+	    elif [[ -z "${img#*.jpg}" ]] ; then
+		jpegoptim "$img"
+	    fi
+	    mv -i "$@" ~/annex/wallpapers
+	done
     fi
+}
+
+waitfor () {
+    while pgrep "$1" > /dev/null ; do
+	sleep 30
+    done
+}
+
+sudofor () {
+    while pgrep "$1" > /dev/null ; do
+	sudo -v
+	sleep 4m
+    done
 }
 
 if [[ -a ~/.commonrc_local ]] ; then

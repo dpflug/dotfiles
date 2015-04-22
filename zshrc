@@ -12,6 +12,16 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
+# Make concessions for emacs' TRAMP
+if [[ "$TERM" == "dumb" ]] ; then
+    unsetopt zle
+    unsetopt prompt_cr
+    unsetopt prompt_subst
+    unfunction precmd
+    unfunction preexec
+    PS1='$ '
+fi
+
 # Pretty prompts
 autoload -U promptinit colors
 promptinit

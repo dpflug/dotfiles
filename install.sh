@@ -17,12 +17,14 @@ if [[ ! -d ~/.config ]] ; then
     mkdir ~/.config
 fi
 
-if [[ -a ~/.config ]] ; then
-    if [[ ! -a ~/.config/awesome ]] ; then
-        echo "Linking ~/.config/awesome"
-        ln -s "${REPODIR}"/config/awesome ~/.config/awesome
+cd "${REPODIR}"/config
+find ./* -maxdepth 0 -type d | while read directory ; do
+    if [[ ! -a ~/.config/"${directory#./}" ]] ; then
+        echo "Linking ${REPODIR}/config/${directory#./} to ~/.config/"
+        #ln -s "${REPODIR}/config/${directory#./}" ~/config/
     fi
-fi
+done
+cd - > /dev/null
 
 if [[ ! -d ~/.ssh ]] ; then
     mkdir ~/.ssh
