@@ -13,9 +13,13 @@ UXTerm*font: xft:Envy Code R:autohint=true:antialias=true:size=12
 
 Rxvt*background: Black
 
+
+
 Rxvt*foreground: Gold
-Rxvt*font: xft:Envy Code R:autohint=true:antialias=true:size=10
-!Rxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
+!Rxvt*font: -misc-anonymous pro-medium-r-normal--0-0-0-0-m-0-iso10646-1
+!Rxvt*font: -misc-dejavu sans mono-medium-r-normal--0-0-0-0-m-0-iso8859-1
+Rxvt*font: xft:Envy Code R:size=12
+!Rxvt*font: xft:inconsolata:size=12
 !Rxvt*font: xft:dina
 
 ! fade text n% on unfocus
