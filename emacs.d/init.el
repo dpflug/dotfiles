@@ -65,6 +65,20 @@
 ; Avoids issues with zsh causing it to hang. No benefit to using zsh within tramp.
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
+; Web mode setup
+(autoload 'web-mode "web-mode.el" "Major mode for web development, supporting HTML, CSS, templates, and more" t)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.s?css\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.xml\\'" . web-mode))
+
 ;This is the default browse-url-default-browser with the addition of support for
 ;browse-url-generic-program. Why is this not in here by default?
 (defun browse-url-default-browser (url &rest args)
