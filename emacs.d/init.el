@@ -59,6 +59,10 @@
 ;Slime setup
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (require 'slime)
+(cond ((file-accessible-directory-p "/usr/share/doc/HyperSpec")
+       (setq common-lisp-hyperspec-root "/usr/share/doc/HyperSpec/"))
+      ((file-accessible-directory-p "/usr/local/lisp/CLHS6/HyperSpec")
+       (setq common-lisp-hyperspec-root "/usr/local/lisp/CLHS6/HyperSpec/")))
 ;(slime-setup) - Take care of in init.local.d now.
 
 ;Tramp setup
