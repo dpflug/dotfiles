@@ -139,19 +139,21 @@ function get_bat_handler(bat)
 	 if args[2] > 15 then
 	    bat_10_triggered = false
 	    bat_5_triggered = false
-	 elseif args[2] < 10 and not bat_10_triggered then
-	    naughty.notify({ title = "Feeling a little droopy here!",
-			     text = "Mind plugging me in?" })
-	    bat_10_triggered = true
-	 elseif args[2] < 5 and not bat_5_triggered then
-	    naughty.notify({ preset = naughty.config.presets.critical,
-			     title = "Going to shut off soon!",
-			     text = "I hope you have the cable in hand." })
-	    bat_5_triggered = true
-	 elseif args[2] < 2 then
-	    naughty.notify({ preset = naughty.config.presets.critical,
-			     title = "PLUG ME IN!",
-			     text = "PLUG ME IN PLUG ME IN PLUG ME IN!" })
+	 elseif args[1] ~= "+" then
+	    if args[2] < 2 then
+	       naughty.notify({ preset = naughty.config.presets.critical,
+				title = "PLUG ME IN!",
+				text = "PLUG ME IN PLUG ME IN PLUG ME IN!" })
+	    elseif args[2] < 5 and not bat_5_triggered then
+	       naughty.notify({ preset = naughty.config.presets.critical,
+				title = "Going to shut off soon!",
+				text = "I hope you have the cable in hand." })
+	       bat_5_triggered = true
+	    elseif args[2] < 10 and not bat_10_triggered then
+	       naughty.notify({ title = "Feeling a little droopy here!",
+				text = "Mind plugging me in?" })
+	       bat_10_triggered = true
+	    end
 	 end
 	 return(string.format(" [ Bat%s: %d%%-%s%s ] ", bat, args[2], args[3], args[1]))
       end
