@@ -20,10 +20,6 @@
 (set-language-environment "UTF-8")
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
-;Python mode
-;(autoload 'python-mode "python-mode.el" "Python mode." t)
-;(setq auto-mode-alist (append '(("/*.\.py$" . python-mode)) auto-mode-alist))
-
 ;Lua mode
 (setq auto-mode-alist (cons '("\.lua$" . lua-mode) auto-mode-alist))
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
@@ -82,6 +78,10 @@
 (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.s?css\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.xml\\'" . web-mode))
+(setq web-mode-enable-engine-detection t)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+(setq web-mode-markup-indent-offset 2)
 
 ;This is the default browse-url-default-browser with the addition of support for
 ;browse-url-generic-program. Why is this not in here by default?
