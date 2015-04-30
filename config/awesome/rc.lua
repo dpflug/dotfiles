@@ -231,21 +231,20 @@ weatherwidget = wibox.widget.textbox()
 vicious.register(weatherwidget, vicious.widgets.weather,
 		 -- I want the "feels like" temperature, so I compute it using the Australian Apparent Temperature formula
 		 function (weatherwidget, args)
-		    local wind = args["{windmph}"]
 		    if args["{tempc}"] ~= "N/A" then -- We have results
 		       local ws = 0
-		       if wind ~= "N/A" then -- We get the string "N/A" when there is no wind.
-			  local ws = tonumber(wind) * 0.447
+		       if args["{windmph}"] ~= "N/A" then -- We get the string "N/A" when there is no wind.
+			  ws = args["{windmph}"]
 		       end
 		       local e = args["{humid}"] / 100 * 6.105 * math.exp(17.27 * args["{tempc}"] / (237.7 + args["{tempc}"]))
 		       local at = args["{tempc}"] + 0.348 * e - 0.7 * ws
 		       local atf = at * 9 / 5 + 32
-		       if ws > 5 and ws < 20 then -- Don't show wind if there isn't any
+		       if ws >= 5 and ws < 25 then -- Don't show wind if there isn't any
 			  return string.format(" [ %s %sF/%sC - %sF - %smph 연! - %s%% ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], ws, args["{humid}"])
 		       elseif ws > 0 then
 			  return string.format(" [ %s %sF/%sC - %sF - %smph - %s%% ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], ws, args["{humid}"])
 		       else
-			  return string.format(" [ %s %sF/%sC - %sF - %s%% ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], args["{humid}"])
+			  return string.format(" [ %s %sF/%sC - %sF - %s%% ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], ws, args["{humid}"])
 		       end
 		    else
 		       return " [ Look Outside ] "
