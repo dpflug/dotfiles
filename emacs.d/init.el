@@ -20,10 +20,6 @@
 (set-language-environment "UTF-8")
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
-;Python mode
-;(autoload 'python-mode "python-mode.el" "Python mode." t)
-;(setq auto-mode-alist (append '(("/*.\.py$" . python-mode)) auto-mode-alist))
-
 ;Lua mode
 (setq auto-mode-alist (cons '("\.lua$" . lua-mode) auto-mode-alist))
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
@@ -59,11 +55,33 @@
 ;Slime setup
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (require 'slime)
+(cond ((file-accessible-directory-p "/usr/share/doc/HyperSpec")
+       (setq common-lisp-hyperspec-root "/usr/share/doc/HyperSpec/"))
+      ((file-accessible-directory-p "/usr/local/lisp/CLHS6/HyperSpec")
+       (setq common-lisp-hyperspec-root "/usr/local/lisp/CLHS6/HyperSpec/")))
 ;(slime-setup) - Take care of in init.local.d now.
 
 ;Tramp setup
 ; Avoids issues with zsh causing it to hang. No benefit to using zsh within tramp.
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+
+; Web mode setup
+(autoload 'web-mode "web-mode.el" "Major mode for web development, supporting HTML, CSS, templates, and more" t)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.s?css\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.xml\\'" . web-mode))
+(setq web-mode-enable-engine-detection t)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+(setq web-mode-markup-indent-offset 2)
 
 ;This is the default browse-url-default-browser with the addition of support for
 ;browse-url-generic-program. Why is this not in here by default?

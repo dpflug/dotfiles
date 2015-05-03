@@ -139,19 +139,21 @@ function get_bat_handler(bat)
 	 if args[2] > 15 then
 	    bat_10_triggered = false
 	    bat_5_triggered = false
-	 elseif args[2] < 10 and not bat_10_triggered then
-	    naughty.notify({ title = "Feeling a little droopy here!",
-			     text = "Mind plugging me in?" })
-	    bat_10_triggered = true
-	 elseif args[2] < 5 and not bat_5_triggered then
-	    naughty.notify({ preset = naughty.config.presets.critical,
-			     title = "Going to shut off soon!",
-			     text = "I hope you have the cable in hand." })
-	    bat_5_triggered = true
-	 elseif args[2] < 2 then
-	    naughty.notify({ preset = naughty.config.presets.critical,
-			     title = "PLUG ME IN!",
-			     text = "PLUG ME IN PLUG ME IN PLUG ME IN!" })
+	 elseif args[1] ~= "+" then
+	    if args[2] < 2 then
+	       naughty.notify({ preset = naughty.config.presets.critical,
+				title = "PLUG ME IN!",
+				text = "PLUG ME IN PLUG ME IN PLUG ME IN!" })
+	    elseif args[2] < 5 and not bat_5_triggered then
+	       naughty.notify({ preset = naughty.config.presets.critical,
+				title = "Going to shut off soon!",
+				text = "I hope you have the cable in hand." })
+	       bat_5_triggered = true
+	    elseif args[2] < 10 and not bat_10_triggered then
+	       naughty.notify({ title = "Feeling a little droopy here!",
+				text = "Mind plugging me in?" })
+	       bat_10_triggered = true
+	    end
 	 end
 	 return(string.format(" [ Bat%s: %d%%-%s%s ] ", bat, args[2], args[3], args[1]))
       end
@@ -231,21 +233,20 @@ weatherwidget = wibox.widget.textbox()
 vicious.register(weatherwidget, vicious.widgets.weather,
 		 -- I want the "feels like" temperature, so I compute it using the Australian Apparent Temperature formula
 		 function (weatherwidget, args)
-		    local wind = args["{windmph}"]
 		    if args["{tempc}"] ~= "N/A" then -- We have results
 		       local ws = 0
-		       if wind ~= "N/A" then -- We get the string "N/A" when there is no wind.
-			  local ws = tonumber(wind) * 0.447
+		       if args["{windmph}"] ~= "N/A" then -- We get the string "N/A" when there is no wind.
+			  ws = args["{windmph}"]
 		       end
 		       local e = args["{humid}"] / 100 * 6.105 * math.exp(17.27 * args["{tempc}"] / (237.7 + args["{tempc}"]))
 		       local at = args["{tempc}"] + 0.348 * e - 0.7 * ws
 		       local atf = at * 9 / 5 + 32
-		       if ws > 5 and ws < 20 then -- Don't show wind if there isn't any
+		       if ws >= 5 and ws < 25 then -- Don't show wind if there isn't any
 			  return string.format(" [ %s %sF/%sC - %sF - %smph 연! - %s%% ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], ws, args["{humid}"])
 		       elseif ws > 0 then
 			  return string.format(" [ %s %sF/%sC - %sF - %smph - %s%% ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], ws, args["{humid}"])
 		       else
-			  return string.format(" [ %s %sF/%sC - %sF - %s%% ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], args["{humid}"])
+			  return string.format(" [ %s %sF/%sC - %sF - %s%% ] ", args["{sky}"], math.ceil(atf), math.ceil(at), args["{tempf}"], ws, args["{humid}"])
 		       end
 		    else
 		       return " [ Look Outside ] "
