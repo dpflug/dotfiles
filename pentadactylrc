@@ -42,4 +42,7 @@ style -name nightshift -append * pre:not(:empty), code:not(:empty) , cite:not(:e
 
 styledisable -name nightshift
 
+" uMatix UI visibility workaround
+style -name umatrix * #nav-bar { visibility:visible; }
+
 " vim: set ft=pentadactyl:
