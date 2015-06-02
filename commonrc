@@ -129,13 +129,13 @@ wp () {
 }
 
 waitfor () {
-    while pgrep "$1" > /dev/null ; do
+    while pgrep -f "$1" > /dev/null ; do
 	sleep 30
     done
 }
 
 sudofor () {
-    while pgrep "$1" > /dev/null ; do
+    while pgrep -f "$1" > /dev/null ; do
 	sudo -v
 	sleep 4m
     done
