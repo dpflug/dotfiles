@@ -8,8 +8,8 @@ XTerm*background: Black
 XTerm*foreground: Gold
 UXTerm*background: Black
 UXTerm*foreground: Gold
-XTerm*font: xft:Envy Code R:autohint=true:antialias=true:size=12
-UXTerm*font: xft:Envy Code R:autohint=true:antialias=true:size=12
+XTerm*font: xft:Envy Code R:autohint=true:antialias=true:size=16
+UXTerm*font: xft:Envy Code R:autohint=true:antialias=true:size=16
 
 Rxvt*background: Black
 
@@ -18,15 +18,15 @@ Rxvt*background: Black
 Rxvt*foreground: Gold
 !Rxvt*font: -misc-anonymous pro-medium-r-normal--0-0-0-0-m-0-iso10646-1
 !Rxvt*font: -misc-dejavu sans mono-medium-r-normal--0-0-0-0-m-0-iso8859-1
-Rxvt*font: xft:Envy Code R:size=12
-!Rxvt*font: xft:inconsolata:size=12
+Rxvt*font: xft:Envy Code R:autohint=true:antialias=true:size=14
+!Rxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
 !Rxvt*font: xft:dina
 
 ! fade text n% on unfocus
-Rxvt*fading: 20
+!Rxvt*fading: 20
 ! Let's try some transparency.
-Rxvt*transparent: True
-Rxvt*shading: 15
+!Rxvt*transparent: True
+!Rxvt*shading: 15
 
 ! We don't need no steenkin scrollbars.
 Rxvt*scrollBar: False
