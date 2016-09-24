@@ -37,6 +37,7 @@ alias o='xdg-open'
 alias aurup='makepkg -S; burp $(source PKGBUILD; echo ${pkgname}-${pkgver}-${pkgrel}.src.tar.gz)'
 alias om='nice -n20 ionice -c3 offlineimap; nice -n20 ionice -c3 mu index'
 alias t=task
+alias to=taskopen
 
 #Games :)
 alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
