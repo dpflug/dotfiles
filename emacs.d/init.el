@@ -25,8 +25,8 @@
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 
 ;PKGBUILD mode
+(setq auto-mode-alist (cons '("/PKGBUILD$" . pkgbuild-mode) auto-mode-alist))
 (autoload 'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
-(setq auto-mode-alist (append '(("/PKGBUILD$" . pkgbuild-mode)) auto-mode-alist))
 
 ;ELPA setup
 (require 'package)
