@@ -65,8 +65,11 @@ fi
 # Deprecated in favor of PyEnv
 
 # PyEnv
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+#eval "$(pyenv init -)"
+#eval "$(pyenv virtualenv-init -)"
+# Deprecated in favor of direnv
+
+eval "$(direnv hook $(basename $SHELL))"
 
 # EncFS
 if [[ -d ~/Private && -d ~/.Private ]] ; then
