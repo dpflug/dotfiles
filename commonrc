@@ -57,19 +57,18 @@ if [[ $EUID -gt 1 ]] ; then
     fi
 fi
 
-# Virtualenvwrapper
-#if [[ -f "$(which virtualenvwrapper.sh)" ]] ; then
-#    export WORKON_HOME=~/.virtualenvs
-#    source "$(which virtualenvwrapper.sh)"
-#fi
-# Deprecated in favor of PyEnv
-
-# PyEnv
-#eval "$(pyenv init -)"
-#eval "$(pyenv virtualenv-init -)"
-# Deprecated in favor of direnv
-
-eval "$(direnv hook $(basename $SHELL))"
+# Python environ handling
+if [[ -f "$(which direnv)" ]] ; then
+    eval "$(direnv hook $(basename $SHELL))"
+elif [[ -f "$(which pyenv)" ]] ; then
+    echo "Using pyenv."
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+elif [[ -f "$(which virtualenvwrapper.sh)" ]] ; then
+    echo "Using virtualenvwrapper."
+    export WORKON_HOME=~/.virtualenvs
+    source "$(which virtualenvwrapper.sh)"
+fi    
 
 # EncFS
 if [[ -d ~/Private && -d ~/.Private ]] ; then
