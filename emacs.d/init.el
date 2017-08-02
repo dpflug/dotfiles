@@ -3,7 +3,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(scheme-program-name "racket" t)
+ '(package-selected-packages
+   (quote
+    (better-defaults pandoc pandoc-mode arduino-mode ox-html5slide ox-impress-js ox-tiddly ox-epub haxe-mode sly sly-quicklisp go-mode elpy direnv scad-mode scad-preview cdlatex picolisp-mode web-mode systemd sprunge smart-tabs-mode slime sicp rust-mode pkgbuild-mode paredit ox-reveal org-preview-html ob-ipython multiple-cursors minizinc-mode markdown-mode magit lua-mode lispy landmark json-mode haskell-mode gnuplot-mode gnuplot flymd flycheck-flow evil-tutor evil-numbers ein clojurescript-mode clojure-mode cedit)))
+ '(scheme-program-name "guile" t)
  '(send-mail-function (quote mailclient-send-it))
  '(tool-bar-mode nil)
  '(weechat-button-buttonize-emails t)
@@ -21,20 +24,23 @@
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 
 ;Lua mode
-(setq auto-mode-alist (cons '("\.lua$" . lua-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\.lua\\'" . lua-mode))
 (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 
 ;PKGBUILD mode
-(setq auto-mode-alist (cons '("/PKGBUILD$" . pkgbuild-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("/PKGBUILD" . pkgbuild-mode))
 (autoload 'pkgbuild-mode "pkgbuild-mode.el" "PKGBUILD mode." t)
 
 ;ELPA setup
 (require 'package)
 (add-to-list 'package-archives
-  '("marmalade" . "http://marmalade-repo.org/packages/"))
+             '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives
-  '("melpa" . "http://melpa.org/packages/"))
+             '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
+
+; Include some better defaults
+(require 'better-defaults)
 
 ;ParEdit
 (autoload 'paredit-mode "paredit"
@@ -65,19 +71,23 @@
 ; Avoids issues with zsh causing it to hang. No benefit to using zsh within tramp.
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
+; Set up smart tabs
+(eval-after-load 'smart-tabs
+  '(smart-tabs-insinuate 'c 'c++ 'java 'javascript 'cperl 'python 'ruby 'nxml))
+
 ; Web mode setup
+(add-to-list 'auto-mode-alist '("\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.tpl\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.jsx?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.s?css\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\.xml\\'" . web-mode))
 (autoload 'web-mode "web-mode.el" "Major mode for web development, supporting HTML, CSS, templates, and more" t)
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.s?css\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.xml\\'" . web-mode))
 (setq web-mode-enable-engine-detection t)
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
