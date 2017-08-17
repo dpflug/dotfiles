@@ -3,10 +3,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes (quote (gruvbox-dark-hard)))
+ '(custom-safe-themes
+   (quote
+    ("8d3c5e9ba9dcd05020ccebb3cc615e40e7623b267b69314bdb70fe473dd9c7a8" default)))
  '(package-selected-packages
    (quote
-    (better-defaults pandoc pandoc-mode arduino-mode ox-html5slide ox-impress-js ox-tiddly ox-epub haxe-mode sly sly-quicklisp go-mode elpy direnv scad-mode scad-preview cdlatex picolisp-mode web-mode systemd sprunge smart-tabs-mode slime sicp rust-mode pkgbuild-mode paredit ox-reveal org-preview-html ob-ipython multiple-cursors minizinc-mode markdown-mode magit lua-mode lispy landmark json-mode haskell-mode gnuplot-mode gnuplot flymd flycheck-flow evil-tutor evil-numbers ein clojurescript-mode clojure-mode cedit)))
- '(scheme-program-name "guile" t)
+    (gruvbox-theme nix-mode nixos-options pretty-mode ox-pandoc better-defaults pandoc pandoc-mode arduino-mode ox-html5slide ox-impress-js ox-tiddly ox-epub haxe-mode sly sly-quicklisp go-mode elpy direnv scad-mode scad-preview cdlatex picolisp-mode web-mode systemd sprunge smart-tabs-mode slime sicp rust-mode pkgbuild-mode paredit ox-reveal org-preview-html ob-ipython multiple-cursors minizinc-mode markdown-mode magit lua-mode lispy landmark json-mode haskell-mode gnuplot-mode gnuplot flymd flycheck-flow evil-tutor evil-numbers ein clojurescript-mode clojure-mode cedit)))
  '(send-mail-function (quote mailclient-send-it))
  '(tool-bar-mode nil)
  '(weechat-button-buttonize-emails t)
@@ -22,6 +25,9 @@
 ; I like arrows on my line wrapping.
 (set-language-environment "UTF-8")
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+
+; While we're prettying things up
+(global-prettify-symbols-mode 1)
 
 ;Lua mode
 (add-to-list 'auto-mode-alist '("\.lua\\'" . lua-mode))
@@ -41,6 +47,8 @@
 
 ; Include some better defaults
 (require 'better-defaults)
+; But I don't like ido mode
+(ido-mode 0)
 
 ;ParEdit
 (autoload 'paredit-mode "paredit"
@@ -93,41 +101,43 @@
 (setq web-mode-code-indent-offset 2)
 (setq web-mode-markup-indent-offset 2)
 
+
+; #### This appears to be no longer needed. ####
 ;This is the default browse-url-default-browser with the addition of support for
-;browse-url-generic-program. Why is this not in here by default?
-(defun browse-url-default-browser (url &rest args)
-  "Find a suitable browser and ask it to load URL.
-Default to the URL around or before point.
+;; ;browse-url-generic-program. Why is this not in here by default?
+;; (defun browse-url-default-browser (url &rest args)
+;;   "Find a suitable browser and ask it to load URL.
+;; Default to the URL around or before point.
 
-When called interactively, if variable `browse-url-new-window-flag' is
-non-nil, load the document in a new window, if possible, otherwise use
-a random existing one.  A non-nil interactive prefix argument reverses
-the effect of `browse-url-new-window-flag'.
+;; When called interactively, if variable `browse-url-new-window-flag' is
+;; non-nil, load the document in a new window, if possible, otherwise use
+;; a random existing one.  A non-nil interactive prefix argument reverses
+;; the effect of `browse-url-new-window-flag'.
 
-When called non-interactively, optional second argument NEW-WINDOW is
-used instead of `browse-url-new-window-flag'."
-  (apply
-   (cond
-    ((not (null browse-url-generic-program))
-     'browse-url-generic)
-    ((memq system-type '(windows-nt ms-dos cygwin))
-     'browse-url-default-windows-browser)
-    ((memq system-type '(darwin))
-     'browse-url-default-macosx-browser)
-    ((browse-url-can-use-xdg-open) 'browse-url-xdg-open)
-    ((executable-find browse-url-gnome-moz-program) 'browse-url-gnome-moz)
-    ((executable-find browse-url-mozilla-program) 'browse-url-mozilla)
-    ((executable-find browse-url-firefox-program) 'browse-url-firefox)
-    ((executable-find browse-url-chromium-program) 'browse-url-chromium)
-    ((executable-find browse-url-galeon-program) 'browse-url-galeon)
-    ((executable-find browse-url-kde-program) 'browse-url-kde)
-    ((executable-find browse-url-netscape-program) 'browse-url-netscape)
-    ((executable-find browse-url-mosaic-program) 'browse-url-mosaic)
-    ((executable-find browse-url-xterm-program) 'browse-url-text-xterm)
-    ((locate-library "w3") 'browse-url-w3)
-    (t
-     (lambda (&rest ignore) (error "No usable browser found"))))
-   url args))
+;; When called non-interactively, optional second argument NEW-WINDOW is
+;; used instead of `browse-url-new-window-flag'."
+;;   (apply
+;;    (cond
+;;     ((not (null browse-url-generic-program))
+;;      'browse-url-generic)
+;;     ((memq system-type '(windows-nt ms-dos cygwin))
+;;      'browse-url-default-windows-browser)
+;;     ((memq system-type '(darwin))
+;;      'browse-url-default-macosx-browser)
+;;     ((browse-url-can-use-xdg-open) 'browse-url-xdg-open)
+;;     ((executable-find browse-url-gnome-moz-program) 'browse-url-gnome-moz)
+;;     ((executable-find browse-url-mozilla-program) 'browse-url-mozilla)
+;;     ((executable-find browse-url-firefox-program) 'browse-url-firefox)
+;;     ((executable-find browse-url-chromium-program) 'browse-url-chromium)
+;;     ((executable-find browse-url-galeon-program) 'browse-url-galeon)
+;;     ((executable-find browse-url-kde-program) 'browse-url-kde)
+;;     ((executable-find browse-url-netscape-program) 'browse-url-netscape)
+;;     ((executable-find browse-url-mosaic-program) 'browse-url-mosaic)
+;;     ((executable-find browse-url-xterm-program) 'browse-url-text-xterm)
+;;     ((locate-library "w3") 'browse-url-w3)
+;;     (t
+;;      (lambda (&rest ignore) (error "No usable browser found"))))
+;;    url args))
 
 ;Pull in local settings, if the file exists
 (load "~/.emacs.d/init.local.el" 'ignore-unexisting)
