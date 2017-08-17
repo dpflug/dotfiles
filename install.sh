@@ -53,6 +53,12 @@ else
     done
 fi
 
+if [[ ! -d ~/.gnupg ]] ; then
+    mkdir ~/.gnupg
+fi
+
+ln -s "${REPODIR}"/gunpg/gpg.conf ~/.gnupg/
+
 if [[ ! -d ~/.vim ]] ; then
     ln -s "$REPODIR"/vim ~/.vim
 elif [[ ! -h ~/.vim ]] ; then
