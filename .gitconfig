@@ -6,6 +6,12 @@
 [diff]
 	tool = vimdiff
 	algorithm = patience
+[diff "ansible-vault"]
+	textconv = ansible-vault view
+	cachetextconv = false
+[diff "gpg"]
+	textconv = gpg --no-tty --decrypt
+	cachetextconv = false
 [difftool]
 	prompt = false
 [alias]
