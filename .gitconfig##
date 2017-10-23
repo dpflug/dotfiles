@@ -20,7 +20,7 @@
 	default = simple
 [web]
 	browser = xdg-open
-[http]
-	proxy = http://localhost:8123
 [commit]
 	gpgsign = true
+[magit]
+	hideCampaign = true
