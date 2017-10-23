@@ -8,18 +8,17 @@ set softtabstop=4
 set expandtab
 set smarttab
 
-" Enable Vundle, for bundles
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" Let Vundle manage itself
-Bundle 'gmarik/vundle'
+" Enable vim-plug, for plugins
+call plug#begin('~/.vim/plugged')
 
 " My bundles
-Bundle 'nvie/vim-flake8'
-Bundle 'Maroloccio/maroloccio-vim'
-Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'ervandew/supertab'
+Plug 'nvie/vim-flake8'
+Plug 'Maroloccio/maroloccio-vim'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'ervandew/supertab'
+
+" Be finished with vim-plug
+call plug#end()
 
 " Colorscheme I like
 colorscheme maroloccio
@@ -29,17 +28,6 @@ set t_Co=256
 
 " Lilypond support
 set runtimepath+=/usr/share/lilypond/*/vim
-
-" syntax highlighting
-syntax on
-
-" Setting ident options is deprecated in favor of allowed the language detection to setup indentation rules
-" This allows more flexible/intelligent indentation options.
-" See :help 30.3
-"set smartindent
-"set cindent
-filetype on
-filetype plugin indent on
 
 " This allows you to switch to other buffers without saving.
 set hidden
