@@ -4,6 +4,7 @@ export LESS="$LESS -iRs"
 export LC_ALL=
 export LC_COLLATE="C"
 export VDPAU_NVIDIA_NO_OVERLAY=1
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
 
 if [[ ! "-iRs" =~ "$LESS" ]] ; then
     export LESS="$LESS -iRs"
@@ -126,27 +127,27 @@ opng () {
 
 wp () {
     if [[ -n "$1" ]] ; then
-	for img in "$@" ; do
-	    if [[ -z "${img#*.png}" ]] ; then
-		opng "$img"
-	    elif [[ -z "${img#*.jpg}" ]] ; then
-		jpegoptim "$img"
-	    fi
-	    mv -i "$@" ~/annex/wallpapers
-	done
+        for img in "$@" ; do
+            if [[ -z "${img#*.png}" ]] ; then
+                opng "$img"
+            elif [[ -z "${img#*.jpg}" ]] ; then
+                jpegoptim "$img"
+            fi
+            mv -i "$@" ~/annex/wallpapers
+        done
     fi
 }
 
 waitfor () {
     while pgrep -f "$1" > /dev/null ; do
-	sleep 30
+        sleep 30
     done
 }
 
 sudofor () {
     while pgrep -f "$1" > /dev/null ; do
-	sudo -v
-	sleep 4m
+        sudo -v
+        sleep 4m
     done
 }
 
