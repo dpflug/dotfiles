@@ -8,16 +8,21 @@ set softtabstop=4
 set expandtab
 set smarttab
 
+" Set up plug
+
+
 " Enable vim-plug, for plugins
 call plug#begin('~/.vim/plugged')
 
 " My bundles
-Plug 'nvie/vim-flake8'
+Plug 'vim-syntastic/syntastic'
 Plug 'Maroloccio/maroloccio-vim'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'ervandew/supertab'
 Plug 'kovisoft/slimv'
-Plug 'vim-pandoc/vim-pandoc'
+if v:version >= 704
+   Plug 'vim-pandoc/vim-pandoc-syntax'
+endif
 
 " Be finished with vim-plug
 call plug#end()
