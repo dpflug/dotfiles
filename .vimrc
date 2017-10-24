@@ -16,6 +16,8 @@ Plug 'nvie/vim-flake8'
 Plug 'Maroloccio/maroloccio-vim'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'ervandew/supertab'
+Plug 'kovisoft/slimv'
+Plug 'vim-pandoc/vim-pandoc'
 
 " Be finished with vim-plug
 call plug#end()
