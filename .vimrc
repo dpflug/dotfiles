@@ -15,17 +15,31 @@ set smarttab
 call plug#begin('~/.vim/plugged')
 
 " My bundles
-Plug 'vim-syntastic/syntastic'
-Plug 'Maroloccio/maroloccio-vim'
+Plug 'vim-syntastic/syntastic'          " Syntax checker
+Plug 'Maroloccio/maroloccio-vim'        " Color scheme
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'ervandew/supertab'
-Plug 'kovisoft/slimv'
+Plug 'kovisoft/slimv'                   " Lisp niceties
+Plug 'gko/vim-coloresque'               " Show colors in CSS/HTML/LESS/SASS
+if v:version >= 703
+    Plug 'Yggdroot/indentLine'          " Add lines to show indent level
+endif
 if v:version >= 704
-   Plug 'vim-pandoc/vim-pandoc-syntax'
+    Plug 'vim-pandoc/vim-pandoc-syntax'
 endif
 
 " Be finished with vim-plug
 call plug#end()
+
+" Set up Syntastic
+set statusline+=%#warningmsg$
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
 " Colorscheme I like
 colorscheme maroloccio
