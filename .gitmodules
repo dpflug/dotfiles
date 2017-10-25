@@ -1,6 +1,6 @@
 [submodule "config/awesome/vicious"]
 	path = .config/awesome/vicious
 	url = http://git.sysphere.org/vicious
-[submodule "/home/dpflug/.emacs.d"]
-	path = /home/dpflug/.emacs.d
+[submodule ".emacs.d"]
+	path = .emacs.d
 	url = https://github.com/syl20bnr/spacemacs.git
