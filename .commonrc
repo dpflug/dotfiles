@@ -98,20 +98,9 @@ urxvtcd () {
 
 toweb () {
     if [[ -n "$1" ]] ; then
-        rsync -SHPcavy "$@" og:public_html/
+        rsync -SHPcavy "$@" igal:/var/www/files/
         for x in "$@" ; do
-            echo "http://dpflug.udderweb.com/$(basename "${x}" | sed 's/ /%20/g')"
-        done
-    else
-        echo "What should be sent?"
-    fi
-}
-
-dump () {
-    if [[ -n "$1" ]] ; then
-        rsync -SHPcavy "$@" uw:dump/
-        for x in "$@" ; do
-            echo "http://dump.udderweb.com/$(basename "${x}" | sed 's/ /%20/g')"
+            echo "http://files.pflug.email/$(basename "${x}" | sed 's/ /%20/g')"
         done
     else
         echo "What should be sent?"
