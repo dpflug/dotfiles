@@ -24,3 +24,5 @@
 	gpgsign = true
 [magit]
 	hideCampaign = true
+[github]
+	user = dpflug
