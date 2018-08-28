@@ -8,19 +8,13 @@ XTerm*background: Black
 XTerm*foreground: Gold
 UXTerm*background: Black
 UXTerm*foreground: Gold
-XTerm*font: xft:Envy Code R:autohint=true:antialias=true:size=16
-UXTerm*font: xft:Envy Code R:autohint=true:antialias=true:size=16
+XTerm*font: xft:FuraCode Nerd Font:autohint=true:antialias=true:size=12
+UXTerm*font: xft:FuraCode Nerd Font:autohint=true:antialias=true:size=12
 
 Rxvt*background: Black
 
-
-
 Rxvt*foreground: Gold
-!Rxvt*font: -misc-anonymous pro-medium-r-normal--0-0-0-0-m-0-iso10646-1
-!Rxvt*font: -misc-dejavu sans mono-medium-r-normal--0-0-0-0-m-0-iso8859-1
-Rxvt*font: xft:Envy Code R:autohint=true:antialias=true:size=14
-!Rxvt*font: xft:inconsolata:antialias=true:autohint=true:size=10
-!Rxvt*font: xft:dina
+Rxvt*font: xft:FuraCode Nerd Font:autohint=true:antialias=true:size=12
 
 ! fade text n% on unfocus
 !Rxvt*fading: 20
@@ -53,3 +47,4 @@ Rxvt*color3: Orange
 Emacs*Background: Black
 Emacs*Foreground: Gold
 Emacs*Background-Mode: dark
+Emacs*Font: FuraCode Nerd Font-12
