@@ -1,6 +1,3 @@
-[user]
-	name = David Pflug
-	email = david@pflug.email
 [color]
 	ui = auto
 [diff]
@@ -29,5 +26,5 @@
 	user = dpflug
 [pull]
 	ffonly = true
-[core]
-	quotepath = false
+[include]
+	path = .gitconfig.local
