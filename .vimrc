@@ -21,6 +21,7 @@ Plug 'michaeljsmith/vim-indent-object'
 Plug 'ervandew/supertab'
 Plug 'kovisoft/slimv'                   " Lisp niceties
 Plug 'gko/vim-coloresque'               " Show colors in CSS/HTML/LESS/SASS
+Plug 'docunext/closetag.vim'            " Close HTML tags
 if v:version >= 703
     Plug 'Yggdroot/indentLine'          " Add lines to show indent level
 endif
