@@ -48,7 +48,7 @@ ssh_keys=$(find ~/.ssh -name id_\* -and \! -name \*.pub)
 gpg_keys=""
 
 if [[ $EUID -gt 1 ]] ; then
-    if [[ -x "$(which keychain)" ]] ; then
+    if [[ -f "$(which keychain)" ]] ; then
         eval "$(keychain --eval -q ~/.ssh/cao_key ${ssh_keys} ${gpg_keys})"
     fi
 fi
@@ -109,7 +109,15 @@ toweb () {
 
 opng () {
     if [[ -n "$1" ]] ; then
-        parallel optipng -o7 -zw32k -p ::: "$@"
+        if [[ -f "$(which parallel)" ]] ; then
+            advpng && parallel advpng -z4 ::: "$@"
+            ect && parallel ect --strict -9 ::: "$@"
+            optipng && parallel optipng -o7 -zw32k -p ::: "$@"
+        else
+            advpng && advpng -z4 "$@"
+            ect && ect --strict -9 "$@"
+            optipng && optipng -o7 -zw32k -p "$@"
+        fi
     fi
 }
 
