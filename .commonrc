@@ -147,6 +147,21 @@ sudofor () {
     done
 }
 
+setproxy () {
+    export HTTP_PROXY="$1"
+    export HTTPS_PROXY="$HTTP_PROXY"
+    export FTP_PROXY="$HTTP_PROXY"
+    export SOCKS_PROXY="$HTTP_PROXY"
+    export http_proxy="$HTTP_PROXY"
+    export https_proxy="$HTTP_PROXY"
+    export ftp_proxy="$HTTP_PROXY"
+    export socks_proxy="$HTTP_PROXY"
+}
+
+cpterminfo () {
+    infocmp | ssh "$1" "cat | tic -x -"
+}
+
 if [[ -a ~/.commonrc_local ]] ; then
     source ~/.commonrc_local
 fi
