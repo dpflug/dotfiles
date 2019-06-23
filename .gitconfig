@@ -1,6 +1,6 @@
 [user]
 	name = David Pflug
-	email = david@tpflug.com
+	email = david@pflug.email
 [color]
 	ui = auto
 [diff]
@@ -16,6 +16,7 @@
 	prompt = false
 [alias]
 	d = difftool
+	graph = log --graph --oneline --decorate
 [push]
 	default = simple
 [web]
@@ -26,3 +27,7 @@
 	hideCampaign = true
 [github]
 	user = dpflug
+[pull]
+	ffonly = true
+[core]
+	quotepath = false
