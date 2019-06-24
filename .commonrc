@@ -110,13 +110,13 @@ toweb () {
 opng () {
     if [[ -n "$1" ]] ; then
         if [[ -f "$(which parallel)" ]] ; then
-            advpng && parallel advpng -z4 ::: "$@"
-            ect && parallel ect --strict -9 ::: "$@"
-            optipng && parallel optipng -o7 -zw32k -p ::: "$@"
+            which advpng > /dev/null && parallel advpng -z4 ::: "$@"
+            which ect > /dev/null && parallel ect --strict -9 ::: "$@"
+            which optipng > /dev/null && parallel optipng -o7 -zw32k -p ::: "$@"
         else
-            advpng && advpng -z4 "$@"
-            ect && ect --strict -9 "$@"
-            optipng && optipng -o7 -zw32k -p "$@"
+            which advpng > /dev/null && advpng -z4 "$@"
+            which ect > /dev/null && ect --strict -9 "$@"
+            which optipng > /dev/null && optipng -o7 -zw32k -p "$@"
         fi
     fi
 }
