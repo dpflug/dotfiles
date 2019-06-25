@@ -129,7 +129,7 @@ wp () {
             elif [[ -z "${img#*.jpg}" ]] ; then
                 jpegoptim "$img"
             fi
-            mv -i "$@" ~/annex/wallpapers
+            mv -i "$@" ~/wallpapers
         done
     fi
 }
