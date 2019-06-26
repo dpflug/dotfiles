@@ -1,6 +1,9 @@
 [submodule "config/awesome/vicious"]
 	path = .config/awesome/vicious
 	url = http://git.sysphere.org/vicious
-[submodule ".emacs.d"]
-	path = .emacs.d
-	url = https://github.com/syl20bnr/spacemacs.git
+[submodule ".yadm-project"]
+	path = .yadm-project
+	url = https://github.com/TheLocehiliosan/yadm.git
+[submodule "/home/ac46451/.local/share/agkozak-zsh-prompt"]
+	path = /home/ac46451/.local/share/agkozak-zsh-prompt
+	url = https://github.com/agkozak/agkozak-zsh-prompt.git

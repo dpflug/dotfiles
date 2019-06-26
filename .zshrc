@@ -23,11 +23,17 @@ if [[ "$TERM" == "dumb" ]] ; then
 fi
 
 # Pretty prompts
-autoload -U promptinit colors
-promptinit
+autoload -U colors
 colors
-prompt walters
-PS1="%B%(?..[%?] )%b%{$fg[blue]%}%n%{$reset_color%}@%U%B%m%b%u%{$fg[red]%}%#%{$reset_color%} "
+
+if [[ -d "$HOME/.local/share/agkozak_zsh_prompt" ]] ; then
+    source "$HOME/.local/share/agkozak_zsh_prompt/agkozak-zsh-prompt.plugin.zsh"
+else
+    autoload -U promptinit
+    promptinit
+    prompt walters
+    PS1="%B%(?..[%?] )%b%{$fg[blue]%}%n%{$reset_color%}@%U%B%m%b%u%{$fg[red]%}%#%{$reset_color%} "
+fi
 
 # Fuzzy matching of completions
 zstyle ':completion:*' completer _complete _match _approximate
