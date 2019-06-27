@@ -1,0 +1,21 @@
+[submodule "config/awesome/vicious"]
+	path = .config/awesome/vicious
+	url = http://git.sysphere.org/vicious
+[submodule ".yadm-project"]
+	path = .yadm-project
+	url = https://github.com/TheLocehiliosan/yadm.git
+[submodule ".local/share/agkozak-zsh-prompt"]
+	path = .local/share/agkozak-zsh-prompt
+	url = https://github.com/agkozak/agkozak-zsh-prompt.git
+[submodule ".yadm_submodules/agkozak-zsh-prompt"]
+	path = .yadm_submodules/agkozak-zsh-prompt
+	url = https://github.com/agkozak/agkozak-zsh-prompt.git
+[submodule ".yadm_submodules/keychain"]
+	path = .yadm_submodules/keychain
+	url = https://github.com/funtoo/keychain.git
+[submodule ".yadm_submodules/jq"]
+	path = .yadm_submodules/jq
+	url = https://github.com/stedolan/jq.git
+[submodule ".yadm_submodules/yadm-project"]
+	path = .yadm_submodules/yadm-project
+	url = https://github.com/TheLocehiliosan/yadm.git

@@ -11,8 +11,8 @@ if [[ ! "-iRs" =~ "$LESS" ]] ; then
 fi
 
 #PATH handling
-if [[ ! "$PATH" =~ "$HOME/bin" && -d "$HOME/bin" ]] ; then
-    PATH="$HOME/bin:$PATH"
+if [[ ! "$PATH" =~ "$HOME/.local/bin" && -d "$HOME/.local/bin" ]] ; then
+    PATH="$HOME/.local/bin:$PATH"
 fi
 export GOPATH="$HOME/.go"
 

@@ -26,8 +26,8 @@ fi
 autoload -U colors
 colors
 
-if [[ -d "$HOME/.local/share/agkozak_zsh_prompt" ]] ; then
-    source "$HOME/.local/share/agkozak_zsh_prompt/agkozak-zsh-prompt.plugin.zsh"
+if [[ -d "$HOME/.yadm_submodules/agkozak-zsh-prompt" ]] ; then
+    source "$HOME/.yadm_submodules/agkozak-zsh-prompt/agkozak-zsh-prompt.plugin.zsh"
 else
     autoload -U promptinit
     promptinit
