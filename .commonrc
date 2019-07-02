@@ -49,7 +49,7 @@ gpg_keys=""
 
 if [[ $EUID -gt 1 ]] ; then
     if [[ -f "$(which keychain)" ]] ; then
-        eval "$(keychain --eval -q ~/.ssh/cao_key ${ssh_keys} ${gpg_keys})"
+        eval "$(keychain --eval -q ${ssh_keys} ${gpg_keys})"
     fi
 fi
 
