@@ -1,0 +1,12 @@
+[submodule "/c/Users/davpfl1/.yadm_project"]
+	path = /c/Users/davpfl1/.yadm_project
+	url = https://github.com/TheLocehiliosan/yadm.git
+[submodule ".yadm_submodules/agkozak-zsh-prompt"]
+	path = .yadm_submodules/agkozak-zsh-prompt
+	url = https://github.com/agkozak/agkozak-zsh-prompt.git
+[submodule ".yadm_submodules/keychain"]
+	path = .yadm_submodules/keychain
+	url = https://github.com/funtoo/keychain.git
+[submodule ".yadm_submodules/jq"]
+	path = .yadm_submodules/jq
+	url = https://github.com/stedolan/jq.git

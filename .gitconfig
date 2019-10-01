@@ -1,11 +1,9 @@
-[user]
-	name = David Pflug
-	email = david@pflug.email
 [color]
 	ui = auto
 [diff]
 	tool = vimdiff
 	algorithm = patience
+	guitool = kdiff3
 [diff "ansible-vault"]
 	textconv = ansible-vault view
 	cachetextconv = false
@@ -29,5 +27,13 @@
 	user = dpflug
 [pull]
 	ffonly = true
+[include]
+	path = .gitconfig.local
+[merge]
+	tool = kdiff3
+[mergetool "kdiff3"]
+	path = C:/Program Files/KDiff3/kdiff3.exe
+[difftool "kdiff3"]
+	path = C:/Program Files/KDiff3/kdiff3.exe
 [core]
-	quotepath = false
+	editor = \"C:/Program Files (x86)/GitExtensions/GitExtensions.exe\" fileeditor

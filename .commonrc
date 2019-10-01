@@ -1,5 +1,5 @@
 #!$SHELL
-export EDITOR="emacsclient -c"
+export EDITOR="vim"
 export LESS="$LESS -iRs"
 export LC_ALL=
 export LC_COLLATE="C"
@@ -11,8 +11,8 @@ if [[ ! "-iRs" =~ "$LESS" ]] ; then
 fi
 
 #PATH handling
-if [[ ! "$PATH" =~ "$HOME/bin" && -d "$HOME/bin" ]] ; then
-    PATH="$HOME/bin:$PATH"
+if [[ ! "$PATH" =~ "$HOME/.local/bin" && -d "$HOME/.local/bin" ]] ; then
+    PATH="$HOME/.local/bin:$PATH"
 fi
 export GOPATH="$HOME/.go"
 
@@ -49,7 +49,7 @@ gpg_keys=""
 
 if [[ $EUID -gt 1 ]] ; then
     if [[ -f "$(which keychain)" ]] ; then
-        eval "$(keychain --eval -q ~/.ssh/cao_key ${ssh_keys} ${gpg_keys})"
+        eval "$(keychain --eval -q ${ssh_keys} ${gpg_keys})"
     fi
 fi
 
