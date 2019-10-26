@@ -46,6 +46,8 @@ alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/do
 ssh_keys=$(find ~/.ssh -name id_\* -and \! -name \*.pub)
 #gpg_keys=$(gpg -K | grep 'sec ' | awk '{ print $2 }' | cut -d'/' -f 2)
 gpg_keys=""
+GPG_TTY=$(tty)
+export GPG_TTY
 
 if [[ $EUID -gt 1 ]] ; then
     if [[ -f "$(which keychain)" ]] ; then
