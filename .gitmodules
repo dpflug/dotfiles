@@ -1,5 +1,5 @@
-[submodule "/c/Users/davpfl1/.yadm_project"]
-	path = /c/Users/davpfl1/.yadm_project
+[submodule ".yadm_project"]
+	path = .yadm_project
 	url = https://github.com/TheLocehiliosan/yadm.git
 [submodule ".yadm_submodules/agkozak-zsh-prompt"]
 	path = .yadm_submodules/agkozak-zsh-prompt
