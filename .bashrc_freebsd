@@ -1,3 +1,3 @@
 #!/usr/local/bin/bash
-CLICOLOR=YES
+export CLICOLOR=YES
 unalias ls

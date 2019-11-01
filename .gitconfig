@@ -4,8 +4,7 @@
 [color]
 	ui = auto
 [diff]
-	tool = vimdiff
-	algorithm = patience
+	algorithm = histogram
 [diff "ansible-vault"]
 	textconv = ansible-vault view
 	cachetextconv = false
@@ -17,8 +16,6 @@
 [alias]
 	d = difftool
 	graph = log --graph --oneline --decorate
-[push]
-	default = simple
 [web]
 	browser = xdg-open
 [commit]
