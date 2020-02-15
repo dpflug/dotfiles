@@ -12,7 +12,7 @@ fi
 
 #PATH handling
 if [ "${PATH#*$HOME/.local/bin}" = "$PATH" ] && [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+    PATH="$HOME/.local/bin:$PATH"
 fi
 
 alias vi='vim'
