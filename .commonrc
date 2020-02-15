@@ -74,6 +74,26 @@ if [ -f /etc/profile.d/nix.sh ] ; then
     . /etc/profile.d/nix.sh
 fi
 
+# Guix
+for profile in "$HOME/.guix-profile" "$HOME/.config/guix/current"
+do
+  if [ -f "$profile/etc/profile" ]
+  then
+    # Load the user profile's settings.
+    export GUIX_PROFILE="$profile" ; \
+    . "$profile/etc/profile"
+  else
+    # At least define this one so that basic things just work
+    # when the user installs their first package.
+    if [ "${PATH#*$profile/bin}" = "$PATH" ] ; then
+        export PATH="$profile/bin:$PATH"
+    fi
+    export INFOPATH="$profile/share/info${INFOPATH:+:$INFOPATH}"
+  fi
+done
+unset profile
+export GUIX_LOCPATH=$HOME/.guix-profile/lib/locale
+
 d () {
     for word in "$@" ; do
         curl dict://dict.org/d:"${word}" 2> /dev/null | less -FX
