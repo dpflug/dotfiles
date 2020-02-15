@@ -22,6 +22,7 @@ Plug 'ervandew/supertab'
 Plug 'kovisoft/slimv'                   " Lisp niceties
 Plug 'gko/vim-coloresque'               " Show colors in CSS/HTML/LESS/SASS
 Plug 'docunext/closetag.vim'            " Close HTML tags
+Plug 'jreybert/vimagit'			" Magit for vim!
 if v:version >= 703
     Plug 'Yggdroot/indentLine'          " Add lines to show indent level
 endif
@@ -122,8 +123,10 @@ if v:version >= 703
     " Relative line numbers can be helpful for navigation
     set rnu
 
-    " Stronger encryption
-    set cryptmethod=blowfish
+    if !has('nvim')
+        " Stronger encryption
+        set cryptmethod=blowfish
+    endif
 endif
 
 " I shouldn't encounter any slow TTYs
