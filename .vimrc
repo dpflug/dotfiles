@@ -71,7 +71,7 @@ if v:version >= 800
     Plug 'Shougo/deoplete.nvim'
     if !has('nvim')
         Plug 'roxma/nvim-yarp'
-        Plug 'roxma/vim-hug-neovim-rpg'
+        Plug 'roxma/vim-hug-neovim-rpc'
     endif
 else
     Plug 'ervandew/supertab'
