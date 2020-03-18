@@ -1,3 +1,7 @@
+" Surround entire file with vscode check, so we can use the
+" embedded neovim vscode extension
+if !exists('g:vscode')
+
 set nocompatible
 
 " Whip the tabs into shape
@@ -12,36 +16,77 @@ set smarttab
 
 
 " Enable vim-plug, for plugins
-call plug#begin('~/.vim/plugged')
+if has('win32')
+    call plug#begin($APPDATA . '/nvim/plugged')
+else
+    call plug#begin('~/.vim/plugged')
+endif
 
-" My bundles
-Plug 'vim-syntastic/syntastic'          " Syntax checker
-Plug 'Maroloccio/maroloccio-vim'        " Color scheme
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'ervandew/supertab'
-Plug 'kovisoft/slimv'                   " Lisp niceties
-Plug 'gko/vim-coloresque'               " Show colors in CSS/HTML/LESS/SASS
-Plug 'docunext/closetag.vim'            " Close HTML tags
+"""""" My bundles
+Plug 'Maroloccio/maroloccio-vim'	" Color scheme
+Plug 'gko/vim-coloresque'		" Show colors in CSS/HTML/LESS/SASS
+Plug 'docunext/closetag.vim'		" Close HTML tags
 Plug 'jreybert/vimagit'			" Magit for vim!
 if v:version >= 703
-    Plug 'Yggdroot/indentLine'          " Add lines to show indent level
+    Plug 'Yggdroot/indentLine'		" Add lines to show indent level
 endif
 if v:version >= 704
     Plug 'vim-pandoc/vim-pandoc-syntax'
 endif
 
+" Lisp REPL/niceties
+if v:version >= 800
+    Plug 'vlime/vlime'
+    Plug 'kovisoft/paredit'
+else
+    Plug 'kovisoft/slimv'
+endif
+
+" Linting/checking
+if v:version >= 800
+    Plug 'dense-analysis/ale'
+
+    let g:ale_fixers = {
+    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \ 'go': ['goimports', 'gofmt'],
+    \ 'python': ['black'],
+    \ 'sh': ['shfmt'],
+    \}
+    let g:ale_fix_on_save = 1
+else
+    Plug 'vim-syntastic/syntastic'
+
+    set statusline+=%#warningmsg$
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
+
+    let g:synastic_always_populate_loc_list = 1
+    let g:synastic_auto_loc_list = 1
+    let g:synastic_check_on_open = 1
+    let g:synastic_check_on_wq = 0
+endif
+
+" Completion
+if v:version >= 800
+    Plug 'Shougo/deoplete.nvim'
+    if !has('nvim')
+        Plug 'roxma/nvim-yarp'
+        Plug 'roxma/vim-hug-neovim-rpg'
+    endif
+else
+    Plug 'ervandew/supertab'
+endif
+
+" LSP support
+if v:version >= 800
+    Plug 'prabirshrestha/async.vim'
+    Plug 'prabirshrestha/vim-lsp'
+    Plug 'mattn/vim-lsp-settings'
+    Plug 'lighttiger2505/deoplete-vim-lsp'
+endif
+
 " Be finished with vim-plug
 call plug#end()
-
-" Set up Syntastic
-set statusline+=%#warningmsg$
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 " Colorscheme I like
 colorscheme maroloccio
@@ -143,7 +188,7 @@ if has("multi_byte")
     set fileencodings=utf-8,latin1
     set list listchars=tab:▸\ ,trail:·
 else
-set list listchars=trail:-,tab:>-
+    set list listchars=trail:-,tab:>-
 endif
 
 " Sometimes I open files, then decide I want to make changes when I don't have
@@ -180,4 +225,5 @@ if exists("$DISPLAY")
 else
     map ,pb :w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
     vmap ,pb '<,'>w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
+endif
 endif
