@@ -112,7 +112,7 @@ toweb () {
     if [ -n "$1" ] ; then
         rsync -SHPcavy "$@" igal:/var/www/files/
         for x in "$@" ; do
-            echo "http://files.pflug.email/$(basename "${x}" | sed 's/ /%20/g')"
+            echo "http://files.pflug.io/$(basename "${x}" | sed 's/ /%20/g')"
         done
     else
         echo "What should be sent?"
