@@ -16,6 +16,7 @@
 [alias]
 	d = difftool
 	graph = log --graph --oneline --decorate
+	lg = log --graph --pretty=format:'%Cred%h%C(auto) - %d %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 [web]
 	browser = xdg-open
 [commit]
@@ -26,5 +27,6 @@
 	user = dpflug
 [pull]
 	ffonly = true
+	ff = only
 [core]
 	quotepath = false
