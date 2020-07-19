@@ -18,7 +18,12 @@ if [ "${PATH#*$HOME/.go/bin}" = "$PATH" ] && [ -d "$HOME/.go/bin" ] ; then
     PATH="$HOME/.go/bin:$PATH"
 fi
 
-alias vi='vim'
+if type nvim > /dev/null ; then
+    alias vi='nvim'
+    alias vim='nvim'
+else
+    alias vi='vim'
+fi
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
 alias x='startx'
