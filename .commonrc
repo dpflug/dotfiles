@@ -14,6 +14,9 @@ fi
 if [ "${PATH#*$HOME/.local/bin}" = "$PATH" ] && [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+if [ "${PATH#*$HOME/.go/bin}" = "$PATH" ] && [ -d "$HOME/.go/bin" ] ; then
+    PATH="$HOME/.go/bin:$PATH"
+fi
 
 alias vi='vim'
 alias ls='ls --color=auto'
