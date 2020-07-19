@@ -38,6 +38,7 @@ alias om='nice -n20 ionice -c3 offlineimap; nice -n20 ionice -c3 mu index'
 alias t=task
 alias to=taskopen
 alias ix='curl -F "f:1=<-" ix.io'
+alias gea="guix environment --ad-hoc"
 
 #Games :)
 #alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
@@ -81,26 +82,6 @@ fi
 if [ -f /etc/profile.d/nix.sh ] ; then
     . /etc/profile.d/nix.sh
 fi
-
-# Guix
-for profile in "$HOME/.guix-profile" "$HOME/.config/guix/current"
-do
-  if [ -f "$profile/etc/profile" ]
-  then
-    # Load the user profile's settings.
-    export GUIX_PROFILE="$profile" ; \
-    . "$profile/etc/profile"
-  else
-    # At least define this one so that basic things just work
-    # when the user installs their first package.
-    if [ "${PATH#*$profile/bin}" = "$PATH" ] ; then
-        export PATH="$profile/bin:$PATH"
-    fi
-    export INFOPATH="$profile/share/info${INFOPATH:+:$INFOPATH}"
-  fi
-done
-unset profile
-export GUIX_LOCPATH=$HOME/.guix-profile/lib/locale
 
 d () {
     for word in "$@" ; do
