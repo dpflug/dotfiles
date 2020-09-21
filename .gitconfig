@@ -25,6 +25,6 @@
 [github]
 	user = dpflug
 [pull]
-	ffonly = true
+	ff = only
 [include]
 	path = .gitconfig.local
