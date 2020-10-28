@@ -52,8 +52,10 @@ if v:version >= 800
     let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
     \}
-    if executable('go')
-        let g:ale_fixers['go'] = ['goimports', 'gofmt']
+    if executable('goimports')
+        let g:ale_fixers['go'] = ['goimports']
+    else
+        let g:ale_fixers['go'] = ['gofmt']
     endif
     if executable('black')
         let g:ale_fixers['python'] = ['black']
@@ -65,8 +67,8 @@ if v:version >= 800
     if !exists('g:ale_linters')
         let g:ale_linters = {}
     endif
-    if executable('prospector')
-        let g:ale_linters['python'] = ['prospector']
+    if executable('gopls')
+        let g:ale_linters['go'] = ['gopls']
     endif
     let g:ale_fix_on_save = 1
 else
