@@ -48,3 +48,7 @@ Emacs*Background: Black
 Emacs*Foreground: Gold
 Emacs*Background-Mode: dark
 Emacs*Font: FuraCode Nerd Font-12
+
+
+Sxiv*background: Black
+Sxiv*foreground: Gold

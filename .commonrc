@@ -1,6 +1,5 @@
 #!$SHELL
 export EDITOR="emacsclient -c"
-export LESS="$LESS -iRs"
 export LC_ALL=
 export LC_COLLATE="C"
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
@@ -39,6 +38,7 @@ alias t=task
 alias to=taskopen
 alias ix='curl -F "f:1=<-" ix.io'
 alias gea="guix environment --ad-hoc"
+alias sudo="sudo "  # Lets me use other aliases via sudo
 
 #Games :)
 #alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
@@ -76,11 +76,6 @@ elif [ -f "$(command -v virtualenvwrapper.sh)" ] ; then
     export WORKON_HOME=~/.virtualenvs
     # shellcheck source=/dev/null
     . "$(command -v virtualenvwrapper.sh)"
-fi
-
-# Nix
-if [ -f /etc/profile.d/nix.sh ] ; then
-    . /etc/profile.d/nix.sh
 fi
 
 d () {
