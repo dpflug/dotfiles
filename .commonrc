@@ -11,8 +11,8 @@ if [ "${LESS#*-iRs}" = "$LESS" ] ; then
 fi
 
 #PATH handling
-if [ "${PATH#*$HOME/.local/bin}" = "$PATH" ] && [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+if [ "${PATH#*$HOME/.local/share/bin}" = "$PATH" ] && [ -d "$HOME/.local/share/bin" ] ; then
+    PATH="$HOME/.local/share/bin:$PATH"
 fi
 if [ "${PATH#*$HOME/.go/bin}" = "$PATH" ] && [ -d "$HOME/.go/bin" ] ; then
     PATH="$HOME/.go/bin:$PATH"
@@ -164,5 +164,6 @@ cpterminfo () {
 }
 
 if [ -e ~/.commonrc_local ] ; then
+    # shellcheck source=/home/dpflug/.commonrc_local disable=SC1091
     . ~/.commonrc_local
 fi
