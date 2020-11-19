@@ -7,8 +7,7 @@ set nocompatible
 " Whip the tabs into shape
 set shiftwidth=4
 set softtabstop=4
-" Let's see where there may be some tabs.
-"set tabstop=4
+set tabstop=4
 set expandtab
 set smarttab
 
@@ -29,6 +28,7 @@ Plug 'preservim/nerdtree'               " Directory browser
 Plug 'Maroloccio/maroloccio-vim'	" Color scheme
 Plug 'gko/vim-coloresque'		" Show colors in CSS/HTML/LESS/SASS
 Plug 'docunext/closetag.vim'		" Close HTML tags
+Plug 'ziglang/zig.vim'
 if v:version >= 703
     Plug 'Yggdroot/indentLine'		" Add lines to show indent level
 endif
@@ -51,6 +51,7 @@ if v:version >= 800
     let g:ale_python_mypy_options = '--strict'
     let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \ 'c': ['clang-format', 'clangtidy'],
     \}
     if executable('goimports')
         let g:ale_fixers['go'] = ['goimports']
