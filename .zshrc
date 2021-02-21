@@ -1,4 +1,12 @@
 #!/usr/bin/env zsh
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -23,11 +31,15 @@ if [[ "$TERM" == "dumb" ]] ; then
 fi
 
 # Pretty prompts
-autoload -U promptinit colors
-promptinit
-colors
-prompt walters
-PS1="%B%(?..[%?] )%b%{$fg[blue]%}%n%{$reset_color%}@%U%B%m%b%u%{$fg[red]%}%#%{$reset_color%} "
+if [ -r "${HOME}/.local/share/yadm_submodules/powerlevel10k2" ] ; then
+    source "${HOME}/.local/share/yadm_submodules/powerlevel10k2/powerlevel10k.zsh-theme"
+else
+    autoload -U promptinit colors
+    promptinit
+    colors
+    prompt walters
+    PS1="%B%(?..[%?] )%b%{$fg[blue]%}%n%{$reset_color%}@%U%B%m%b%u%{$fg[red]%}%#%{$reset_color%} "
+fi
 
 # Fuzzy matching of completions
 zstyle ':completion:*' completer _complete _match _approximate
@@ -81,3 +93,6 @@ fi
 if [[ -a ~/.zshrc_local ]] ; then
     source ~/.zshrc_local
 fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

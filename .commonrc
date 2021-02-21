@@ -5,23 +5,23 @@ export LC_COLLATE="C"
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
 export GOPATH="$HOME/.go"
 
-if [ "${LESS#*-iRs}" = "$LESS" ] ; then
-    export LESS="$LESS -iRs"
+if [ "${LESS#*-iRs}" = "$LESS" ]; then
+	export LESS="$LESS -iRs"
 fi
 
 #PATH handling
-if [ "${PATH#*$HOME/.local/share/bin}" = "$PATH" ] && [ -d "$HOME/.local/share/bin" ] ; then
-    PATH="$HOME/.local/share/bin:$PATH"
+if [ "${PATH#*$HOME/.local/share/bin}" = "$PATH" ] && [ -d "$HOME/.local/share/bin" ]; then
+	PATH="$HOME/.local/share/bin:$PATH"
 fi
-if [ "${PATH#*$HOME/.go/bin}" = "$PATH" ] && [ -d "$HOME/.go/bin" ] ; then
-    PATH="$HOME/.go/bin:$PATH"
+if [ "${PATH#*$HOME/.go/bin}" = "$PATH" ] && [ -d "$HOME/.go/bin" ]; then
+	PATH="$HOME/.go/bin:$PATH"
 fi
 
-if type nvim > /dev/null ; then
-    alias vi='nvim'
-    alias vim='nvim'
+if type nvim >/dev/null; then
+	alias vi='nvim'
+	alias vim='nvim'
 else
-    alias vi='vim'
+	alias vi='vim'
 fi
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
@@ -38,7 +38,7 @@ alias t=task
 alias to=taskopen
 alias ix='curl -F "f:1=<-" ix.io'
 alias gea="guix environment --ad-hoc"
-alias sudo="sudo "  # Lets me use other aliases via sudo
+alias sudo="sudo " # Lets me use other aliases via sudo
 
 #Games :)
 #alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
@@ -54,111 +54,122 @@ gpg_keys=""
 GPG_TTY=$(tty)
 export GPG_TTY
 
-if [ "$EUID" -gt 1 ] || [ "$(id -u)" -gt 1 ] ; then
-    if [ -f "$(command -v keychain)" ] ; then
-        eval "$(keychain --eval -q "$ssh_keys" "$gpg_keys")"
-    fi
+if [ "$EUID" -gt 1 ] || [ "$(id -u)" -gt 1 ]; then
+	if [ -f "$(command -v keychain)" ]; then
+		eval "$(keychain --eval -q "$ssh_keys" "$gpg_keys")"
+	fi
 fi
 
 # Python environ handling
-if [ -f "$(command -v direnv)" ] ; then
-    if [ -z ${ZSH_NAME+x} ] ; then
-        eval "$(direnv hook bash)"
-    elif [ -z ${BASH+x} ] ; then
-        eval "$(direnv hook zsh)"
-    fi
-elif [ -f "$(command -v pyenv)" ] ; then
-    echo "Using pyenv."
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-elif [ -f "$(command -v virtualenvwrapper.sh)" ] ; then
-    echo "Using virtualenvwrapper."
-    export WORKON_HOME=~/.virtualenvs
-    # shellcheck source=/dev/null
-    . "$(command -v virtualenvwrapper.sh)"
+if [ -f "$(command -v direnv)" ]; then
+	if [ -z ${ZSH_NAME+x} ]; then
+		eval "$(direnv hook bash)"
+	elif [ -z ${BASH+x} ]; then
+		eval "$(direnv hook zsh)"
+	fi
+elif [ -f "$(command -v pyenv)" ]; then
+	echo "Using pyenv."
+	eval "$(pyenv init -)"
+	eval "$(pyenv virtualenv-init -)"
+elif [ -f "$(command -v virtualenvwrapper.sh)" ]; then
+	echo "Using virtualenvwrapper."
+	export WORKON_HOME=~/.virtualenvs
+	# shellcheck source=/dev/null
+	. "$(command -v virtualenvwrapper.sh)"
 fi
 
-d () {
-    for word in "$@" ; do
-        curl dict://dict.org/d:"${word}" 2> /dev/null | less -FX
-    done
+# fzf & fd
+if [ -f "$(command -v fzf)" ] && [ -f "$(command -v fd)" ]; then
+	export FZF_DEFAULT_COMMAND="fd . $HOME"
+	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+	export FZF_ALT_C_COMMAND="fd -t d . $HOME"
+fi
+
+d() {
+	for word in "$@"; do
+		curl dict://dict.org/d:"${word}" 2>/dev/null | less -FX
+	done
 }
 
-urxvtcd () {
-    urxvtc "$@"
-    if [ $? -eq 2 ]; then
-        urxvtd -q -o -f
-        urxvtc "$@"
-    fi
+urxvtcd() {
+	urxvtc "$@"
+	if [ $? -eq 2 ]; then
+		urxvtd -q -o -f
+		urxvtc "$@"
+	fi
 }
 
-toweb () {
-    if [ -n "$1" ] ; then
-        rsync -SHPcavy "$@" igal:/var/www/files/
-        for x in "$@" ; do
-            echo "http://files.pflug.io/$(basename "${x}" | sed 's/ /%20/g')"
-        done
-    else
-        echo "What should be sent?"
-    fi
+toweb() {
+	if [ -n "$1" ]; then
+		rsync -SHPcavy "$@" igal:/var/www/files/
+		for x in "$@"; do
+			echo "http://files.pflug.io/$(basename "${x}" | sed 's/ /%20/g')"
+		done
+	else
+		echo "What should be sent?"
+	fi
 }
 
-opng () {
-    if [ -n "$1" ] ; then
-        if [ -f "$(command -v parallel)" ] ; then
-            command -v advpng > /dev/null && parallel advpng -z4 ::: "$@"
-            command -v ect > /dev/null && parallel ect --strict -9 ::: "$@"
-            command -v optipng > /dev/null && parallel optipng -o7 -zw32k -p ::: "$@"
-        else
-            command -v advpng > /dev/null && advpng -z4 "$@"
-            command -v ect > /dev/null && ect --strict -9 "$@"
-            command -v optipng > /dev/null && optipng -o7 -zw32k -p "$@"
-        fi
-    fi
+opng() {
+	if [ -n "$1" ]; then
+		if [ -f "$(command -v parallel)" ]; then
+			command -v advpng >/dev/null && parallel advpng -z4 ::: "$@"
+			command -v ect >/dev/null && parallel ect --strict -9 ::: "$@"
+			command -v optipng >/dev/null && parallel optipng -o7 -zw32k -p ::: "$@"
+		else
+			command -v advpng >/dev/null && advpng -z4 "$@"
+			command -v ect >/dev/null && ect --strict -9 "$@"
+			command -v optipng >/dev/null && optipng -o7 -zw32k -p "$@"
+		fi
+	fi
 }
 
-wp () {
-    if [ -n "$1" ] ; then
-        for img in "$@" ; do
-            if [ -z "${img#*.png}" ] ; then
-                opng "$img"
-            elif [ -z "${img#*.jpg}" ] ; then
-                jpegoptim "$img"
-            fi
-            mv -i "$@" ~/wallpapers
-        done
-    fi
+wp() {
+	if [ -n "$1" ]; then
+		for img in "$@"; do
+			if [ -z "${img#*.png}" ]; then
+				opng "$img"
+			elif [ -z "${img#*.jpg}" ]; then
+				jpegoptim "$img"
+			fi
+			mv -i "$@" ~/wallpapers
+		done
+	fi
 }
 
-waitfor () {
-    while pgrep -f "$1" > /dev/null ; do
-        sleep 30
-    done
+waitfor() {
+	while pgrep -f "$1" >/dev/null; do
+		sleep 30
+	done
 }
 
-sudofor () {
-    while pgrep -f "$1" > /dev/null ; do
-        sudo -v
-        sleep 4m
-    done
+sudofor() {
+	while pgrep -f "$1" >/dev/null; do
+		sudo -v
+		sleep 4m
+	done
 }
 
-setproxy () {
-    export HTTP_PROXY="$1"
-    export HTTPS_PROXY="$HTTP_PROXY"
-    export FTP_PROXY="$HTTP_PROXY"
-    export SOCKS_PROXY="$HTTP_PROXY"
-    export http_proxy="$HTTP_PROXY"
-    export https_proxy="$HTTP_PROXY"
-    export ftp_proxy="$HTTP_PROXY"
-    export socks_proxy="$HTTP_PROXY"
+setproxy() {
+	export HTTP_PROXY="$1"
+	export HTTPS_PROXY="$HTTP_PROXY"
+	export FTP_PROXY="$HTTP_PROXY"
+	export SOCKS_PROXY="$HTTP_PROXY"
+	export http_proxy="$HTTP_PROXY"
+	export https_proxy="$HTTP_PROXY"
+	export ftp_proxy="$HTTP_PROXY"
+	export socks_proxy="$HTTP_PROXY"
 }
 
-cpterminfo () {
-    infocmp | ssh "$1" "cat | tic -x -"
+cpterminfo() {
+	infocmp | ssh "$1" "cat | tic -x -"
 }
 
-if [ -e ~/.commonrc_local ] ; then
-    # shellcheck source=/home/dpflug/.commonrc_local disable=SC1091
-    . ~/.commonrc_local
+gear() {
+    guix environment --ad-hoc "$1" -- "$@"
+}
+
+if [ -e ~/.commonrc_local ]; then
+	# shellcheck source=/home/dpflug/.commonrc_local disable=SC1091
+	. ~/.commonrc_local
 fi

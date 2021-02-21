@@ -1,0 +1,3 @@
+[submodule "/home/dpflug/.local/share/yadm_submodules/powerlevel10k"]
+	path = /home/dpflug/.local/share/yadm_submodules/powerlevel10k
+	url = https://github.com/romkatv/powerlevel10k
