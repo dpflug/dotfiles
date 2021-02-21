@@ -31,8 +31,8 @@ if [[ "$TERM" == "dumb" ]] ; then
 fi
 
 # Pretty prompts
-if [ -r "${HOME}/.local/share/yadm_submodules/powerlevel10k2" ] ; then
-    source "${HOME}/.local/share/yadm_submodules/powerlevel10k2/powerlevel10k.zsh-theme"
+if [ -r "${HOME}/.local/share/yadm_submodules/powerlevel10k" ] ; then
+    source "${HOME}/.local/share/yadm_submodules/powerlevel10k/powerlevel10k.zsh-theme"
 else
     autoload -U promptinit colors
     promptinit
