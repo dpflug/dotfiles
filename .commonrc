@@ -3,40 +3,45 @@ export EDITOR="vim"
 export LESS="$LESS -iRs"
 export LC_ALL=
 export LC_COLLATE="C"
-export VDPAU_NVIDIA_NO_OVERLAY=1
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
+export GOPATH="$HOME/.go"
 
-if [[ ! "-iRs" =~ "$LESS" ]] ; then
+if [ "${LESS#*-iRs}" = "$LESS" ] ; then
     export LESS="$LESS -iRs"
 fi
 
 #PATH handling
-if [[ ! "$PATH" =~ "$HOME/.local/bin" && -d "$HOME/.local/bin" ]] ; then
+if [ "${PATH#*$HOME/.local/bin}" = "$PATH" ] && [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
-export GOPATH="$HOME/.go"
+if [ "${PATH#*$HOME/.go/bin}" = "$PATH" ] && [ -d "$HOME/.go/bin" ] ; then
+    PATH="$HOME/.go/bin:$PATH"
+fi
 
-alias vi='vim'
+if type nvim > /dev/null ; then
+    alias vi='nvim'
+    alias vim='nvim'
+else
+    alias vi='vim'
+fi
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
 alias x='startx'
 alias ta='tmux a -d > /dev/null || tmux'
 alias taa='tmux a > /dev/null || tmux'
-alias awdb='Xephyr -ac -br -noreset -screen 800:600 :1 & export DISPLAY=":1.0" PS1="\[\e[0;31m\]AWDB ${PS1}" ; sleep 2 && awesome &'
 alias undb='killall Xephyr ; export DISPLAY=":0.0" PS1=${PS1##*AWDB }'
 alias mtr='mtr --curses'
 alias myip='curl icanhazip.com'
-alias chroothere='sudo mount -R /dev dev && sudo mount -t proc{,,} && sudo mount -t sys{fs,fs,} && sudo chroot . /bin/bash ; sudo umount dev/* dev sys proc'
 alias wifi='sudo wifi-menu'
 alias o='xdg-open'
-alias aurup='makepkg -S; burp $(source PKGBUILD; echo ${pkgname}-${pkgver}-${pkgrel}.src.tar.gz)'
 alias om='nice -n20 ionice -c3 offlineimap; nice -n20 ionice -c3 mu index'
 alias t=task
 alias to=taskopen
 alias ix='curl -F "f:1=<-" ix.io'
+alias gea="guix environment --ad-hoc"
 
 #Games :)
-alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
+#alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
 #alias engage=""
 #play -n -c1 synth whitenoise lowpass -1 120 lowpass -1 120 lowpass -1 120 gain +14
 #play -n -c1 synth whitenoise band 100 20 compand .3,.8 -1,-10 gain +20
@@ -46,40 +51,36 @@ alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/do
 ssh_keys=$(find ~/.ssh -name id_\* -and \! -name \*.pub)
 #gpg_keys=$(gpg -K | grep 'sec ' | awk '{ print $2 }' | cut -d'/' -f 2)
 gpg_keys=""
+GPG_TTY=$(tty)
+export GPG_TTY
 
-if [[ $EUID -gt 1 ]] ; then
-    if [[ -f "$(which keychain)" ]] ; then
-        eval "$(keychain --eval -q ${ssh_keys} ${gpg_keys})"
+if [ "$EUID" -gt 1 ] || [ "$(id -u)" -gt 1 ] ; then
+    if [ -f "$(command -v keychain)" ] ; then
+        eval "$(keychain --eval -q "$ssh_keys" "$gpg_keys")"
     fi
 fi
 
 # Python environ handling
-if [[ -f "$(which direnv)" ]] ; then
+if [ -f "$(command -v direnv)" ] ; then
     if [ -z ${ZSH_NAME+x} ] ; then
         eval "$(direnv hook bash)"
     elif [ -z ${BASH+x} ] ; then
         eval "$(direnv hook zsh)"
     fi
-elif [[ -f "$(which pyenv)" ]] ; then
+elif [ -f "$(command -v pyenv)" ] ; then
     echo "Using pyenv."
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
-elif [[ -f "$(which virtualenvwrapper.sh)" ]] ; then
+elif [ -f "$(command -v virtualenvwrapper.sh)" ] ; then
     echo "Using virtualenvwrapper."
     export WORKON_HOME=~/.virtualenvs
-    source "$(which virtualenvwrapper.sh)"
-fi
-
-# EncFS
-if [[ -d ~/Private && -d ~/.Private ]] ; then
-    if ! mount | grep "${USER}/Private" > /dev/null ; then
-        encfs ~/{.,}Private
-    fi
+    # shellcheck source=/dev/null
+    . "$(command -v virtualenvwrapper.sh)"
 fi
 
 # Nix
 if [ -f /etc/profile.d/nix.sh ] ; then
-    source /etc/profile.d/nix.sh
+    . /etc/profile.d/nix.sh
 fi
 
 d () {
@@ -97,10 +98,10 @@ urxvtcd () {
 }
 
 toweb () {
-    if [[ -n "$1" ]] ; then
+    if [ -n "$1" ] ; then
         rsync -SHPcavy "$@" igal:/var/www/files/
         for x in "$@" ; do
-            echo "http://files.pflug.email/$(basename "${x}" | sed 's/ /%20/g')"
+            echo "http://files.pflug.io/$(basename "${x}" | sed 's/ /%20/g')"
         done
     else
         echo "What should be sent?"
@@ -108,25 +109,25 @@ toweb () {
 }
 
 opng () {
-    if [[ -n "$1" ]] ; then
-        if [[ -f "$(which parallel)" ]] ; then
-            which advpng > /dev/null && parallel advpng -z4 ::: "$@"
-            which ect > /dev/null && parallel ect --strict -9 ::: "$@"
-            which optipng > /dev/null && parallel optipng -o7 -zw32k -p ::: "$@"
+    if [ -n "$1" ] ; then
+        if [ -f "$(command -v parallel)" ] ; then
+            command -v advpng > /dev/null && parallel advpng -z4 ::: "$@"
+            command -v ect > /dev/null && parallel ect --strict -9 ::: "$@"
+            command -v optipng > /dev/null && parallel optipng -o7 -zw32k -p ::: "$@"
         else
-            which advpng > /dev/null && advpng -z4 "$@"
-            which ect > /dev/null && ect --strict -9 "$@"
-            which optipng > /dev/null && optipng -o7 -zw32k -p "$@"
+            command -v advpng > /dev/null && advpng -z4 "$@"
+            command -v ect > /dev/null && ect --strict -9 "$@"
+            command -v optipng > /dev/null && optipng -o7 -zw32k -p "$@"
         fi
     fi
 }
 
 wp () {
-    if [[ -n "$1" ]] ; then
+    if [ -n "$1" ] ; then
         for img in "$@" ; do
-            if [[ -z "${img#*.png}" ]] ; then
+            if [ -z "${img#*.png}" ] ; then
                 opng "$img"
-            elif [[ -z "${img#*.jpg}" ]] ; then
+            elif [ -z "${img#*.jpg}" ] ; then
                 jpegoptim "$img"
             fi
             mv -i "$@" ~/wallpapers
@@ -162,6 +163,6 @@ cpterminfo () {
     infocmp | ssh "$1" "cat | tic -x -"
 }
 
-if [[ -a ~/.commonrc_local ]] ; then
-    source ~/.commonrc_local
+if [ -e ~/.commonrc_local ] ; then
+    . ~/.commonrc_local
 fi

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 if [[ -a ~/.commonrc ]] ; then
+    # shellcheck source=/home/dpflug/.commonrc
     source ~/.commonrc
 fi
 
@@ -17,5 +18,6 @@ if [[ $EUID -gt 1 ]] ; then
 fi
 
 if [[ -a ~/.bashrc_local ]] ; then
+    # shellcheck source=/home/dpflug/.bashrc_local
     source ~/.bashrc_local
 fi

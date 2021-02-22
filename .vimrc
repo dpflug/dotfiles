@@ -48,28 +48,12 @@ endif
 if v:version >= 800
     Plug 'dense-analysis/ale'
 
-    let g:ale_python_mypy_options = '--strict'
     let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+    \ 'go': ['goimports', 'gofmt'],
+    \ 'python': ['black'],
+    \ 'sh': ['shfmt'],
     \}
-    if executable('goimports')
-        let g:ale_fixers['go'] = ['goimports']
-    else
-        let g:ale_fixers['go'] = ['gofmt']
-    endif
-    if executable('black')
-        let g:ale_fixers['python'] = ['black']
-    endif
-    if executable('shfmt')
-        let g:ale_fixers['sh'] = ['shfmt']
-    endif
-
-    if !exists('g:ale_linters')
-        let g:ale_linters = {}
-    endif
-    if executable('gopls')
-        let g:ale_linters['go'] = ['gopls']
-    endif
     let g:ale_fix_on_save = 1
 else
     Plug 'vim-syntastic/syntastic'

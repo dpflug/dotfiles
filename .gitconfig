@@ -1,8 +1,7 @@
 [color]
 	ui = auto
 [diff]
-	tool = vimdiff
-	algorithm = patience
+	algorithm = histogram
 [diff "ansible-vault"]
 	textconv = ansible-vault view
 	cachetextconv = false
@@ -13,9 +12,9 @@
 	prompt = false
 [alias]
 	d = difftool
+	co = checkout
 	graph = log --graph --oneline --decorate
-[push]
-	default = simple
+	lg = log --graph --pretty=format:'%Cred%h%C(auto) - %d %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 [web]
 	browser = xdg-open
 [commit]
@@ -26,7 +25,9 @@
 	user = dpflug
 [pull]
 	ff = only
-[include]
-	path = .gitconfig.local
 [log]
 	showSignature = true
+[core]
+	quotepath = false
+[include]
+	path = .gitconfig.local
