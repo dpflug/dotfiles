@@ -1,5 +1,21 @@
 #!/usr/bin/env zsh
 
+# Ensure GPG prompts here
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# Keychain
+if [ "$EUID" -gt 1 ] || [ "$(id -u)" -gt 1 ]; then
+	if [ -f "$(command -v keychain)" ]; then
+		ssh_keys=$(find ~/.ssh -name id_\* -and \! -name \*.pub)
+		#gpg_keys=$(gpg -K | grep 'sec ' | awk '{ print $2 }' | cut -d'/' -f 2)
+		gpg_keys=""
+		eval "$(keychain --eval -q "$ssh_keys" "$gpg_keys")"
+		unset gpg_keys
+		unset ssh_keys
+	fi
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
