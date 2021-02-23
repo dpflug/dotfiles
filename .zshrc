@@ -1,4 +1,28 @@
 #!/usr/bin/env zsh
+
+# Ensure GPG prompts here
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# Keychain
+if [ "$EUID" -gt 1 ] || [ "$(id -u)" -gt 1 ]; then
+	if [ -f "$(command -v keychain)" ]; then
+		ssh_keys=$(find ~/.ssh -name id_\* -and \! -name \*.pub)
+		#gpg_keys=$(gpg -K | grep 'sec ' | awk '{ print $2 }' | cut -d'/' -f 2)
+		gpg_keys=""
+		eval "$(keychain --eval -q "$ssh_keys" "$gpg_keys")"
+		unset gpg_keys
+		unset ssh_keys
+	fi
+fi
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
@@ -23,14 +47,12 @@ if [[ "$TERM" == "dumb" ]] ; then
 fi
 
 # Pretty prompts
-autoload -U colors
-colors
-
-if [[ -d "$HOME/.yadm_submodules/agkozak-zsh-prompt" ]] ; then
-    source "$HOME/.yadm_submodules/agkozak-zsh-prompt/agkozak-zsh-prompt.plugin.zsh"
+if [ -r "${HOME}/.yadm_submodules/powerlevel10k" ] ; then
+    source "${HOME}/.yadm_submodules/powerlevel10k/powerlevel10k.zsh-theme"
 else
-    autoload -U promptinit
+    autoload -U promptinit colors
     promptinit
+    colors
     prompt walters
     PS1="%B%(?..[%?] )%b%{$fg[blue]%}%n%{$reset_color%}@%U%B%m%b%u%{$fg[red]%}%#%{$reset_color%} "
 fi
@@ -87,3 +109,6 @@ fi
 if [[ -a ~/.zshrc_local ]] ; then
     source ~/.zshrc_local
 fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
