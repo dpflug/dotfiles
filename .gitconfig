@@ -30,3 +30,5 @@
 	ff = only
 [core]
 	quotepath = false
+[init]
+	defaultBranch = trunk
