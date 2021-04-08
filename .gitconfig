@@ -30,5 +30,8 @@
 	ff = only
 [core]
 	quotepath = false
+	whitespace = blank-at-eol,space-before-tab
+[apply]
+	whitespace = error-all
 [init]
 	defaultBranch = trunk
