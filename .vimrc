@@ -51,25 +51,52 @@ if v:version >= 800
     let g:ale_python_mypy_options = '--strict'
     let g:ale_fixers = {
     \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \ 'c': ['clang-format', 'clangtidy'],
+    \ 'c': [],
+    \ 'go': [],
+    \ 'python': [],
+    \ 'sh': [],
     \}
+    if executable('astyle')
+        call add(g:ale_fixers['c'], 'astyle')
+    endif
+    if executable('clang-format')
+        call add(ale_fixers['c'], 'clang-format')
+    endif
+    if executable('clang-tidy')
+        call add(g:ale_fixers['c'], 'clangtidy')
+    endif
+    if executable('uncrustify')
+        call add(g:ale_fixers['c'], 'uncrustify')
+    endif
     if executable('goimports')
-        let g:ale_fixers['go'] = ['goimports']
+        call add(g:ale_fixers['go'], 'goimports')
     else
-        let g:ale_fixers['go'] = ['gofmt']
+        call add(g:ale_fixers['go'], 'gofmt')
     endif
     if executable('black')
-        let g:ale_fixers['python'] = ['black']
+        call add(g:ale_fixers['python'], 'black')
     endif
     if executable('shfmt')
-        let g:ale_fixers['sh'] = ['shfmt']
+        call add(g:ale_fixers['sh'], 'shfmt')
     endif
 
     if !exists('g:ale_linters')
-        let g:ale_linters = {}
+        let g:ale_linters = {
+        \ 'go': [],
+        \ 'c': [],
+        \}
+    endif
+    if executable('cpplint')
+        call add(g:ale_linters['c'], 'cpplint')
+    endif
+    if executable('ccls')
+        call add(g:ale_linters['c'], 'ccls')
     endif
     if executable('gopls')
-        let g:ale_linters['go'] = ['gopls']
+        call add(g:ale_linters['go'], 'gopls')
+    endif
+    if executable('golint')
+        call add(g:ale_linters['go'], 'golint')
     endif
     let g:ale_fix_on_save = 1
 else
