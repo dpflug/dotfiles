@@ -13,8 +13,8 @@
 [alias]
 	d = difftool
 	co = checkout
-	graph = log --graph --oneline --decorate
-	lg = log --graph --pretty=format:'%Cred%h%C(auto) - %d %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	graph = log --graph --oneline --decorate --all
+	lg = log --graph --all --pretty=format:'%Cred%h%C(auto) - %d %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 [web]
 	browser = xdg-open
 [commit]
@@ -29,5 +29,8 @@
 	showSignature = true
 [core]
 	quotepath = false
+	whitespace = blank-at-eol,space-before-tab
+[apply]
+	whitespace = error
 [include]
 	path = .gitconfig.local

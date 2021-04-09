@@ -1,4 +1,5 @@
 [user]
 	name = David Pflug
 	email = david.pflug@exfo.com
-	signingKey = C88DDDF49B1F0E56F235D9E6E26A617B29793DB4
+[gpg]
+	program = /mnt/c/Program Files (x86)/GnuPG/bin/gpg.exe
