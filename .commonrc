@@ -1,4 +1,5 @@
 #!$SHELL
+# shellcheck shell=bash
 export EDITOR="vim"
 export LESS="$LESS -iRs"
 export LC_ALL=
@@ -12,10 +13,13 @@ fi
 
 #PATH handling
 if [ "${PATH#*$HOME/.local/share/bin}" = "$PATH" ] && [ -d "$HOME/.local/share/bin" ]; then
-	PATH="$HOME/.local/share/bin:$PATH"
+	PATH="$PATH:$HOME/.local/share/bin"
 fi
 if [ "${PATH#*$HOME/.go/bin}" = "$PATH" ] && [ -d "$HOME/.go/bin" ]; then
-	PATH="$HOME/.go/bin:$PATH"
+	PATH="$PATH:$HOME/.go/bin"
+fi
+if [ "${PATH#*$HOME/.roswell/bin}" = "$PATH" ] && [ -d "$HOME/.roswell/bin" ]; then
+	PATH="$PATH:$HOME/.roswell/bin"
 fi
 
 if type nvim >/dev/null; then
