@@ -40,6 +40,7 @@ endif
 if v:version >= 800
     Plug 'vlime/vlime'
     Plug 'kovisoft/paredit'
+    let g:vlime_leader = ","
 else
     Plug 'kovisoft/slimv'
 endif
@@ -102,6 +103,12 @@ if v:version >= 800
     Plug 'prabirshrestha/vim-lsp'
     Plug 'mattn/vim-lsp-settings'
     Plug 'lighttiger2505/deoplete-vim-lsp'
+endif
+
+Plug 'Omer/vim-sparql'
+
+if filereadable("~/.vimrc_local_plug")
+    source "~/.vimrc_local_plug"
 endif
 
 " Be finished with vim-plug
@@ -244,5 +251,9 @@ if exists("$DISPLAY")
 else
     map ,pb :w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
     vmap ,pb '<,'>w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
+endif
+
+if filereadable("~/.vimrc_local")
+    source "~/.vimrc_local"
 endif
 endif
