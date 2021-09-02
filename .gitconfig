@@ -35,3 +35,8 @@
 	whitespace = error-all
 [init]
 	defaultBranch = trunk
+[sendemail]
+    smtpEncryption = tls
+    smtpServer = smtp.gmail.com
+    smtpUser = david@tpflug.com
+    smtpServerPort = 587
