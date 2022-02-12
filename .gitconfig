@@ -1,40 +1,40 @@
 [user]
-	name = David Pflug
-	email = david@pflug.io
+    name = David Pflug
+    email = david@pflug.io
 [color]
-	ui = auto
+    ui = auto
 [diff]
-	algorithm = histogram
+    algorithm = histogram
 [diff "ansible-vault"]
-	textconv = ansible-vault view
-	cachetextconv = false
+    textconv = ansible-vault view
+    cachetextconv = false
 [diff "gpg"]
-	textconv = gpg --no-tty --decrypt
-	cachetextconv = false
+    textconv = gpg --no-tty --decrypt
+    cachetextconv = false
 [difftool]
-	prompt = false
+    prompt = false
 [alias]
-	d = difftool
-	graph = log --graph --oneline --decorate
-	lg = log --graph --pretty=format:'%Cred%h%C(auto) - %d %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+    d = difftool
+    graph = log --graph --oneline --decorate
+    lg = log --graph --pretty=format:'%Cred%h%C(auto) - %d %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 [web]
-	browser = xdg-open
+    browser = xdg-open
 [commit]
-	gpgsign = true
+    gpgsign = true
 [magit]
-	hideCampaign = true
+    hideCampaign = true
 [github]
-	user = dpflug
+    user = dpflug
 [pull]
-	ffonly = true
-	ff = only
+    ffonly = true
+    ff = only
 [core]
-	quotepath = false
-	whitespace = blank-at-eol,space-before-tab
+    quotepath = false
+    whitespace = blank-at-eol,space-before-tab
 [apply]
-	whitespace = error-all
+    whitespace = error
 [init]
-	defaultBranch = trunk
+    defaultBranch = trunk
 [sendemail]
     smtpEncryption = tls
     smtpServer = smtp.gmail.com
