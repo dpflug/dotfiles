@@ -4,6 +4,9 @@
 GPG_TTY=$(tty)
 export GPG_TTY
 
+# vi edit mode
+bindkey -v
+
 # Keychain
 if [ "$EUID" -gt 1 ] || [ "$(id -u)" -gt 1 ]; then
 	if [ -f "$(command -v keychain)" ]; then
