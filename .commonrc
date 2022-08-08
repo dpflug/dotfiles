@@ -67,115 +67,117 @@ alias qr="qrencode -tutf8"
 #play -n -c1 synth whitenoise band -n 100 20 band -n 50 20 gain +25  fade h 1 864000 1
 
 # Python environ handling
-if [ -f "$(command -v direnv)" ]; then
-    if [ -z ${ZSH_NAME+x} ]; then
-        eval "$(direnv hook bash)"
-    elif [ -z ${BASH+x} ]; then
-        eval "$(direnv hook zsh)"
-    fi
-elif [ -f "$(command -v pyenv)" ]; then
-    echo "Using pyenv."
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
-elif [ -f "$(command -v virtualenvwrapper.sh)" ]; then
-    echo "Using virtualenvwrapper."
-    export WORKON_HOME=~/.virtualenvs
-    # shellcheck source=/dev/null
-    . "$(command -v virtualenvwrapper.sh)"
+if is_exe direnv; then
+	if [ -z ${ZSH_NAME+x} ]; then
+		eval "$(direnv hook bash)"
+	elif [ -z ${BASH+x} ]; then
+		eval "$(direnv hook zsh)"
+	fi
+elif is_exe pyenv; then
+	echo "Using pyenv."
+	eval "$(pyenv init -)"
+	eval "$(pyenv virtualenv-init -)"
+elif virtualenvwrapper.sh; then
+	echo "Using virtualenvwrapper."
+	export WORKON_HOME=~/.virtualenvs
+	# shellcheck source=/dev/null
+	. "$(which virtualenvwrapper.sh)"
 fi
 
 # fzf & fd
-if [ -f "$(command -v fzf)" ] && [ -f "$(command -v fd)" ]; then
-    export FZF_DEFAULT_COMMAND="fd . $HOME"
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_ALT_C_COMMAND="fd -t d . $HOME"
+if is_exe fzf && is_exe fd; then
+	export FZF_DEFAULT_COMMAND="fd . $HOME"
+	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+	export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 fi
 
 d() {
-    for word in "$@"; do
-        curl dict://dict.org/d:"${word}" 2>/dev/null | less -FX
-    done
+	for word in "$@"; do
+		curl dict://dict.org/d:"${word}" 2>/dev/null | less -FX
+	done
 }
 
 urxvtcd() {
-    urxvtc "$@"
-    if [ $? -eq 2 ]; then
-        urxvtd -q -o -f
-        urxvtc "$@"
-    fi
+	urxvtc "$@"
+	if [ $? -eq 2 ]; then
+		urxvtd -q -o -f
+		urxvtc "$@"
+	fi
 }
 
 toweb() {
-    if [ -n "$1" ]; then
-        rsync -SHPcavy "$@" igal:/var/www/files/
-        for x in "$@"; do
-            echo "http://files.pflug.io/$(basename "${x}" | sed 's/ /%20/g')"
-        done
-    else
-        echo "What should be sent?"
-    fi
+	if [ -n "$1" ]; then
+		rsync -SHPcavy "$@" igal:/var/www/files/
+		for x in "$@"; do
+			echo "http://files.pflug.io/$(basename "${x}" | sed 's/ /%20/g')"
+		done
+	else
+		echo "What should be sent?"
+	fi
 }
 
 opng() {
-    if [ -n "$1" ]; then
-        if [ -f "$(command -v parallel)" ]; then
-            command -v advpng >/dev/null && parallel advpng -z4 ::: "$@"
-            command -v ect >/dev/null && parallel ect --strict -9 ::: "$@"
-            command -v optipng >/dev/null && parallel optipng -o7 -zw32k -p ::: "$@"
-        else
-            command -v advpng >/dev/null && advpng -z4 "$@"
-            command -v ect >/dev/null && ect --strict -9 "$@"
-            command -v optipng >/dev/null && optipng -o7 -zw32k -p "$@"
-        fi
-    fi
+	if [ -n "$1" ]; then
+		if is_exe parallel; then
+			is_exe advpng && parallel advpng -z4 ::: "$@"
+			is_exe ect && parallel ect --strict -9 ::: "$@"
+			is_exe optipng && parallel optipng -o7 -zw32k -p ::: "$@"
+		else
+			is_exe advpng && advpng -z4 "$@"
+			is_exe ect && ect --strict -9 "$@"
+			is_exe optipng && optipng -o7 -zw32k -p "$@"
+		fi
+	fi
 }
 
 wp() {
-    if [ -n "$1" ]; then
-        for img in "$@"; do
-            if [ -z "${img#*.png}" ]; then
-                opng "$img"
-            elif [ -z "${img#*.jpg}" ]; then
-                jpegoptim "$img"
-            fi
-            mv -i "$@" ~/wallpapers
-        done
-    fi
+	if [ -n "$1" ]; then
+		for img in "$@"; do
+			if [ -z "${img#*.png}" ]; then
+				opng "$img"
+			elif [ -z "${img#*.jpg}" ]; then
+				jpegoptim "$img"
+			fi
+			mv -i "$@" ~/wallpapers
+		done
+	fi
 }
 
 waitfor() {
-    while pgrep -f "$1" >/dev/null; do
-        sleep 30
-    done
+	while pgrep -f "$1" >/dev/null; do
+		sleep 30
+	done
 }
 
 sudofor() {
-    while pgrep -f "$1" >/dev/null; do
-        sudo -v
-        sleep 4m
-    done
+	while pgrep -f "$1" >/dev/null; do
+		sudo -v
+		sleep 4m
+	done
 }
 
 setproxy() {
-    export HTTP_PROXY="$1"
-    export HTTPS_PROXY="$HTTP_PROXY"
-    export FTP_PROXY="$HTTP_PROXY"
-    export SOCKS_PROXY="$HTTP_PROXY"
-    export http_proxy="$HTTP_PROXY"
-    export https_proxy="$HTTP_PROXY"
-    export ftp_proxy="$HTTP_PROXY"
-    export socks_proxy="$HTTP_PROXY"
+	export HTTP_PROXY="$1"
+	export HTTPS_PROXY="$HTTP_PROXY"
+	export FTP_PROXY="$HTTP_PROXY"
+	export SOCKS_PROXY="$HTTP_PROXY"
+	export http_proxy="$HTTP_PROXY"
+	export https_proxy="$HTTP_PROXY"
+	export ftp_proxy="$HTTP_PROXY"
+	export socks_proxy="$HTTP_PROXY"
 }
 
 cpterminfo() {
-    infocmp | ssh "$1" "cat | tic -x -"
+	infocmp | ssh "$1" "cat | tic -x -"
 }
 
 gear() {
-    guix environment --ad-hoc "$1" -- "$@"
+	guix environment --ad-hoc "$1" -- "$@"
 }
 
 if [ -e ~/.commonrc_local ]; then
-    # shellcheck source=/home/dpflug/.commonrc_local disable=SC1091
-    . ~/.commonrc_local
+	# shellcheck source=/home/dpflug/.commonrc_local disable=SC1091
+	. ~/.commonrc_local
 fi
+
+. "$HOME/.cargo/env"
