@@ -66,24 +66,6 @@ alias qr="qrencode -tutf8"
 #play -n -c1 synth whitenoise band 100 20 compand .3,.8 -1,-10 gain +20
 #play -n -c1 synth whitenoise band -n 100 20 band -n 50 20 gain +25  fade h 1 864000 1
 
-# Ensure GPG prompts here
-GPG_TTY=$(tty)
-export GPG_TTY
-
-# Keychain
-# Disabling complaint about EUID being non-POSIX. It's just a speedup.
-# shellcheck disable=SC3028
-if [ "$EUID" -gt 1 ] || [ "$(id -u)" -gt 1 ]; then
-    if [ -f "$(command -v keychain)" ]; then
-        ssh_keys=$(find ~/.ssh -name id_\* -and \! -name \*.pub)
-        #gpg_keys=$(gpg -K | grep 'sec ' | awk '{ print $2 }' | cut -d'/' -f 2)
-        gpg_keys=""
-        eval "$(keychain --eval -q "$ssh_keys" "$gpg_keys")"
-        unset gpg_keys
-        unset ssh_keys
-    fi
-fi
-
 # Python environ handling
 if [ -f "$(command -v direnv)" ]; then
     if [ -z ${ZSH_NAME+x} ]; then
