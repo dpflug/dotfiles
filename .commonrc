@@ -7,35 +7,39 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
 export GOPATH="$HOME/.go"
 
 if [ "${LESS#*-iRs}" = "$LESS" ]; then
-    export LESS="$LESS -iRs"
+	export LESS="$LESS -iRs"
 fi
 
 #PATH handling
 pathmunge() {
-    case ":${PATH}:" in
-    *:"$1":*) ;;
+	case ":${PATH}:" in
+	*:"$1":*) ;;
 
-    *)
-        if [ "$2" = "after" ]; then
-            PATH=$PATH:$1
-        else
-            PATH=$1:$PATH
-        fi
-        ;;
-    esac
+	*)
+		if [ "$2" = "after" ]; then
+			PATH=$PATH:$1
+		else
+			PATH=$1:$PATH
+		fi
+		;;
+	esac
 }
 
-for dir in ".local/share" ".go" ".roswell" ".cargo"; do
-    if [ "${PATH#*"$HOME"/"${dir}"/bin}" = "$PATH" ] && [ -d "$HOME/${dir}/bin" ]; then
-        pathmunge "$HOME/${dir}/bin" after
-    fi
+is_exe() {
+	hash "$1" 2>/dev/null
+}
+
+for dir in ".local/share" ".local" ".go" ".roswell" ".cargo"; do
+	if [ "${PATH#*"$HOME"/"${dir}"/bin}" = "$PATH" ] && [ -d "$HOME/${dir}/bin" ]; then
+		pathmunge "$HOME/${dir}/bin" after
+	fi
 done
 
-if command -v nvim >/dev/null; then
-    alias vi='nvim'
-    alias vim='nvim'
+if is_exe nvim; then
+	alias vi='nvim'
+	alias vim='nvim'
 else
-    alias vi='vim'
+	alias vi='vim'
 fi
 alias ls='ls --color=auto'
 alias grep='grep --colour=auto'
@@ -53,6 +57,7 @@ alias to=taskopen
 alias ix='curl -F "f:1=<-" ix.io'
 alias gea="guix environment --ad-hoc"
 alias sudo="sudo " # Lets me use other aliases via sudo
+alias qr="qrencode -tutf8"
 
 #Games :)
 #alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
