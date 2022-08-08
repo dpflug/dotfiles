@@ -1,0 +1,77 @@
+#!$SHELL
+# shellcheck shell=sh
+if [ -d "/usr/local/go/bin" ]; then
+	GOPATH="$HOME/projects"
+	GOROOT="$HOME/go"
+	export GOROOT GOPATH
+	pathmunge "/usr/local/go/bin:$GOPATH/bin" after
+fi
+export CDPATH="~:/mnt/c/Users/ac46451/OneDrive - Lumen/Documents:/mnt/c/Users/ac46451/OneDrive - Lumen/Documents/EXFO"
+
+
+# Using https://github.com/rupor-github/win-gpg-agent
+if printenv WSL_AGENT_HOME >/dev/null ; then
+	export GNUPGHOME="$WSL_AGENT_HOME"
+	export SSH_AUTH_SOCK="$WSL_AGENT_HOME/S.gpg-agent.ssh"
+fi
+
+# KEEP FOR WSL2 or if we need to go back to https://github.com/benpye/wsl-ssh-pageant
+#
+#NPIPERELAY='/mnt/c/Users/ac46451/OneDrive - Lumen/Documents/papps/npiperelay.exe'
+#WINGPGDIR='C:/Users/ac46451/AppData/Roaming/gnupg'
+#SOCAT_GPG_PID="$HOME"/.local/share/socat-gpg.pid
+#
+#if [ -f "$SOCAT_GPG_PID" ] && kill -0 "$(cat "$SOCAT_GPG_PID")"; then
+#	true # Already running
+#else
+#	rm -f "$HOME/.gnupg/S.gpg-agent*"
+#	(
+#		trap 'rm $SOCAT_GPG_PID' EXIT
+#		socat UNIX-LISTEN:"$HOME/.gnupg/S.gpg-agent,fork" EXEC:"${NPIPERELAY} -p -ep -ei -s -a '${WINGPGDIR}/S.gpg-agent'",nofork </dev/null >/dev/null 2>&1
+#	) &
+#	echo $! >"$SOCAT_GPG_PID"
+#fi
+#
+#SOCAT_SSH_PID="$HOME"/.local/share/socat-ssh.pid
+#export SSH_AUTH_SOCK="${HOME}/.ssh/S.wincrypt-ssh"
+#if [ -f "$SOCAT_SSH_PID" ] && kill -0 "$(cat "$SOCAT_SSH_PID")"; then
+#	true # Already running
+#else
+#	rm -f '$SSH_AUTH_SOCK'
+#	(
+#		trap 'rm $SOCAT_SSH_PID' EXIT
+#		socat UNIX-LISTEN:"$SSH_AUTH_SOCK",fork EXEC:"${NPIPERELAY} -ei -s '//./pipe/ssh-pageant'",nofork
+#	) &
+#	echo $! >"$SOCAT_SSH_PID"
+#fi
+#
+#unset NPIPERELAY WINGPGDIR
+
+#recursively renice a process and its children
+recurnice() {
+	newnice=20
+	pid="$1"
+
+	# If we can't find PID, return
+	if [ -z "$pid" ]; then return; fi
+
+	renice $newnice "$pid"
+
+	# Find children
+	children=$(pgrep -d ' ' -P "$pid")
+
+	for child in $children; do
+		recurnice "$child" &
+	done
+}
+
+if [ -d "/usr/pkg/bin" ]; then
+	pathmunge "/usr/pkg/bin" after
+fi
+if [ -d "/usr/pkg/sbin" ]; then
+	pathmunge "/usr/pkg/sbin" after
+fi
+
+#alias units=gunits
+alias vn="ionice -c3 nice -n20"
+alias pssh="parallel-ssh --inline-stdout"
