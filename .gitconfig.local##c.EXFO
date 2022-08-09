@@ -1,5 +1,5 @@
 [user]
 	name = David Pflug
 	email = david.pflug@exfo.com
-[gpg]
-	program = /mnt/c/Program Files (x86)/GnuPG/bin/gpg.exe
+[gc]
+	auto = 256

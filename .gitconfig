@@ -28,9 +28,8 @@
 [log]
 	showSignature = true
 [core]
-	quotepath = false
 	whitespace = blank-at-eol,space-before-tab
-[apply]
-	whitespace = error
 [include]
 	path = .gitconfig.local
+[init]
+	defaultBranch = trunk
