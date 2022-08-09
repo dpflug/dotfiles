@@ -1,0 +1,17 @@
+[MAIN]
+jobs=0
+
+[FORMAT]
+max-line-length=88
+
+[BASIC]
+bad-names=foo,
+          bar,
+          baz,
+          qux,
+          toto,
+          tutu,
+          tata
+
+good-names=i,
+           _
