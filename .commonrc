@@ -137,13 +137,13 @@ toweb() {
 opng() {
 	if [ -n "$1" ]; then
 		if is_exe parallel; then
-			command -v advpng >/dev/null && parallel advpng -z4 ::: "$@"
-			command -v ect >/dev/null && parallel ect --strict -9 ::: "$@"
-			command -v optipng >/dev/null && parallel optipng -o7 -zw32k -p ::: "$@"
+			is_exe advpng >/dev/null && parallel advpng -z4 ::: "$@"
+			is_exe ect >/dev/null && parallel ect --strict -9 ::: "$@"
+			is_exe optipng >/dev/null && parallel optipng -o7 -zw32k -p ::: "$@"
 		else
-			command -v advpng >/dev/null && advpng -z4 "$@"
-			command -v ect >/dev/null && ect --strict -9 "$@"
-			command -v optipng >/dev/null && optipng -o7 -zw32k -p "$@"
+			is_exe advpng >/dev/null && advpng -z4 "$@"
+			is_exe ect >/dev/null && ect --strict -9 "$@"
+			is_exe optipng >/dev/null && optipng -o7 -zw32k -p "$@"
 		fi
 	fi
 }
