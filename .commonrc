@@ -15,6 +15,7 @@ pathmunge() {
 	case ":${PATH}:" in
 	*:"$1":*) ;;
 	*)
+
 		if [ "$2" = "after" ]; then
 			PATH=$PATH:$1
 		else
@@ -24,13 +25,17 @@ pathmunge() {
 	esac
 }
 
+is_exe() {
+	hash "$1" 2>/dev/null
+}
+
 for dir in ".local/share" ".local" ".go" ".roswell" ".cargo"; do
 	if [ "${PATH#*"$HOME"/"${dir}"/bin}" = "$PATH" ] && [ -d "$HOME/${dir}/bin" ]; then
 		pathmunge "$HOME/${dir}/bin" after
 	fi
 done
 
-if type nvim >/dev/null; then
+if is_exe nvim; then
 	alias vi='nvim'
 	alias vim='nvim'
 else
@@ -52,6 +57,7 @@ alias to=taskopen
 alias ix='curl -F "f:1=<-" ix.io'
 alias gea="guix environment --ad-hoc"
 alias sudo="sudo " # Lets me use other aliases via sudo
+alias qr="qrencode -tutf8"
 
 #Games :)
 #alias megarace='dosbox -conf ~/dosbox/MEGARACE/dosbox-0.74.conf -c "mount c ~/dosbox" -c "mount e ~/dosbox/megarace_cd" -c c: -c "cd MEGARACE" MEGARACE.BAT'
@@ -79,17 +85,17 @@ if [ "$EUID" -gt 1 ] || [ "$(id -u)" -gt 1 ]; then
 fi
 
 # Python environ handling
-if [ -f "$(command -v direnv)" ]; then
+if is_exe direnv; then
 	if [ -z ${ZSH_NAME+x} ]; then
 		eval "$(direnv hook bash)"
 	elif [ -z ${BASH+x} ]; then
 		eval "$(direnv hook zsh)"
 	fi
-elif [ -f "$(command -v pyenv)" ]; then
+elif is_exe pyenv; then
 	echo "Using pyenv."
 	eval "$(pyenv init -)"
 	eval "$(pyenv virtualenv-init -)"
-elif [ -f "$(command -v virtualenvwrapper.sh)" ]; then
+elif is_exe virtualenvwrapper.sh; then
 	echo "Using virtualenvwrapper."
 	export WORKON_HOME=~/.virtualenvs
 	# shellcheck source=/dev/null
@@ -97,7 +103,7 @@ elif [ -f "$(command -v virtualenvwrapper.sh)" ]; then
 fi
 
 # fzf & fd
-if [ -f "$(command -v fzf)" ] && [ -f "$(command -v fd)" ]; then
+if is_exe fzf && is_exe fd; then
 	export FZF_DEFAULT_COMMAND="fd . $HOME"
 	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 	export FZF_ALT_C_COMMAND="fd -t d . $HOME"
@@ -130,7 +136,7 @@ toweb() {
 
 opng() {
 	if [ -n "$1" ]; then
-		if [ -f "$(command -v parallel)" ]; then
+		if is_exe parallel; then
 			command -v advpng >/dev/null && parallel advpng -z4 ::: "$@"
 			command -v ect >/dev/null && parallel ect --strict -9 ::: "$@"
 			command -v optipng >/dev/null && parallel optipng -o7 -zw32k -p ::: "$@"
