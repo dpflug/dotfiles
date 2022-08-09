@@ -1,12 +1,8 @@
-[submodule ".yadm_submodules/keychain"]
-	path = .yadm_submodules/keychain
-	url = https://github.com/funtoo/keychain.git
-[submodule ".yadm_submodules/jq"]
-	path = .yadm_submodules/jq
-	url = https://github.com/stedolan/jq.git
-[submodule ".yadm_submodules/yadm-project"]
-	path = .yadm_submodules/yadm-project
+[submodule ".local/share/yadm_submodules/yadm-project"]
+	path = .local/share/yadm_submodules/yadm-project
 	url = https://github.com/TheLocehiliosan/yadm.git
-[submodule ".yadm_submodules/powerlevel10k"]
-	path = .yadm_submodules/powerlevel10k
+	shallow = true
+[submodule ".local/share/yadm_submodules/powerlevel10k"]
+	path = .local/share/yadm_submodules/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k
+	shallow = true

@@ -39,8 +39,8 @@ if [[ "$TERM" == "dumb" ]]; then
 fi
 
 ## Pretty prompts
-if [ -r "${HOME}/.yadm_submodules/powerlevel10k" ]; then
-	source "${HOME}/.yadm_submodules/powerlevel10k/powerlevel10k.zsh-theme"
+if [ -r "${HOME}/.local/share/yadm_submodules/powerlevel10k" ]; then
+	source "${HOME}/.local/share/yadm_submodules/powerlevel10k/powerlevel10k.zsh-theme"
 elif command -v starship > /dev/null ; then
 	eval "$(starship init zsh)"
 else
