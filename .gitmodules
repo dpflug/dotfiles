@@ -1,6 +1,6 @@
 [submodule ".local/share/yadm_submodules/yadm-project"]
 	path = .local/share/yadm_submodules/yadm-project
-	url = https://github.com/TheLocehiliosan/yadm.git
+	url = https://github.com/TheLocehiliosan/yadm
 	shallow = true
 [submodule ".local/share/yadm_submodules/powerlevel10k"]
 	path = .local/share/yadm_submodules/powerlevel10k
