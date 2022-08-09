@@ -1,3 +1,4 @@
 [submodule ".local/share/yadm_submodules/powerlevel10k"]
 	path = .local/share/yadm_submodules/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k
+	shallow = true
