@@ -27,8 +27,7 @@ Plug 'jiangmiao/auto-pairs'             " Auto-close paired characters
 Plug 'preservim/nerdtree'               " Directory browser
 Plug 'Maroloccio/maroloccio-vim'	" Color scheme
 Plug 'gko/vim-coloresque'		" Show colors in CSS/HTML/LESS/SASS
-Plug 'docunext/closetag.vim'		" Close HTML tags
-Plug 'ziglang/zig.vim'
+Plug 'ziglang/zig.vim', { 'for': 'zig' }
 if v:version >= 703
     Plug 'Yggdroot/indentLine'		" Add lines to show indent level
 endif
@@ -38,11 +37,11 @@ endif
 
 " Lisp REPL/niceties
 if v:version >= 800
-    Plug 'vlime/vlime'
+    Plug 'vlime/vlime', { 'for': 'lisp' }
     Plug 'kovisoft/paredit'
     let g:vlime_leader = ","
 else
-    Plug 'kovisoft/slimv'
+    Plug 'kovisoft/slimv', { 'for': 'lisp' }
 endif
 
 " Linting/checking
@@ -66,6 +65,9 @@ if v:version >= 800
         let g:ale_fixers['sh'] = ['shfmt']
     endif
 
+    "if executable('shellcheck')
+    "    let g:ale_fixers['sh'] = ['shellcheck']
+    "endif
     if !exists('g:ale_linters')
         let g:ale_linters = {}
     endif
@@ -185,10 +187,6 @@ let g:SuperTabDefaultCompletionType = "context"
 
 " Add pydoc and menu for completion
 set completeopt=menuone,longest,preview
-
-" HTML tag closing
-autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
-autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
 if v:version >= 703
     " Relative line numbers can be helpful for navigation
