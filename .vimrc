@@ -2,8 +2,6 @@
 " embedded neovim vscode extension
 if !exists('g:vscode')
 
-set nocompatible
-
 " Whip the tabs into shape
 set shiftwidth=4
 set softtabstop=4
@@ -39,7 +37,7 @@ endif
 if v:version >= 800
     Plug 'vlime/vlime', { 'for': 'lisp' }
     Plug 'kovisoft/paredit'
-    let g:vlime_leader = ","
+    let g:vlime_leader = ','
 else
     Plug 'kovisoft/slimv', { 'for': 'lisp' }
 endif
@@ -109,8 +107,8 @@ endif
 
 Plug 'Omer/vim-sparql'
 
-if filereadable("~/.vimrc_local_plug")
-    source "~/.vimrc_local_plug"
+if filereadable('~/.vimrc_local_plug')
+    source '~/.vimrc_local_plug'
 endif
 
 " Be finished with vim-plug
@@ -172,18 +170,17 @@ set spellfile=~/.vim/spellfile.add
 " Make Crtl-L clear search highlights
 nmap <silent> <C-l> :nohl<CR>
 
-" txt2tags support
-au BufNewFile,BufRead *.t2t set ft=txt2tags
+" Python completion
+augroup py
+autocmd py FileType python set omnifunc=pythoncomplete#Complete
+let g:SuperTabDefaultCompletionType = 'context'
 
 if v:version >= 703
     " Python and git commit line length indicators
-    autocmd FileType python set colorcolumn=72,79
-    autocmd FileType gitcommit set colorcolumn=50
+    augroup git
+    autocmd py FileType python set colorcolumn=72,88
+    autocmd git FileType gitcommit set colorcolumn=50,72
 endif
-
-" Python completion
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-let g:SuperTabDefaultCompletionType = "context"
 
 " Add pydoc and menu for completion
 set completeopt=menuone,longest,preview
@@ -203,11 +200,12 @@ set ttyfast
 
 " Show end of line whitespace, tabs
 " For some reason, this isn't working for me within tmux.
-if has("multi_byte")
-    if &termencoding == ''
+if has('multi_byte')
+    if &termencoding ==# ''
         let &termencoding = &encoding
     endif
     set encoding=utf-8
+    scriptencoding utf-8
     setglobal fileencoding=utf-8 nobomb
     set fileencodings=utf-8,latin1
     set list listchars=tab:▸\ ,trail:·
@@ -243,7 +241,7 @@ map ,c :w !xclip<CR><CR>
 vmap ,c '<,'>w !xclip<CR><CR>
 
 " Pastebin my crap
-if exists("$DISPLAY")
+if exists('$DISPLAY')
     map ,pb :w !curl -sF 'sprunge=<-' http://sprunge.us \| tee /dev/stderr \| xclip<CR>
     vmap ,pb '<,'>w !curl -sF 'sprunge=<-' http://sprunge.us \| tee /dev/stderr \| xclip<CR>
 else
@@ -251,7 +249,7 @@ else
     vmap ,pb '<,'>w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
 endif
 
-if filereadable("~/.vimrc_local")
-    source "~/.vimrc_local"
+if filereadable('~/.vimrc_local')
+    source '~/.vimrc_local'
 endif
 endif
