@@ -6,7 +6,7 @@ if [ -d "/usr/local/go/bin" ]; then
 	export GOROOT GOPATH
 	pathmunge "/usr/local/go/bin:$GOPATH/bin" after
 fi
-export CDPATH="~:/mnt/c/Users/ac46451/OneDrive - Lumen/Documents:/mnt/c/Users/ac46451/OneDrive - Lumen/Documents/EXFO"
+export CDPATH="~:/mnt/c/pflug-enclave"
 
 
 # Using https://github.com/rupor-github/win-gpg-agent
@@ -17,7 +17,7 @@ fi
 
 # KEEP FOR WSL2 or if we need to go back to https://github.com/benpye/wsl-ssh-pageant
 #
-#NPIPERELAY='/mnt/c/Users/ac46451/OneDrive - Lumen/Documents/papps/npiperelay.exe'
+#NPIPERELAY='/mnt/c/pflug-enclave/papps/npiperelay.exe'
 #WINGPGDIR='C:/Users/ac46451/AppData/Roaming/gnupg'
 #SOCAT_GPG_PID="$HOME"/.local/share/socat-gpg.pid
 #
