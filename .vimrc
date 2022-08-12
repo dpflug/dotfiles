@@ -1,7 +1,3 @@
-" Surround entire file with vscode check, so we can use the
-" embedded neovim vscode extension
-if !exists('g:vscode')
-
 " Whip the tabs into shape
 set shiftwidth=4
 set softtabstop=4
@@ -26,12 +22,8 @@ Plug 'preservim/nerdtree'               " Directory browser
 Plug 'Maroloccio/maroloccio-vim'	" Color scheme
 Plug 'gko/vim-coloresque'		" Show colors in CSS/HTML/LESS/SASS
 Plug 'ziglang/zig.vim', { 'for': 'zig' }
-if v:version >= 703
-    Plug 'Yggdroot/indentLine'		" Add lines to show indent level
-endif
-if v:version >= 704
-    Plug 'vim-pandoc/vim-pandoc-syntax'
-endif
+Plug 'Yggdroot/indentLine'		" Add lines to show indent level
+Plug 'vim-pandoc/vim-pandoc-syntax'
 
 " Lisp REPL/niceties
 if v:version >= 800
@@ -48,9 +40,9 @@ if v:version >= 800
 
     let g:ale_python_mypy_options = '--strict'
     let g:ale_fixers = {
-    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-    \ 'c': ['clang-format', 'clangtidy'],
-    \}
+                \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+                \ 'c': ['clang-format', 'clangtidy'],
+                \}
     if executable('goimports')
         let g:ale_fixers['go'] = ['goimports']
     else
@@ -170,29 +162,29 @@ set spellfile=~/.vim/spellfile.add
 " Make Crtl-L clear search highlights
 nmap <silent> <C-l> :nohl<CR>
 
-" Python completion
+" Python completion and line length indicators
 augroup py
-autocmd py FileType python set omnifunc=pythoncomplete#Complete
-let g:SuperTabDefaultCompletionType = 'context'
-
-if v:version >= 703
-    " Python and git commit line length indicators
-    augroup git
+    au!
     autocmd py FileType python set colorcolumn=72,88
+    autocmd py FileType python set omnifunc=pythoncomplete#Complete
+    let g:SuperTabDefaultCompletionType = 'context'
+augroup END
+
+" git commit line length indicators
+augroup git
+    au!
     autocmd git FileType gitcommit set colorcolumn=50,72
-endif
+augroup END
 
 " Add pydoc and menu for completion
 set completeopt=menuone,longest,preview
 
-if v:version >= 703
-    " Relative line numbers can be helpful for navigation
-    set rnu
+" Relative line numbers can be helpful for navigation
+set rnu
 
-    if !has('nvim')
-        " Stronger encryption
-        set cryptmethod=blowfish
-    endif
+if !has('nvim')
+    " Stronger encryption
+    set cryptmethod=blowfish
 endif
 
 " I shouldn't encounter any slow TTYs
@@ -251,5 +243,4 @@ endif
 
 if filereadable('~/.vimrc_local')
     source '~/.vimrc_local'
-endif
 endif
