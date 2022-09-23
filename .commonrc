@@ -190,7 +190,7 @@ cpterminfo() {
 }
 
 gear() {
-	guix environment --ad-hoc "$1" -- "$@"
+	guix shell "$1" -- "$@"
 }
 
 if [ -e ~/.commonrc_local ]; then
